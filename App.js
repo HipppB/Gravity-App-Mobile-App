@@ -1,15 +1,10 @@
-import { View, Text } from "react-native";
+import LoginView from "./src/views/LoginView";
 
-export default function App() {
-  return (
-    <View
-      style={{
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
-      <Text>Universal React with Expo</Text>
-    </View>
-  );
+import GravityHeadCrush from "./src/views/GravityHeadCrush";
+import GravityCrush from "./src/views/GravityCrush";
+import MainNavigator from "./src/routes/MainNavigator";
+function App() {
+  return <MainNavigator />;
 }
+
+export default App;
