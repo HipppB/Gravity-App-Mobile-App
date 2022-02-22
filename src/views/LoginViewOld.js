@@ -12,7 +12,7 @@ import {
 
 import bg1 from "../assets/images/bg1.jpg";
 import globe from "../assets/images/globe.gif";
-function LoginView(props) {
+function LoginViewOld(props) {
   const [isLogging, setIsLogging] = useState(true);
   function toggleLogging() {
     setIsLogging(!isLogging);
@@ -27,7 +27,7 @@ function LoginView(props) {
             style={styles.logo}
           />
         </View>
-        <View style={styles.subContainer}>
+        {/* <View style={styles.subContainer}>
           <View style={styles.titleContainer}>
             <Text style={[styles.text, styles.textFirstLine]}>Feel the</Text>
             <Text style={[styles.text, styles.textSecondLine]}>gravity</Text>
@@ -35,7 +35,7 @@ function LoginView(props) {
           <TouchableOpacity style={styles.button}>
             <Text style={styles.buttonText}>Se connecter</Text>
           </TouchableOpacity>
-        </View>
+        </View> */}
       </ImageBackground>
     </View>
   );
@@ -97,4 +97,4 @@ const styles = StyleSheet.create({
     fontSize: 25,
   },
 });
-export default LoginView;
+export default LoginViewOld;

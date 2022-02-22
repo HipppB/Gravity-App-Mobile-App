@@ -20,8 +20,7 @@ function ColoredViewComponent({ isBlue, ...props }) {
       <View style={[styles.container, props?.containerStyle]}>
         <LinearGradient
           colors={["#E86D32", "white"]}
-          start={{ x: 0, y: 0.4 }}
-          end={{ x: 1.1, y: 0.5 }}
+          end={{ x: 1.2, y: 0.5 }}
           style={[styles.gradient, props?.coloredViewStyle]}
         >
           {props.children}
