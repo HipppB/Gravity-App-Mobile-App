@@ -9,13 +9,15 @@ import {
 } from "react-native";
 
 import ColoredViewComponent from "../components/ColoredViewComponent";
-import OutlinedText from "../components/OutlinedText";
-import lettere from "../assets/Letters/Normal/e.png";
-import letterF from "../assets/Letters/Normal/F.png";
-import letterh from "../assets/Letters/Normal/h.png";
-import letterl from "../assets/Letters/Normal/l.png";
-import lettert from "../assets/Letters/Normal/t.png";
-function LoginView(props) {
+import { useFonts } from "expo-font";
+
+import TextInputComponent from "../components/TextInputComponent";
+import { useAuthentification } from "../Context/AuthContext";
+function ConnexionView(props) {
+  const { login } = useAuthentification();
+  let [fontsLoaded] = useFonts({
+    "Modern-Deco": require("../assets/fonts/Modern-Deco.ttf"),
+  });
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.logoContainer}>
@@ -29,54 +31,16 @@ function LoginView(props) {
         containerStyle={styles.nameContainerContainer}
         isBlue
       >
-        <Text style={styles.nameText}>Gravity App</Text>
+        <Text style={styles.nameText}>Connexion</Text>
       </ColoredViewComponent>
 
-      <View style={styles.labelContainer}>
-        <View style={styles.labelTextletterContainer}>
-          <OutlinedText
-            letterImage={letterF}
-            fontHeight={32}
-            style={{ marginRight: 1 }}
-          />
-          <OutlinedText
-            letterImage={lettere}
-            fontHeight={24}
-            style={{ marginRight: 1 }}
-          />
-          <OutlinedText
-            letterImage={lettere}
-            fontHeight={24}
-            style={{ marginRight: 1 }}
-          />
-          <OutlinedText
-            letterImage={letterl}
-            fontHeight={32}
-            style={{ marginRight: 10 }}
-          />
-
-          <OutlinedText
-            letterImage={lettert}
-            fontHeight={32}
-            style={{ marginRight: 1 }}
-          />
-          <OutlinedText
-            letterImage={letterh}
-            fontHeight={32}
-            style={{ marginRight: 1 }}
-          />
-          <OutlinedText
-            letterImage={lettere}
-            fontHeight={24}
-            style={{ marginRight: 0 }}
-          />
-        </View>
-        <Text style={styles.labelText}>GRAVITY</Text>
-      </View>
+      <ColoredViewComponent containerStyle={styles.labelContainer} isBlue>
+        <TextInputComponent placeholder="mail Isep" />
+      </ColoredViewComponent>
 
       <TouchableOpacity
         style={styles.buttonTouchableContainer}
-        onPress={() => props.navigation.navigate("Connexion")}
+        onPress={() => login()}
       >
         <ColoredViewComponent
           coloredViewStyle={styles.buttonContainer}
@@ -100,10 +64,11 @@ const styles = StyleSheet.create({
   nameContainerContainer: {
     width: "70%",
     alignItems: "center",
+    height: 100,
   },
   nameContainer: {
     width: "100%",
-    height: 100,
+    height: 70,
     justifyContent: "center",
   },
   nameText: {
@@ -115,7 +80,6 @@ const styles = StyleSheet.create({
   labelContainer: {
     width: "70%",
     height: 150,
-    justifyContent: "center",
   },
   labelText: {
     color: "black",
@@ -152,4 +116,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default LoginView;
+export default ConnexionView;

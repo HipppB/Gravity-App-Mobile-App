@@ -3,7 +3,7 @@ import { StyleSheet, View, Text, Image } from "react-native";
 
 function OutlinedText({ letterImage, ...props }) {
   const { width, height } = Image.resolveAssetSource(letterImage);
-  console.log(width, height);
+
   let fontImageWidth = props?.fontWidth;
   let fontImageHeight = props?.fontHeight;
   if (props?.fontWidth && !props?.fontHeight) {
@@ -11,7 +11,6 @@ function OutlinedText({ letterImage, ...props }) {
   } else if (!props?.fontWidth && props?.fontHeight) {
     fontImageWidth = (fontImageHeight * width) / height;
   }
-  console.log(fontImageWidth, fontImageHeight);
 
   return (
     <Image

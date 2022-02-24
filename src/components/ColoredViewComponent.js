@@ -7,8 +7,10 @@ function ColoredViewComponent({ isBlue, ...props }) {
     return (
       <View style={[styles.container, props?.containerStyle]}>
         <LinearGradient
-          colors={["#203D43", "#4191CC"]}
-          end={{ x: 1, y: 0.5 }}
+          colors={["#0C1316", "#203C42", "#2293D0"]}
+          end={{ x: 1, y: 0 }}
+          locations={[0.0, 0.25, 0.75]}
+          start={{ x: -0.3, y: 0 }}
           style={[styles.gradient, props?.coloredViewStyle]}
         >
           {props.children}
@@ -19,8 +21,10 @@ function ColoredViewComponent({ isBlue, ...props }) {
     return (
       <View style={[styles.container, props?.containerStyle]}>
         <LinearGradient
-          colors={["#E86D32", "white"]}
-          end={{ x: 1.2, y: 0.5 }}
+          colors={["#E65F02", "#F4C182", "#FFF0C1"]}
+          locations={[0.3, 0.7, 0.98]}
+          start={{ x: -0.3, y: 0 }}
+          end={{ x: 1, y: 0 }}
           style={[styles.gradient, props?.coloredViewStyle]}
         >
           {props.children}
