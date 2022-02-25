@@ -1,11 +1,18 @@
 import React from "react";
-import { StyleSheet, View, Text, Image } from "react-native";
+import {
+  StyleSheet,
+  View,
+  Text,
+  Image,
+  TouchableOpacity,
+  SafeAreaView,
+} from "react-native";
 import ColoredViewComponent from "./ColoredViewComponent";
 import { LinearGradient } from "expo-linear-gradient";
 
 function HeaderComponenent(props) {
   return (
-    <View style={styles.headerContainer}>
+    <SafeAreaView style={styles.headerContainer}>
       <View
         style={{
           flexDirection: "row",
@@ -28,24 +35,26 @@ function HeaderComponenent(props) {
             <Text style={styles.nameText}>Hippolyte</Text>
           </View>
         </View>
-        <View>
+        <TouchableOpacity
+          onPress={() => props.navigation.navigate("Notifications")}
+        >
           <Image
             source={require("../assets/images/annonce.png")}
             style={styles.icon}
           />
-        </View>
+        </TouchableOpacity>
       </View>
       <View style={styles.titleContainer}>
         <Text style={styles.title}>Feel the GRAVITY</Text>
       </View>
-    </View>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   headerContainer: {
     backgroundColor: "white",
-    marginTop: 10,
+    marginTop: 20,
   },
   profileContainer: {
     width: 50,

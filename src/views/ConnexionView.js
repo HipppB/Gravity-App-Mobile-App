@@ -1,4 +1,4 @@
-import React, { ReactPropTypes } from "react";
+import React, { ReactPropTypes, useState } from "react";
 import {
   StyleSheet,
   Text,
@@ -18,6 +18,7 @@ function ConnexionView(props) {
   let [fontsLoaded] = useFonts({
     "Modern-Deco": require("../assets/fonts/Modern-Deco.ttf"),
   });
+  const [mailInput, setMailInput] = useState("");
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.logoContainer}>
@@ -35,7 +36,11 @@ function ConnexionView(props) {
       </ColoredViewComponent>
 
       <ColoredViewComponent containerStyle={styles.labelContainer} isBlue>
-        <TextInputComponent placeholder="mail Isep" />
+        <TextInputComponent
+          placeholder="mail Isep"
+          value={mailInput}
+          onChange={setMailInput}
+        />
       </ColoredViewComponent>
 
       <TouchableOpacity
@@ -64,7 +69,7 @@ const styles = StyleSheet.create({
   nameContainerContainer: {
     width: "70%",
     alignItems: "center",
-    height: 100,
+    marginBottom: 30,
   },
   nameContainer: {
     width: "100%",
@@ -79,7 +84,7 @@ const styles = StyleSheet.create({
   },
   labelContainer: {
     width: "70%",
-    height: 150,
+    marginBottom: 50,
   },
   labelText: {
     color: "black",

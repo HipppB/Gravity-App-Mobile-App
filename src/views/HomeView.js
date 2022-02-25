@@ -28,7 +28,7 @@ function HomeView(props) {
   }
   return (
     <View style={styles.container}>
-      <HeaderComponenent />
+      <HeaderComponenent navigation={props.navigation} />
 
       <ScrollView
         horizontal
@@ -140,7 +140,7 @@ function HomeView(props) {
         scrollEventThrottle={0.1}
         onScroll={(e) => {
           scrollViewSelector.current.scrollTo({
-            x: (e.nativeEvent.contentOffset.x / width) * 60 + "%",
+            x: (e.nativeEvent.contentOffset.x / width) * 60,
             animated: false,
           });
         }}
@@ -161,7 +161,7 @@ function HomeView(props) {
         </ScrollView>
       </ScrollView>
 
-      <BottomBarComponent />
+      <BottomBarComponent navigation={props.navigation} />
     </View>
   );
 }

@@ -106,7 +106,6 @@ function TextInputComponent(props) {
         style={[styles.inputStyle, props?.additionalStyle, securedStyle]}
         onChangeText={props?.onChange}
         value={props?.value}
-        d
         editable={props?.disabled}
       />
     </View>

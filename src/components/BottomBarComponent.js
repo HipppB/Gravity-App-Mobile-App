@@ -1,10 +1,14 @@
 import React from "react";
 import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
 
-function BottomBarComponent(props) {
+import { LinearGradient } from "expo-linear-gradient";
+
+function BottomBarComponent({ navigation, ...props }) {
+  let active = props.state?.routeNames[props.state?.index];
+
   return (
     <View style={styles.container}>
-      <TouchableOpacity>
+      <TouchableOpacity onPress={() => navigation.navigate("Home")}>
         <View style={styles.homeButton}>
           <Image
             source={require("../assets/images/home.png")}
@@ -13,23 +17,77 @@ function BottomBarComponent(props) {
           <Text style={styles.homeText}>Accueil</Text>
         </View>
       </TouchableOpacity>
-      <TouchableOpacity>
-        <Image
-          source={require("../assets/images/calendar.png")}
-          style={styles.icons}
-        />
+      <TouchableOpacity
+        onPress={() => navigation.navigate("Calendar")}
+        style={active === "Calendar" ? styles.active : {}}
+      >
+        <LinearGradient
+          colors={
+            active === "Calendar"
+              ? ["#E65F02", "#F4C182", "#FFF0C1"]
+              : ["white", "white", "white"]
+          }
+          locations={[0.3, 0.7, 0.98]}
+          start={{ x: -0.3, y: 0 }}
+          end={{ x: 1.2, y: 0 }}
+          style={[styles.activeButtonGradient]}
+        >
+          <Image
+            source={require("../assets/images/calendar.png")}
+            style={[
+              styles.icons,
+              active === "Calendar" ? styles.activeIcon : styles.inactiveIcon,
+            ]}
+          />
+        </LinearGradient>
       </TouchableOpacity>
-      <TouchableOpacity>
-        <Image
-          source={require("../assets/images/hands.png")}
-          style={styles.icons}
-        />
+      <TouchableOpacity
+        onPress={() => navigation.navigate("Sponsor")}
+        style={active === "Sponsor" ? styles.active : {}}
+      >
+        <LinearGradient
+          colors={
+            active === "Sponsor"
+              ? ["#E65F02", "#F4C182", "#FFF0C1"]
+              : ["white", "white", "white"]
+          }
+          locations={[0.3, 0.7, 0.98]}
+          start={{ x: -0.3, y: 0 }}
+          end={{ x: 1.2, y: 0 }}
+          style={[styles.activeButtonGradient]}
+        >
+          <Image
+            source={require("../assets/images/hands.png")}
+            style={[
+              styles.icons,
+              active === "Sponsor" ? styles.activeIcon : styles.inactiveIcon,
+            ]}
+          />
+        </LinearGradient>
       </TouchableOpacity>
-      <TouchableOpacity>
-        <Image
-          source={require("../assets/images/games.png")}
-          style={styles.icons}
-        />
+      <TouchableOpacity
+        onPress={() => navigation.navigate("Event")}
+        style={active === "Event" ? styles.active : {}}
+      >
+        <LinearGradient
+          colors={
+            active === "Event"
+              ? ["#E65F02", "#F4C182", "#FFF0C1"]
+              : ["white", "white", "white"]
+          }
+          locations={[0.3, 0.7, 0.98]}
+          start={{ x: -0.3, y: 0 }}
+          end={{ x: 1.2, y: 0 }}
+          style={[styles.activeButtonGradient]}
+        >
+          <Image
+            source={require("../assets/images/games.png")}
+            style={[
+              styles.icons,
+              active === "Event" ? styles.activeIcon : styles.inactiveIcon,
+            ]}
+          />
+        </LinearGradient>
       </TouchableOpacity>
     </View>
   );
@@ -44,6 +102,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-evenly",
     alignItems: "center",
   },
+
   homeButton: {
     flexDirection: "row",
     alignItems: "center",
@@ -66,6 +125,20 @@ const styles = StyleSheet.create({
   icons: {
     width: 40,
     height: 40,
+  },
+
+  activeIcon: {
+    tintColor: "white",
+  },
+  inactiveIcon: { tintColor: "black" },
+
+  activeButtonGradient: {
+    padding: 5,
+    backgroundColor: "#E8E8E8",
+    justifyContent: "center",
+    alignItems: "center",
+
+    borderRadius: 12,
   },
 });
 
