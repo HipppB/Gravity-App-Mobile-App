@@ -6,7 +6,7 @@ const { width, height } = Dimensions.get("screen");
 function EventView(props) {
   return (
     <View style={styles.container}>
-      <HeaderComponenent />
+      <HeaderComponenent navigation={props.navigation} />
       <View style={styles.bodyContainer}>
         <View style={styles.noSponsorContainer}>
           <Text style={styles.noSponsorText}>

@@ -8,6 +8,7 @@ import BottomBarComponent from "../components/BottomBarComponent";
 const Tab = createBottomTabNavigator();
 
 import SponsorNavigator from "./SponsorNavigator";
+import HomeNavigator from "./HomeNavigator";
 function TabNavigator() {
   return (
     <Tab.Navigator
@@ -16,7 +17,7 @@ function TabNavigator() {
       }}
       tabBar={(props) => <BottomBarComponent {...props} />}
     >
-      <Tab.Screen name="Home" component={HomeView} />
+      <Tab.Screen name="Home" component={HomeNavigator} />
       <Tab.Screen name="Calendar" component={CalendarView} />
       <Tab.Screen name="Sponsor" component={SponsorNavigator} />
       <Tab.Screen name="Event" component={EventView} />

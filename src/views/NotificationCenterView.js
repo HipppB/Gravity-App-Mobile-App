@@ -5,6 +5,7 @@ function NotificationCenterView(props) {
   return (
     <View style={{ padding: 20, paddingTop: 70 }}>
       <Text style={styles.pageTitle}>Centre de notification</Text>
+      <Text>Aucune notification</Text>
     </View>
   );
 }

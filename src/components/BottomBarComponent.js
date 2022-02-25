@@ -5,10 +5,12 @@ import { LinearGradient } from "expo-linear-gradient";
 
 function BottomBarComponent({ navigation, ...props }) {
   let active = props.state?.routeNames[props.state?.index];
-
+  console.log(active);
   return (
     <View style={styles.container}>
-      <TouchableOpacity onPress={() => navigation.navigate("Home")}>
+      <TouchableOpacity
+        onPress={() => navigation.navigate("Home", { screen: "HomeHome" })}
+      >
         <View style={styles.homeButton}>
           <Image
             source={require("../assets/images/home.png")}
@@ -42,7 +44,9 @@ function BottomBarComponent({ navigation, ...props }) {
         </LinearGradient>
       </TouchableOpacity>
       <TouchableOpacity
-        onPress={() => navigation.navigate("Sponsor")}
+        onPress={() =>
+          navigation.navigate("Sponsor", { screen: "sponsorHome" })
+        }
         style={active === "Sponsor" ? styles.active : {}}
       >
         <LinearGradient

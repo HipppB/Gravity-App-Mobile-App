@@ -20,7 +20,12 @@ function HeaderComponenent(props) {
           justifyContent: "space-between",
         }}
       >
-        <View style={{ flexDirection: "row" }}>
+        <TouchableOpacity
+          style={{ flexDirection: "row" }}
+          onPress={() =>
+            props.navigation.navigate("Home", { screen: "HomeAccount" })
+          }
+        >
           <LinearGradient
             colors={["#0C1316", "#2293D0"]}
             end={{ x: 1, y: 0 }}
@@ -34,7 +39,7 @@ function HeaderComponenent(props) {
             <Text style={styles.welcomeText}>Bienvenue,</Text>
             <Text style={styles.nameText}>Hippolyte</Text>
           </View>
-        </View>
+        </TouchableOpacity>
         <TouchableOpacity
           onPress={() => props.navigation.navigate("Notifications")}
         >
