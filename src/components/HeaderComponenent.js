@@ -7,7 +7,6 @@ import {
   TouchableOpacity,
   SafeAreaView,
 } from "react-native";
-import ColoredViewComponent from "./ColoredViewComponent";
 import { LinearGradient } from "expo-linear-gradient";
 
 function HeaderComponenent(props) {
@@ -47,6 +46,7 @@ function HeaderComponenent(props) {
             source={require("../assets/images/annonce.png")}
             style={styles.icon}
           />
+          <View style={styles.notification} />
         </TouchableOpacity>
       </View>
       <View style={styles.titleContainer}>
@@ -100,6 +100,15 @@ const styles = StyleSheet.create({
     width: 35,
     height: 35,
     marginRight: 50,
+  },
+  notification: {
+    position: "absolute",
+    width: 10,
+    height: 10,
+    backgroundColor: "red",
+    bottom: 0,
+    left: 30,
+    borderRadius: 30,
   },
 });
 

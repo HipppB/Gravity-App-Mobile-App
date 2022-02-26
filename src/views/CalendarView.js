@@ -14,7 +14,11 @@ function CalendarView(props) {
       <ScrollView style={styles.bodyScrollContainer}>
         <View style={styles.bodyContainer}>
           {eventList.map((event) => (
-            <EventComponent event={event} key={event.id} />
+            <EventComponent
+              event={event}
+              key={event.id}
+              navigation={props.navigation}
+            />
           ))}
         </View>
       </ScrollView>

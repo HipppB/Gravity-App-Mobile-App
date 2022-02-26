@@ -10,9 +10,12 @@ import {
 
 const { width, height } = Dimensions.get("screen");
 
-function EventComponent({ event, ...props }) {
+function EventComponent({ event, navigation, ...props }) {
   return (
-    <TouchableOpacity style={styles.container}>
+    <TouchableOpacity
+      style={styles.container}
+      onPress={() => navigation.navigate("calendarDetails")}
+    >
       <Image
         source={{
           uri: event.imageUrl,

@@ -1,14 +1,12 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
-import HomeView from "../views/HomeView";
-import CalendarView from "../views/CalendarView";
-import SponsorView from "../views/SponsorView";
 import EventView from "../views/EventView";
 import BottomBarComponent from "../components/BottomBarComponent";
 const Tab = createBottomTabNavigator();
 
 import SponsorNavigator from "./SponsorNavigator";
 import HomeNavigator from "./HomeNavigator";
+import CalendarNavigator from "./CalendarNavigator";
 function TabNavigator() {
   return (
     <Tab.Navigator
@@ -18,7 +16,7 @@ function TabNavigator() {
       tabBar={(props) => <BottomBarComponent {...props} />}
     >
       <Tab.Screen name="Home" component={HomeNavigator} />
-      <Tab.Screen name="Calendar" component={CalendarView} />
+      <Tab.Screen name="Calendar" component={CalendarNavigator} />
       <Tab.Screen name="Sponsor" component={SponsorNavigator} />
       <Tab.Screen name="Event" component={EventView} />
     </Tab.Navigator>

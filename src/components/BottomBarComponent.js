@@ -20,7 +20,9 @@ function BottomBarComponent({ navigation, ...props }) {
         </View>
       </TouchableOpacity>
       <TouchableOpacity
-        onPress={() => navigation.navigate("Calendar")}
+        onPress={() =>
+          navigation.navigate("Calendar", { screen: "calendarHome" })
+        }
         style={active === "Calendar" ? styles.active : {}}
       >
         <LinearGradient

@@ -9,7 +9,8 @@ import TabNavigator from "./TabNavigator";
 
 import NotificationCenterView from "../views/NotificationCenterView";
 import RestaurantView from "../views/RestaurantView";
-
+import ChatView from "../views/ChatView";
+import FirstConnexionPopUp from "../views/FirstConnexionPopUp";
 import {
   useFonts,
   ChangaOne_400Regular,
@@ -50,7 +51,13 @@ function MainNavigator(props) {
             options={{ presentation: "modal" }}
             component={NotificationCenterView}
           />
+          <Stack.Screen
+            name="Welcome"
+            options={{ presentation: "modal" }}
+            component={FirstConnexionPopUp}
+          />
           <Stack.Screen name="Restaurants" component={RestaurantView} />
+          <Stack.Screen name="Chat" component={ChatView} />
         </Stack.Navigator>
       )}
     </NavigationContainer>
