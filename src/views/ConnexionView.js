@@ -9,15 +9,12 @@ import {
 } from "react-native";
 
 import ColoredViewComponent from "../components/ColoredViewComponent";
-import { useFonts } from "expo-font";
 
 import TextInputComponent from "../components/TextInputComponent";
 import { useAuthentification } from "../Context/AuthContext";
 function ConnexionView(props) {
   const { login } = useAuthentification();
-  let [fontsLoaded] = useFonts({
-    "Modern-Deco": require("../assets/fonts/Modern-Deco.ttf"),
-  });
+
   const [mailInput, setMailInput] = useState("");
   return (
     <SafeAreaView style={styles.container}>

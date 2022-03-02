@@ -15,7 +15,14 @@ import letterF from "../assets/Letters/Normal/F.png";
 import letterh from "../assets/Letters/Normal/h.png";
 import letterl from "../assets/Letters/Normal/l.png";
 import lettert from "../assets/Letters/Normal/t.png";
+
+import { useFonts } from "expo-font";
+
 function LoginView(props) {
+  let [fontsLoaded] = useFonts({
+    "Modern-Deco": require("../assets/fonts/Modern-Deco.ttf"),
+    Neon: require("../assets/fonts/Neon.ttf"),
+  });
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.logoContainer}>
