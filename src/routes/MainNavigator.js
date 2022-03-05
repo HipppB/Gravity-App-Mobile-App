@@ -11,6 +11,8 @@ import NotificationCenterView from "../views/NotificationCenterView";
 import RestaurantView from "../views/RestaurantView";
 import ChatView from "../views/ChatView";
 import FirstConnexionPopUp from "../views/FirstConnexionPopUp";
+import ListOfParticipantView from "../views/ListOfParticipantView";
+import PublicProfilView from "../views/PublicProfilView";
 import {
   useFonts,
   ChangaOne_400Regular,
@@ -55,6 +57,16 @@ function MainNavigator(props) {
             name="Welcome"
             options={{ presentation: "modal" }}
             component={FirstConnexionPopUp}
+          />
+          <Stack.Screen
+            name="ParticipantList"
+            options={{ presentation: "modal" }}
+            component={ListOfParticipantView}
+          />
+          <Stack.Screen
+            name="PublicProfil"
+            options={{ presentation: "modal" }}
+            component={PublicProfilView}
           />
           <Stack.Screen name="Restaurants" component={RestaurantView} />
           <Stack.Screen name="Chat" component={ChatView} />

@@ -49,12 +49,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   text: {
-    fontFamily: "Modern-Deco",
+    fontFamily: "Neon",
     textAlign: "center",
     fontSize: 30,
   },
   textSmall: {
-    fontFamily: "Modern-Deco",
+    fontFamily: "Neon",
     textAlign: "center",
     lineHeight: 33,
     fontSize: 20,

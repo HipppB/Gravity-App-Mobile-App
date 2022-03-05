@@ -81,10 +81,10 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   welcomeText: {
-    fontFamily: "Modern-Deco",
+    fontFamily: "Neon",
   },
   nameText: {
-    fontFamily: "Modern-Deco",
+    fontFamily: "Neon",
     fontSize: 20,
   },
   titleContainer: {

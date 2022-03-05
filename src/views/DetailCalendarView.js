@@ -5,6 +5,7 @@ import {
   Text,
   Dimensions,
   ScrollView,
+  TouchableOpacity,
   Image,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -18,6 +19,7 @@ import letters from "../assets/Letters/Italique/s.png";
 import letterd from "../assets/Letters/Italique/d.png";
 import lettere from "../assets/Letters/Italique/e.png";
 import OutlinedText from "../components/OutlinedText";
+
 const { width, height } = Dimensions.get("screen");
 
 function DetailCalendarView(props) {
@@ -79,7 +81,7 @@ function DetailCalendarView(props) {
                 <OutlinedText
                   letterImage={lettero}
                   fontHeight={9}
-                  style={{ marginRight: 1 }}
+                  style={{ marginRight: 0 }}
                 />
                 <OutlinedText
                   letterImage={letterp}
@@ -90,7 +92,7 @@ function DetailCalendarView(props) {
                 <OutlinedText
                   letterImage={lettero}
                   fontHeight={9}
-                  style={{ marginRight: 1 }}
+                  style={{ marginRight: 0 }}
                 />
                 <OutlinedText
                   letterImage={letters}
@@ -111,11 +113,72 @@ function DetailCalendarView(props) {
               <Text style={styles.labelText}>{event.name}</Text>
             </View>
           </View>
-          <View style={{ width: "80%" }}>
-            <Text>Description</Text>
+          <View style={{ width: "80%", marginTop: 10 }}>
+            <Text style={{ fontFamily: "Neon", lineHeight: 20, fontSize: 18 }}>
+              Ceci est une superbe description d'event, venez nous rejoindre
+              pour toujours plus de suprises, le pôle com pourra évidemment
+              modifier ce message car bon, ce n'est pas mon job
+            </Text>
 
-            <View>
-              <Text>Ils y participent :</Text>
+            <Text
+              style={{
+                lineHeight: 20,
+
+                marginTop: 10,
+                fontStyle: "italic",
+              }}
+            >
+              Tout ce qui suit sera activable par le pole com
+            </Text>
+            <Text
+              style={{
+                fontFamily: "Neon",
+                lineHeight: 20,
+                fontSize: 18,
+                marginTop: 10,
+              }}
+            >
+              • Random Text 1
+            </Text>
+            <Text
+              style={{
+                fontFamily: "Neon",
+                lineHeight: 20,
+                fontSize: 18,
+                marginTop: 10,
+              }}
+            >
+              • Random Text 2
+            </Text>
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+
+                height: 50,
+                position: "relative",
+              }}
+            >
+              <Text
+                style={{
+                  fontFamily: "ChangaOne_400Regular",
+                  fontSize: 18,
+                  marginRight: 10,
+                }}
+              >
+                Ils y participent :
+              </Text>
+              <PersonsHeads
+                listOfHeads={[
+                  require("../GravityHeadCrush/images/1.png"),
+                  require("../GravityHeadCrush/images/2.png"),
+                  require("../GravityHeadCrush/images/3.png"),
+                  require("../GravityHeadCrush/images/4.png"),
+                  require("../GravityHeadCrush/images/5.png"),
+                ]}
+                number={50}
+                navigation={props.navigation}
+              />
             </View>
           </View>
           {/* <Text>
@@ -133,6 +196,75 @@ function DetailCalendarView(props) {
         </View>
       </ScrollView>
     </View>
+  );
+}
+function PersonsHeads({ listOfHeads, number, navigation }) {
+  return (
+    <View
+      style={{
+        flexDirection: "row",
+      }}
+    >
+      {listOfHeads.map((head, index) => (
+        <PersonHead
+          image={head}
+          position={index}
+          key={index}
+          onPress={() => navigation.navigate("PublicProfil")}
+        />
+      ))}
+      <TouchableOpacity
+        style={{
+          position: "absolute",
+          left: listOfHeads.length * 20,
+          alignSelf: "center",
+          width: 40,
+          height: 40,
+          backgroundColor: "#ED8A33",
+          borderRadius: 50,
+          justifyContent: "center",
+          alignItems: "flex-end",
+        }}
+        onPress={() => navigation.navigate("ParticipantList")}
+      >
+        <Text
+          style={{
+            left: 10,
+            fontFamily: "ChangaOne_400Regular",
+            color: "white",
+            fontSize: 13,
+            marginRight: 10,
+            width: "100%",
+            textAlign: "center",
+          }}
+        >
+          +{number}
+        </Text>
+      </TouchableOpacity>
+    </View>
+  );
+}
+function PersonHead({ image, position, onPress }) {
+  return (
+    <TouchableOpacity
+      style={{
+        position: "absolute",
+        left: position * 20,
+        alignSelf: "center",
+      }}
+      onPress={onPress}
+    >
+      <Image
+        source={image}
+        style={{
+          width: 40,
+          height: 40,
+          resizeMode: "cover",
+          backgroundColor: "black",
+          borderRadius: 50,
+        }}
+      />
+    </TouchableOpacity>
   );
 }
 

@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
   noSponsorText: {
     fontSize: 20,
     textAlign: "center",
-    fontFamily: "Modern-Deco",
+    fontFamily: "Neon",
   },
 });
 

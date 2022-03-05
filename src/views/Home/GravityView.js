@@ -16,53 +16,53 @@ function GravityView(props) {
         <View style={styles.labelTextletterContainer}>
           <OutlinedText
             letterImage={letterH}
-            fontHeight={26}
+            fontHeight={22}
             style={{ marginRight: 1 }}
           />
           <OutlinedText
             letterImage={letteri}
-            fontHeight={26}
+            fontHeight={20}
             style={{ marginRight: 1 }}
           />
           <OutlinedText
             letterImage={letters}
-            fontHeight={26}
+            fontHeight={17}
             style={{ marginRight: 1 }}
           />
 
           <OutlinedText
             letterImage={lettert}
-            fontHeight={26}
+            fontHeight={20}
             style={{ marginRight: 0 }}
           />
           <OutlinedText
             letterImage={lettero}
-            fontHeight={26}
+            fontHeight={17}
             style={{ marginRight: 0 }}
           />
           <OutlinedText
             letterImage={letteri}
-            fontHeight={26}
+            fontHeight={20}
             style={{ marginRight: 0 }}
           />
           <OutlinedText
             letterImage={letterr}
-            fontHeight={26}
+            fontHeight={17}
             style={{ marginRight: 0 }}
           />
           <OutlinedText
             letterImage={lettere}
-            fontHeight={26}
+            fontHeight={17}
             style={{ marginRight: 7 }}
           />
           <OutlinedText
             letterImage={letterd}
-            fontHeight={26}
+            fontHeight={20}
             style={{ marginRight: 0 }}
           />
           <OutlinedText
             letterImage={lettere}
-            fontHeight={26}
+            fontHeight={17}
             style={{ marginRight: 7 }}
           />
         </View>
@@ -97,9 +97,11 @@ const styles = StyleSheet.create({
   labelContainer: {
     justifyContent: "center",
     flexDirection: "row",
-    alignItems: "flex-end",
+    alignItems: "center",
   },
   labelText: {
+    textAlignVertical: "top",
+
     color: "black",
     fontSize: 28,
     fontFamily: "ChangaOne_400Regular_Italic",

@@ -20,7 +20,6 @@ import { useFonts } from "expo-font";
 
 function LoginView(props) {
   let [fontsLoaded] = useFonts({
-    "Modern-Deco": require("../assets/fonts/Modern-Deco.ttf"),
     Neon: require("../assets/fonts/Neon.ttf"),
   });
   return (
