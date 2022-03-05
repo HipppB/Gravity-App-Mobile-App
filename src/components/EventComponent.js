@@ -14,7 +14,7 @@ function EventComponent({ event, navigation, ...props }) {
   return (
     <TouchableOpacity
       style={styles.container}
-      onPress={() => navigation.navigate("calendarDetails")}
+      onPress={() => navigation.navigate("calendarDetails", { event })}
     >
       <Image
         source={{

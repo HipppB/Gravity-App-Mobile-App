@@ -20,6 +20,7 @@ function OutlinedText({ letterImage, ...props }) {
           width: fontImageWidth,
           height: fontImageHeight,
           resizeMode: "contain",
+          top: props?.top,
         },
         props?.style,
       ]}
