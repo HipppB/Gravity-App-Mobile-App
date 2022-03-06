@@ -5,10 +5,14 @@ import HeaderComponenent from "../components/HeaderComponenent";
 import getSponsors from "../data/getSponsors";
 import SponsorCompoent from "../components/SponsorCompoent";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import { useTranslation } from "../Context/TranslationContext";
+
 const { width, height } = Dimensions.get("screen");
 
 function SponsorView(props) {
   const [sponsorList, setSponsorList] = useState(getSponsors());
+  const { toggleLangage, langage } = useTranslation();
+
   console.log(sponsorList?.length);
   return (
     <View style={styles.container}>
@@ -20,15 +24,11 @@ function SponsorView(props) {
           ))
         ) : (
           <View style={styles.noSponsorContainer}>
-            <Text style={styles.noSponsorText}>
-              Il n'y a aucun sponsor pour le moment, reviens plus tard !
-            </Text>
+            <Text style={styles.noSponsorText}>{langage.noSponsor}</Text>
             <TouchableOpacity
               onPress={() => props.navigation.navigate("sponsorRestaurant")}
             >
-              <Text style={styles.noSponsorText}>
-                En attendant regarde la liste de nos restaurants partenaire !
-              </Text>
+              <Text style={styles.noSponsorText}>{langage.foodForWaiting}</Text>
             </TouchableOpacity>
           </View>
         )}

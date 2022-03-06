@@ -101,6 +101,7 @@ function TextInputComponent(props) {
       </Animated.Text>
 
       <TextInput
+        autoFocus={props?.autoFocus}
         onFocus={inputFocus}
         onBlur={inputUnFocus}
         style={[styles.inputStyle, props?.additionalStyle, securedStyle]}

@@ -2,9 +2,12 @@ import React from "react";
 import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
 
 import { LinearGradient } from "expo-linear-gradient";
+import { useTranslation } from "../Context/TranslationContext";
 
 function BottomBarComponent({ navigation, ...props }) {
   let active = props.state?.routeNames[props.state?.index];
+  const { toggleLangage, langage } = useTranslation();
+
   console.log(active);
   return (
     <View style={styles.container}>
@@ -16,7 +19,7 @@ function BottomBarComponent({ navigation, ...props }) {
             source={require("../assets/images/home.png")}
             style={[styles.icons, styles.homeIcon]}
           />
-          <Text style={styles.homeText}>Accueil</Text>
+          <Text style={styles.homeText}>{langage.homeButton}</Text>
         </View>
       </TouchableOpacity>
       <TouchableOpacity

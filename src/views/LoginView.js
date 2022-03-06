@@ -6,6 +6,7 @@ import {
   SafeAreaView,
   TouchableOpacity,
   Image,
+  Dimensions,
 } from "react-native";
 
 import ColoredViewComponent from "../components/ColoredViewComponent";
@@ -15,28 +16,43 @@ import letterF from "../assets/Letters/Normal/F.png";
 import letterh from "../assets/Letters/Normal/h.png";
 import letterl from "../assets/Letters/Normal/l.png";
 import lettert from "../assets/Letters/Normal/t.png";
-
+import { LogBox } from "react-native";
+import { useTranslation } from "../Context/TranslationContext";
+LogBox.ignoreLogs([
+  "[react-native-gesture-handler] Seems like you're using an old API with gesture components, check out new Gestures system!",
+]);
+import ToggleLangageComponent from "../components/ToggleLangageComponent";
 import { useFonts } from "expo-font";
 
+const { width, height } = Dimensions.get("screen");
 function LoginView(props) {
+  const { toggleLangage, langage } = useTranslation();
   let [fontsLoaded] = useFonts({
     Neon: require("../assets/fonts/Neon.ttf"),
   });
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.logoContainer}>
-        <Text>Animation logo</Text>
+        {/* <Text>Animation logo</Text>
         <Text>version noir</Text>
-        <Text>GRAVITY</Text>
+        <Text>GRAVITY</Text> */}
+        <Image
+          source={require("../assets/images/logos/Couleur/Logo.png")}
+          style={{
+            width: width * 0.8,
+            height: width * 0.8,
+            resizeMode: "contain",
+          }}
+        />
       </View>
 
-      <ColoredViewComponent
+      {/* <ColoredViewComponent
         coloredViewStyle={styles.nameContainer}
         containerStyle={styles.nameContainerContainer}
         isBlue
       >
         <Text style={styles.nameText}>Gravity App</Text>
-      </ColoredViewComponent>
+      </ColoredViewComponent> */}
 
       <View style={styles.labelContainer}>
         <View style={styles.labelTextletterContainer}>
@@ -85,12 +101,14 @@ function LoginView(props) {
         onPress={() => props.navigation.navigate("Connexion")}
       >
         <ColoredViewComponent
+          isBlue
           coloredViewStyle={styles.buttonContainer}
           containerStyle={styles.buttonContainerContainer}
         >
-          <Text style={styles.buttonText}>Se connecter</Text>
+          <Text style={styles.buttonText}>{langage.connexionButton}</Text>
         </ColoredViewComponent>
       </TouchableOpacity>
+      <ToggleLangageComponent />
     </SafeAreaView>
   );
 }

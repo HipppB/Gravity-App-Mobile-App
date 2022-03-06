@@ -13,8 +13,12 @@ import HeaderComponenent from "../components/HeaderComponenent";
 import GravityView from "./Home/GravityView";
 import { LinearGradient } from "expo-linear-gradient";
 import BottomBarComponent from "../components/BottomBarComponent";
+import { useTranslation } from "../Context/TranslationContext";
+
 const { width, height } = Dimensions.get("screen");
 function HomeView(props) {
+  const { toggleLangage, langage } = useTranslation();
+
   const [activePage, setActivePage] = useState(0);
   let scrollViewSelector = useRef();
   let scrollViewPages = useRef();
@@ -76,7 +80,7 @@ function HomeView(props) {
                 activePage == 1 ? styles.buttonSelectorViewTextActive : {},
               ]}
             >
-              Pôles
+              {langage.poles}
             </Text>
           </LinearGradient>
         </TouchableOpacity>
@@ -98,7 +102,7 @@ function HomeView(props) {
                 activePage == 2 ? styles.buttonSelectorViewTextActive : {},
               ]}
             >
-              Projet Pédagogique
+              {langage.projetPeda}
             </Text>
           </LinearGradient>
         </TouchableOpacity>
@@ -120,7 +124,7 @@ function HomeView(props) {
                 activePage == 3 ? styles.buttonSelectorViewTextActive : {},
               ]}
             >
-              Son
+              {langage.son}
             </Text>
           </LinearGradient>
         </TouchableOpacity>

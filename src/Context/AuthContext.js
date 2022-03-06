@@ -1,5 +1,4 @@
 import React, { createContext, useContext, useState } from "react";
-import { Button } from "react-native-web";
 
 const AuthContext = createContext({
   isAuthentificated: false,

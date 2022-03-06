@@ -9,11 +9,14 @@ import {
 } from "react-native";
 
 import MapView, { PROVIDER_GOOGLE, Marker } from "react-native-maps";
+import { useTranslation } from "../Context/TranslationContext";
+
 import RestaurantPreviewComponent from "../components/RestaurantPreviewComponent";
 const { width, height } = Dimensions.get("screen");
 
 function RestaurantView(props) {
   let scrollViewRestaurant = useRef();
+  const { toggleLangage, langage } = useTranslation();
 
   const markers = [
     {
@@ -33,7 +36,7 @@ function RestaurantView(props) {
   return (
     <View style={styles.container}>
       <View style={styles.titleContainer}>
-        <Text style={styles.titleText}>Régale toi avec GRAVITY</Text>
+        <Text style={styles.titleText}>{langage.regaleToi}</Text>
       </View>
       <MapView
         style={styles.mapContainer}

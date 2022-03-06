@@ -8,8 +8,11 @@ import {
   SafeAreaView,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
+import { useTranslation } from "../Context/TranslationContext";
 
 function HeaderComponenent(props) {
+  const { toggleLangage, langage } = useTranslation();
+
   return (
     <SafeAreaView style={styles.headerContainer}>
       <View
@@ -35,7 +38,7 @@ function HeaderComponenent(props) {
           </LinearGradient>
 
           <View style={styles.textContainer}>
-            <Text style={styles.welcomeText}>Bienvenue,</Text>
+            <Text style={styles.welcomeText}>{langage.bienvenueText}</Text>
             <Text style={styles.nameText}>Hippolyte</Text>
           </View>
         </TouchableOpacity>

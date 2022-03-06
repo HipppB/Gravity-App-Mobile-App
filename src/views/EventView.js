@@ -1,17 +1,22 @@
 import React from "react";
 import { StyleSheet, Text, View, Dimensions } from "react-native";
 import HeaderComponenent from "../components/HeaderComponenent";
+import { useTranslation } from "../Context/TranslationContext";
+
 const { width, height } = Dimensions.get("screen");
 
 function EventView(props) {
+  const { toggleLangage, langage } = useTranslation();
+
   return (
     <View style={styles.container}>
       <HeaderComponenent navigation={props.navigation} />
       <View style={styles.bodyContainer}>
         <View style={styles.noSponsorContainer}>
           <Text style={styles.noSponsorText}>
-            Il n'y a aucun jeu accessible pour le moment,
-            {"\n"}Reviens plus tard !
+            {langage.noGame}
+            {"\n"}
+            {langage.comeBackLater}
           </Text>
         </View>
       </View>

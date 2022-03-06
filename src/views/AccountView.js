@@ -3,25 +3,30 @@ import { StyleSheet, View, Text, Dimensions } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
 import ColorViewComponent from "../components/ColoredViewComponent.js";
+import { useTranslation } from "../Context/TranslationContext";
+import ToggleLangageComponent from "../components/ToggleLangageComponent.js";
 const { width, height } = Dimensions.get("screen");
 function AccountView(props) {
+  const { toggleLangage, langage } = useTranslation();
+
   return (
     <SafeAreaView style={styles.container}>
       <ColorViewComponent coloredViewStyle={styles.titleContainer}>
-        <Text style={styles.titleText}>Mon compte</Text>
+        <Text style={styles.titleText}>{langage.myAccount}</Text>
       </ColorViewComponent>
       <View style={styles.bodyContainer}>
         <View>
-          <Text style={styles.text}>Bonjour Hippolyte,</Text>
-          <Text style={styles.textSmall}>Une question ? Une demande ?</Text>
-          <Text style={styles.textSmall}>N‘hesites pas à nous contacter !</Text>
+          <Text style={styles.text}>{langage.hello} Hippolyte,</Text>
+          <Text style={styles.textSmall}>{langage.question}</Text>
+          <Text style={styles.textSmall}>{langage.noHesitation}</Text>
         </View>
         <TouchableOpacity onPress={() => props.navigation.navigate("Chat")}>
           <ColorViewComponent coloredViewStyle={[styles.titleContainer]} isBlue>
-            <Text style={styles.titleText}>Contacter Gravity</Text>
+            <Text style={styles.titleText}>{langage.contactButton}</Text>
           </ColorViewComponent>
         </TouchableOpacity>
       </View>
+      <ToggleLangageComponent />
     </SafeAreaView>
   );
 }

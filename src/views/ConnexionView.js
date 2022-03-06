@@ -6,35 +6,51 @@ import {
   SafeAreaView,
   TouchableOpacity,
   Image,
+  Dimensions,
+  KeyboardAvoidingView,
 } from "react-native";
 
 import ColoredViewComponent from "../components/ColoredViewComponent";
 
 import TextInputComponent from "../components/TextInputComponent";
 import { useAuthentification } from "../Context/AuthContext";
+import { useTranslation } from "../Context/TranslationContext";
+import ToggleLangageComponent from "../components/ToggleLangageComponent";
+const { width, height } = Dimensions.get("screen");
+
 function ConnexionView(props) {
   const { login } = useAuthentification();
+  const { toggleLangage, langage } = useTranslation();
 
   const [mailInput, setMailInput] = useState("");
   return (
-    <SafeAreaView style={styles.container}>
+    <KeyboardAvoidingView
+      style={styles.container}
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+    >
       <View style={styles.logoContainer}>
-        <Text>Animation logo</Text>
-        <Text>version noir</Text>
-        <Text>GRAVITY</Text>
+        <Image
+          source={require("../assets/images/logos/Couleur/Logo.png")}
+          style={{
+            width: width * 0.8,
+            height: width * 0.8,
+            resizeMode: "contain",
+          }}
+        />
       </View>
 
-      <ColoredViewComponent
+      {/* <ColoredViewComponent
         coloredViewStyle={styles.nameContainer}
         containerStyle={styles.nameContainerContainer}
         isBlue
       >
         <Text style={styles.nameText}>Connexion</Text>
-      </ColoredViewComponent>
+      </ColoredViewComponent> */}
 
       <ColoredViewComponent containerStyle={styles.labelContainer} isBlue>
         <TextInputComponent
-          placeholder="mail Isep"
+          autoFocus
+          placeholder={langage.mailPlaceHolder}
           value={mailInput}
           onChange={setMailInput}
         />
@@ -48,10 +64,13 @@ function ConnexionView(props) {
           coloredViewStyle={styles.buttonContainer}
           containerStyle={styles.buttonContainerContainer}
         >
-          <Text style={styles.buttonText}>Se connecter</Text>
+          <Text style={styles.buttonText}>{langage.connexionButton}</Text>
         </ColoredViewComponent>
       </TouchableOpacity>
-    </SafeAreaView>
+      <View style={{ position: "absolute", bottom: 30 }}>
+        <ToggleLangageComponent />
+      </View>
+    </KeyboardAvoidingView>
   );
 }
 
