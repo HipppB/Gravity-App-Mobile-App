@@ -64,7 +64,7 @@ function ConnexionView(props) {
           coloredViewStyle={styles.buttonContainer}
           containerStyle={styles.buttonContainerContainer}
         >
-          <Text style={styles.buttonText}>{langage.connexionButton}</Text>
+          <Text style={styles.buttonText}>{langage?.connexionButton}</Text>
         </ColoredViewComponent>
       </TouchableOpacity>
       <View style={{ position: "absolute", bottom: 30 }}>

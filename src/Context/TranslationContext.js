@@ -11,7 +11,7 @@ const TranslationContext = createContext({
 // create context
 function TranslationProvider({ children }) {
   const [selectedLangage, setSelectedLangage] = useState("fr");
-  const [langage, setLangage] = useState(texts[selectedLangage]);
+  const [langage, setLangage] = useState(texts["fr"]);
   const toggleLangage = () => {
     if (selectedLangage === "fr") {
       setSelectedLangage("en");

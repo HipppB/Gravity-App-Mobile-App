@@ -1,0 +1,19 @@
+{
+  "expo": {
+    "name": "My Test App",
+    "slug": "my-test-app",
+    "version": "1.0.0",
+    "icon": "src/assets/images/logos/LogoApp.png",
+    "android": {
+      "package": "com.gravity.app",
+      "permissions": [
+        "READ_EXTERNAL_STORAGE",
+        "WRITE_EXTERNAL_STORAGE",
+        "NOTIFICATIONS"
+      ]
+    },
+    "ios": {
+      "bundleIdentifier": "com.arthurCann.app"
+    }
+  }
+}

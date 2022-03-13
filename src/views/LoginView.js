@@ -1,4 +1,4 @@
-import React, { ReactPropTypes } from "react";
+import React, { useEffect } from "react";
 import {
   StyleSheet,
   Text,
@@ -29,6 +29,12 @@ function LoginView(props) {
   const { toggleLangage, langage } = useTranslation();
   let [fontsLoaded] = useFonts({
     Neon: require("../assets/fonts/Neon.ttf"),
+  });
+  console.log(langage);
+  useEffect(() => {
+    if (!langage) {
+      toggleLangage();
+    }
   });
   return (
     <SafeAreaView style={styles.container}>
@@ -105,7 +111,7 @@ function LoginView(props) {
           coloredViewStyle={styles.buttonContainer}
           containerStyle={styles.buttonContainerContainer}
         >
-          <Text style={styles.buttonText}>{langage.connexionButton}</Text>
+          <Text style={styles.buttonText}>{langage?.connexionButton}</Text>
         </ColoredViewComponent>
       </TouchableOpacity>
       <ToggleLangageComponent />

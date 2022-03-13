@@ -20,7 +20,9 @@
     "myAccount": "Mon compte",
     "notification": "Centre de notification",
     "regaleToi": "Régale-toi avec GRAVITY",
-    "participant": "Liste des participants"
+    "participant": "Liste des participants",
+    "telecharger": "Télécharger",
+    "openOnYoutube": "Écouter sur Youtube"
   },
   "en": {
     "connexionButton": "Login",
@@ -43,6 +45,8 @@
     "myAccount": "My Account",
     "notification": "Notification center",
     "regaleToi": "Eat plenty with GRAVITY",
-    "participant": "Participant list"
+    "participant": "Participant list",
+    "telecharger": "Download",
+    "openOnYoutube": "Open on Youtube"
   }
 }

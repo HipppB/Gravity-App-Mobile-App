@@ -184,18 +184,6 @@ function DetailCalendarView(props) {
               </ColoredViewComponent>
             </TouchableOpacity>
           </View>
-          {/* <Text>
-            Page à design -{"\n"}
-            Vue détaillée de l'event : {"\n"}
-            Image de présentation - Où ? Quand ? Quoi ? {"\n"}
-            Bouton s'inscrire - Liste des inscrits {"\n"}
-            Bouton Ajout au calendrier {"\n"}
-            MiniMap avec aperçu de la localisation ? {"\n"}
-            Texte decriptif {"\n"}
-            Bouton Retour à la liste du calendrier {"\n"}
-            Bouton Voiture (Pourras être activé par la com sur certains
-            evenements) pour accès vue covoiturage
-          </Text> */}
         </View>
       </ScrollView>
     </View>

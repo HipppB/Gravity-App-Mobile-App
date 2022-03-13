@@ -14,6 +14,8 @@ import GravityView from "./Home/GravityView";
 import { LinearGradient } from "expo-linear-gradient";
 import BottomBarComponent from "../components/BottomBarComponent";
 import { useTranslation } from "../Context/TranslationContext";
+import ProjetPedaView from "./Home/ProjetPedaView";
+import SonView from "./Home/SonView";
 
 const { width, height } = Dimensions.get("screen");
 function HomeView(props) {
@@ -33,139 +35,158 @@ function HomeView(props) {
   return (
     <View style={styles.container}>
       <HeaderComponenent navigation={props.navigation} />
-
-      <ScrollView
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        style={styles.buttonSelectorContainer}
-        ref={scrollViewSelector}
-      >
-        <TouchableOpacity onPress={() => changeActivePage(0)}>
-          <LinearGradient
-            colors={
-              activePage == 0
-                ? ["#0C1316", "#203C42", "#2293D0"]
-                : ["#E8E8E8", "#E8E8E8", "#E8E8E8"]
-            }
-            end={{ x: 1, y: 0 }}
-            locations={[0.0, 0.25, 0.75]}
-            start={{ x: -0.3, y: 0 }}
-            style={styles.buttonSelectorView}
-          >
-            <Text
-              style={[
-                styles.buttonSelectorViewText,
-                activePage == 0 ? styles.buttonSelectorViewTextActive : {},
-              ]}
+      <View style={{ alignItems: "center" }}>
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          style={styles.buttonSelectorContainer}
+          ref={scrollViewSelector}
+        >
+          <TouchableOpacity onPress={() => changeActivePage(0)}>
+            <LinearGradient
+              colors={
+                activePage == 0
+                  ? ["#0C1316", "#203C42", "#2293D0"]
+                  : ["#E8E8E8", "#E8E8E8", "#E8E8E8"]
+              }
+              end={{ x: 1, y: 0 }}
+              locations={[0.0, 0.25, 0.75]}
+              start={{ x: -0.3, y: 0 }}
+              style={styles.buttonSelectorView}
             >
-              GRAVITY
-            </Text>
-          </LinearGradient>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => changeActivePage(1)}>
-          <LinearGradient
-            colors={
-              activePage == 1
-                ? ["#0C1316", "#203C42", "#2293D0"]
-                : ["#E8E8E8", "#E8E8E8", "#E8E8E8"]
-            }
-            end={{ x: 1, y: 0 }}
-            locations={[0.0, 0.25, 0.75]}
-            start={{ x: -0.3, y: 0 }}
-            style={styles.buttonSelectorView}
-          >
-            <Text
-              style={[
-                styles.buttonSelectorViewText,
-                activePage == 1 ? styles.buttonSelectorViewTextActive : {},
-              ]}
+              <Text
+                style={[
+                  styles.buttonSelectorViewText,
+                  activePage == 0 ? styles.buttonSelectorViewTextActive : {},
+                ]}
+              >
+                GRAVITY
+              </Text>
+            </LinearGradient>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => changeActivePage(1)}>
+            <LinearGradient
+              colors={
+                activePage == 1
+                  ? ["#0C1316", "#203C42", "#2293D0"]
+                  : ["#E8E8E8", "#E8E8E8", "#E8E8E8"]
+              }
+              end={{ x: 1, y: 0 }}
+              locations={[0.0, 0.25, 0.75]}
+              start={{ x: -0.3, y: 0 }}
+              style={styles.buttonSelectorView}
             >
-              {langage.poles}
-            </Text>
-          </LinearGradient>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => changeActivePage(2)}>
-          <LinearGradient
-            colors={
-              activePage == 2
-                ? ["#0C1316", "#203C42", "#2293D0"]
-                : ["#E8E8E8", "#E8E8E8", "#E8E8E8"]
-            }
-            end={{ x: 1, y: 0 }}
-            locations={[0.0, 0.25, 0.75]}
-            start={{ x: -0.3, y: 0 }}
-            style={styles.buttonSelectorView}
-          >
-            <Text
-              style={[
-                styles.buttonSelectorViewText,
-                activePage == 2 ? styles.buttonSelectorViewTextActive : {},
-              ]}
+              <Text
+                style={[
+                  styles.buttonSelectorViewText,
+                  activePage == 1 ? styles.buttonSelectorViewTextActive : {},
+                ]}
+              >
+                {langage.poles}
+              </Text>
+            </LinearGradient>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => changeActivePage(2)}>
+            <LinearGradient
+              colors={
+                activePage == 2
+                  ? ["#0C1316", "#203C42", "#2293D0"]
+                  : ["#E8E8E8", "#E8E8E8", "#E8E8E8"]
+              }
+              end={{ x: 1, y: 0 }}
+              locations={[0.0, 0.25, 0.75]}
+              start={{ x: -0.3, y: 0 }}
+              style={styles.buttonSelectorView}
             >
-              {langage.projetPeda}
-            </Text>
-          </LinearGradient>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => changeActivePage(3)}>
-          <LinearGradient
-            colors={
-              activePage == 3
-                ? ["#0C1316", "#203C42", "#2293D0"]
-                : ["#E8E8E8", "#E8E8E8", "#E8E8E8"]
-            }
-            end={{ x: 1, y: 0 }}
-            locations={[0.0, 0.25, 0.75]}
-            start={{ x: -0.3, y: 0 }}
-            style={styles.buttonSelectorView}
-          >
-            <Text
-              style={[
-                styles.buttonSelectorViewText,
-                activePage == 3 ? styles.buttonSelectorViewTextActive : {},
-              ]}
+              <Text
+                style={[
+                  styles.buttonSelectorViewText,
+                  activePage == 2 ? styles.buttonSelectorViewTextActive : {},
+                ]}
+              >
+                {langage.projetPeda}
+              </Text>
+            </LinearGradient>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => changeActivePage(3)}>
+            <LinearGradient
+              colors={
+                activePage == 3
+                  ? ["#0C1316", "#203C42", "#2293D0"]
+                  : ["#E8E8E8", "#E8E8E8", "#E8E8E8"]
+              }
+              end={{ x: 1, y: 0 }}
+              locations={[0.0, 0.25, 0.75]}
+              start={{ x: -0.3, y: 0 }}
+              style={styles.buttonSelectorView}
             >
-              {langage.son}
+              <Text
+                style={[
+                  styles.buttonSelectorViewText,
+                  activePage == 3 ? styles.buttonSelectorViewTextActive : {},
+                ]}
+              >
+                {langage.son}
+              </Text>
+            </LinearGradient>
+          </TouchableOpacity>
+        </ScrollView>
+      </View>
+      <View style={{ flex: 1 }}>
+        <ScrollView
+          horizontal
+          pagingEnabled={true}
+          showsHorizontalScrollIndicator={false}
+          style={styles.pageContainer}
+          ref={scrollViewPages}
+          onMomentumScrollEnd={(e) => {
+            let newpage = Math.round(
+              (e.nativeEvent.contentOffset.x + 0.1) / width
+            );
+            setActivePage(newpage);
+          }}
+          scrollEventThrottle={0.1}
+          onScroll={(e) => {
+            scrollViewSelector.current.scrollTo({
+              x: (e.nativeEvent.contentOffset.x / width) * 60,
+              animated: false,
+            });
+          }}
+        >
+          <ScrollView style={styles.pageInPageContainer}>
+            <GravityView />
+          </ScrollView>
+          <ScrollView style={styles.pageInPageContainer}>
+            <Text>Liste des poles, personnes et description - A design</Text>
+          </ScrollView>
+          <View
+            style={[
+              styles.pageInPageContainer,
+              {
+                justifyContent: "center",
+                alignItems: "center",
+              },
+            ]}
+          >
+            <Text>
+              <ProjetPedaView />
             </Text>
-          </LinearGradient>
-        </TouchableOpacity>
-      </ScrollView>
-      <ScrollView
-        horizontal
-        pagingEnabled={true}
-        showsHorizontalScrollIndicator={false}
-        style={styles.pageContainer}
-        ref={scrollViewPages}
-        onMomentumScrollEnd={(e) => {
-          let newpage = Math.round(
-            (e.nativeEvent.contentOffset.x + 0.1) / width
-          );
-          setActivePage(newpage);
-        }}
-        scrollEventThrottle={0.1}
-        onScroll={(e) => {
-          scrollViewSelector.current.scrollTo({
-            x: (e.nativeEvent.contentOffset.x / width) * 60,
-            animated: false,
-          });
-        }}
-      >
-        <ScrollView style={styles.pageInPageContainer}>
-          <GravityView />
+          </View>
+          <View
+            style={[
+              styles.pageInPageContainer,
+              {
+                justifyContent: "center",
+                alignItems: "center",
+              },
+            ]}
+          >
+            <Text>
+              <SonView />
+            </Text>
+          </View>
         </ScrollView>
-        <ScrollView style={styles.pageInPageContainer}>
-          <Text>Liste des poles, personnes et description - A design</Text>
-        </ScrollView>
-        <ScrollView style={styles.pageInPageContainer}>
-          <Text>
-            Projet Pédagogique - Voir sous quel forme le mettre (Pdf ?)
-          </Text>
-        </ScrollView>
-        <ScrollView style={styles.pageInPageContainer}>
-          <Text>Son - Vidéo youtube ?</Text>
-        </ScrollView>
-      </ScrollView>
-
-      <BottomBarComponent navigation={props.navigation} />
+      </View>
     </View>
   );
 }
@@ -174,17 +195,18 @@ const styles = StyleSheet.create({
   container: {
     paddingTop: height * 0.05,
     backgroundColor: "white",
-    justifyContent: "space-between",
-    maxHeight: height,
+    // justifyContent: "space-between",
+    height: height - 100,
 
     display: "flex",
   },
   buttonSelectorContainer: {
-    marginTop: 20,
-    height: 100,
+    marginTop: 10,
   },
   pageContainer: {
-    marginTop: 20,
+    marginTop: 10,
+    flexGrow: 1,
+    width: width,
   },
   pageInPageContainer: {
     width: width,
