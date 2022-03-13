@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, View, Text } from "react-native";
+import { StyleSheet, View, Platform } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 
 function ColoredViewComponent({
@@ -43,14 +43,17 @@ const styles = StyleSheet.create({
   container: {
     borderRadius: 15,
     shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
+    shadowOffset:
+      Platform.OS === "ios"
+        ? {
+            width: 0,
+            height: 2,
+          }
+        : {},
     shadowOpacity: 0.25,
-    shadowRadius: 3.84,
+    shadowRadius: Platform.OS === "ios" ? 3.84 : 0,
 
-    elevation: 5,
+    elevation: Platform.OS === "ios" ? 5 : 0,
   },
   gradient: {
     borderRadius: 15,

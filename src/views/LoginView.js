@@ -162,7 +162,6 @@ const styles = StyleSheet.create({
     resizeMode: "contain",
 
     tintColor: "black",
-    backgroundColor: "red",
   },
   buttonTouchableContainer: {
     width: "70%",

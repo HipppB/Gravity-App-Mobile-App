@@ -39,7 +39,7 @@ function SponsorView(props) {
 
 const styles = StyleSheet.create({
   container: {
-    paddingTop: height * 0.05,
+    // paddingTop: height * 0.05,
     backgroundColor: "white",
     justifyContent: "space-between",
     height: "100%",

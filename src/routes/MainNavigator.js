@@ -46,7 +46,11 @@ function MainNavigator(props) {
           <Stack.Screen name="Connexion" component={ConnexionView} />
         </Stack.Navigator>
       ) : (
-        <Stack.Navigator screenOptions={{ headerShown: false }}>
+        <Stack.Navigator
+          screenOptions={{
+            headerShown: false,
+          }}
+        >
           <Stack.Screen name="TabNavigator" component={TabNavigator} />
           <Stack.Screen
             name="Notifications"

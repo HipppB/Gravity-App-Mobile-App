@@ -8,6 +8,7 @@ import {
   Image,
   Dimensions,
   KeyboardAvoidingView,
+  Platform,
 } from "react-native";
 
 import ColoredViewComponent from "../components/ColoredViewComponent";
@@ -16,30 +17,32 @@ import TextInputComponent from "../components/TextInputComponent";
 import { useAuthentification } from "../Context/AuthContext";
 import { useTranslation } from "../Context/TranslationContext";
 import ToggleLangageComponent from "../components/ToggleLangageComponent";
+
 const { width, height } = Dimensions.get("screen");
 
 function ConnexionView(props) {
   const { login } = useAuthentification();
   const { toggleLangage, langage } = useTranslation();
-
+  console.log(Platform.OS);
   const [mailInput, setMailInput] = useState("");
   return (
-    <KeyboardAvoidingView
-      style={styles.container}
-      behavior={Platform.OS === "ios" ? "padding" : "height"}
-    >
-      <View style={styles.logoContainer}>
-        <Image
-          source={require("../assets/images/logos/Couleur/Logo.png")}
-          style={{
-            width: width * 0.8,
-            height: width * 0.8,
-            resizeMode: "contain",
-          }}
-        />
-      </View>
+    <View style={{ flex: 1, width: "100%" }}>
+      <KeyboardAvoidingView
+        style={styles.container}
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+      >
+        <View style={styles.logoContainer}>
+          <Image
+            source={require("../assets/images/logos/Couleur/Logo.png")}
+            style={{
+              width: width * 0.8,
+              height: width * 0.8,
+              resizeMode: "contain",
+            }}
+          />
+        </View>
 
-      {/* <ColoredViewComponent
+        {/* <ColoredViewComponent
         coloredViewStyle={styles.nameContainer}
         containerStyle={styles.nameContainerContainer}
         isBlue
@@ -47,30 +50,37 @@ function ConnexionView(props) {
         <Text style={styles.nameText}>Connexion</Text>
       </ColoredViewComponent> */}
 
-      <ColoredViewComponent containerStyle={styles.labelContainer} isBlue>
-        <TextInputComponent
-          autoFocus
-          placeholder={langage.mailPlaceHolder}
-          value={mailInput}
-          onChange={setMailInput}
-        />
-      </ColoredViewComponent>
-
-      <TouchableOpacity
-        style={styles.buttonTouchableContainer}
-        onPress={() => login()}
-      >
-        <ColoredViewComponent
-          coloredViewStyle={styles.buttonContainer}
-          containerStyle={styles.buttonContainerContainer}
-        >
-          <Text style={styles.buttonText}>{langage?.connexionButton}</Text>
+        <ColoredViewComponent containerStyle={styles.labelContainer} isBlue>
+          <TextInputComponent
+            // autoFocus
+            placeholder={langage.mailPlaceHolder}
+            value={mailInput}
+            onChange={setMailInput}
+          />
         </ColoredViewComponent>
-      </TouchableOpacity>
-      <View style={{ position: "absolute", bottom: 30 }}>
+
+        <TouchableOpacity
+          style={styles.buttonTouchableContainer}
+          onPress={() => login()}
+        >
+          <ColoredViewComponent
+            coloredViewStyle={styles.buttonContainer}
+            containerStyle={styles.buttonContainerContainer}
+          >
+            <Text style={styles.buttonText}>{langage?.connexionButton}</Text>
+          </ColoredViewComponent>
+        </TouchableOpacity>
+      </KeyboardAvoidingView>
+      <View
+        style={{
+          position: "absolute",
+          bottom: Platform.OS === "ios" ? 30 : 10,
+          alignSelf: "center",
+        }}
+      >
         <ToggleLangageComponent />
       </View>
-    </KeyboardAvoidingView>
+    </View>
   );
 }
 
@@ -78,10 +88,16 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "white",
-    justifyContent: "space-evenly",
+    justifyContent: Platform.OS === "android" ? "flex-end" : "space-evenly",
     alignItems: "center",
   },
-  logoContainer: {},
+  logoContainer:
+    Platform.OS === "android"
+      ? {
+          position: "absolute",
+          top: 0,
+        }
+      : {},
   nameContainerContainer: {
     width: "70%",
     alignItems: "center",
@@ -117,7 +133,6 @@ const styles = StyleSheet.create({
     resizeMode: "contain",
 
     tintColor: "black",
-    backgroundColor: "red",
   },
   buttonTouchableContainer: {
     width: "70%",
@@ -128,6 +143,7 @@ const styles = StyleSheet.create({
     width: "100%",
     height: 50,
     justifyContent: "center",
+    marginBottom: Platform.OS === "android" ? 100 : 0,
   },
   buttonText: {
     textAlign: "center",

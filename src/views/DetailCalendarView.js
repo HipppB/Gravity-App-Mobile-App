@@ -260,7 +260,7 @@ function PersonHead({ image, position, onPress }) {
 
 const styles = StyleSheet.create({
   container: {
-    paddingTop: height * 0.05,
+    // paddingTop: height * 0.05,
     backgroundColor: "white",
     justifyContent: "space-between",
     height: "100%",
@@ -298,7 +298,6 @@ const styles = StyleSheet.create({
     resizeMode: "contain",
 
     tintColor: "black",
-    backgroundColor: "red",
   },
   buttonTouchableContainer: {
     marginTop: 10,

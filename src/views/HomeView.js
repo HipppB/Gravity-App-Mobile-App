@@ -6,6 +6,7 @@ import {
   ScrollView,
   Dimensions,
   TouchableOpacity,
+  Platform,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -193,7 +194,7 @@ function HomeView(props) {
 
 const styles = StyleSheet.create({
   container: {
-    paddingTop: height * 0.05,
+    // paddingTop: height * 0.05,
     backgroundColor: "white",
     // justifyContent: "space-between",
     height: height - 100,
@@ -206,6 +207,7 @@ const styles = StyleSheet.create({
   pageContainer: {
     marginTop: 10,
     flexGrow: 1,
+    marginBottom: Platform.OS === "ios" ? 0 : 80,
     width: width,
   },
   pageInPageContainer: {
