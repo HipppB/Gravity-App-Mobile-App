@@ -19,7 +19,7 @@ import letters from "../assets/Letters/Italique/s.png";
 import letterd from "../assets/Letters/Italique/d.png";
 import lettere from "../assets/Letters/Italique/e.png";
 import OutlinedText from "../components/OutlinedText";
-import MapView, { PROVIDER_GOOGLE, Marker } from "react-native-maps";
+import MapView, { Marker } from "react-native-maps";
 import { useTranslation } from "../Context/TranslationContext";
 
 const { width, height } = Dimensions.get("screen");
@@ -126,7 +126,6 @@ function DetailCalendarView(props) {
             </Text>
             <MapView
               style={styles.mapContainer}
-              provider={PROVIDER_GOOGLE}
               showsUserLocation
               initialRegion={{
                 latitude: 48.84554,

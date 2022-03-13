@@ -1,8 +1,8 @@
 {
   "expo": {
-    "name": "My Test App",
+    "name": "My App",
     "slug": "my-test-app",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "icon": "src/assets/images/logos/LogoApp.png",
     "android": {
       "package": "com.gravity.app",

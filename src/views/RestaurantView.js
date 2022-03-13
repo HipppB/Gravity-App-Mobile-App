@@ -40,7 +40,7 @@ function RestaurantView(props) {
       </View>
       <MapView
         style={styles.mapContainer}
-        provider={PROVIDER_GOOGLE}
+        // provider={PROVIDER_GOOGLE}
         showsUserLocation
         initialRegion={{
           latitude: 48.84554,
