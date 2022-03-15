@@ -27,17 +27,31 @@ function ChatView(props) {
   };
   const [messages, setMessages] = useState([
     {
-      author: user,
-      createdAt: Date.now(),
+      author: user2,
+      createdAt: new Date(1647226800000),
       id: uuidv4(),
-      text: "HI",
+      text: "Tkt, n'hésites pas à continuer cette fausse conversation pour tester l'application !",
+      type: "text",
+    },
+    {
+      author: user,
+      createdAt: new Date(1647226800000),
+      id: uuidv4(),
+      text: "Wow ça marche ! Génial merci !",
       type: "text",
     },
     {
       author: user2,
-      createdAt: Date.now(),
+      createdAt: new Date(1647226800000),
       id: uuidv4(),
-      text: "HEY YOU",
+      text: "Tu tape ton texte puis tu clique sur l'icone !",
+      type: "text",
+    },
+    {
+      author: user,
+      createdAt: new Date(1647226800000),
+      id: uuidv4(),
+      text: "Hey comment j'envois un message ?",
       type: "text",
     },
   ]);
