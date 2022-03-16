@@ -6,6 +6,7 @@ import {
   Image,
   Dimensions,
   ScrollView,
+  Linking,
   TouchableOpacity,
 } from "react-native";
 
@@ -13,11 +14,22 @@ const { width, height } = Dimensions.get("screen");
 import { useTranslation } from "../Context/TranslationContext";
 
 function NotificationCenterView(props) {
-  const { toggleLangage, langage } = useTranslation();
-
+  const { langage } = useTranslation();
   let listViewData = Array(20)
     .fill("")
-    .map((_, i) => ({ key: `${i}`, text: `item #${i}` }));
+    .map((_, i) => ({
+      key: `${i}`,
+      title: `Super notification #${i + 1}`,
+      isNew: i < 3,
+      action:
+        Math.random() > 0.7
+          ? "CALENDAR"
+          : Math.random() > 0.7
+          ? "URL"
+          : Math.random() > 0.5
+          ? "EVENT"
+          : "SPONSOR",
+    }));
   return (
     <View
       style={{
@@ -63,29 +75,47 @@ function NotificationCenterView(props) {
           paddingBottom: 50,
         }}
       >
-        <Notification isNew />
-        <Notification />
-        <Notification />
-        <Notification />
-        <Notification />
-        <Notification />
-        <Notification />
-        <Notification />
-        <Notification />
+        {listViewData.map((notification) => (
+          <Notification
+            notification={notification}
+            key={notification.key}
+            navigation={props.navigation}
+          />
+        ))}
+        {/* <Notification isNew /> */}
       </ScrollView>
     </View>
   );
 }
 
-function Notification(props) {
+function Notification({ notification, navigation }) {
   const [isNewVisible, setIsNewVisible] = useState(true);
+  function callBack() {
+    switch (notification.action) {
+      case "CALENDAR":
+        navigation.navigate("Calendar");
+        break;
+      case "EVENT":
+        navigation.navigate("Event");
+        break;
+      case "SPONSOR":
+        navigation.navigate("Sponsor");
+        break;
+      case "URL":
+        Linking.openURL("https://google.com");
+        break;
+
+      default:
+        break;
+    }
+  }
   return (
     <View>
       <TouchableOpacity
         style={{ zIndex: 2 }}
         onPress={() => setIsNewVisible(!isNewVisible)}
       >
-        {props?.isNew && isNewVisible ? (
+        {notification?.isNew && isNewVisible ? (
           <Image
             source={require("../assets/images/new.png")}
             style={{
@@ -110,11 +140,13 @@ function Notification(props) {
           padding: 10,
           paddingHorizontal: 20,
         }}
+        onPress={() => callBack()}
       >
         <Text style={{ fontFamily: "ChangaOne_400Regular", marginBottom: 5 }}>
-          Super titre de notification
+          {notification.title}
         </Text>
         <Text style={{ fontFamily: "Neon" }}>
+          Action associée à la notif : {notification.action} {"\n"}
           Super description de cette super notification, l'utilisateur aura
           aussi possibilité de cliquer pour être redirigé sur : Un écran
           d'event, un écran de sponsor (Food ou Normal) ou un écran de jeu
