@@ -81,7 +81,6 @@ function TextInputComponent(props) {
       style={[
         {
           position: "relative",
-
           justifyContent: "flex-end",
         },
         props?.additionalStyleContainer,
@@ -108,6 +107,8 @@ function TextInputComponent(props) {
         onChangeText={props?.onChange}
         value={props?.value}
         editable={props?.disabled}
+        keyboardType={props?.keyboardType}
+        secureTextEntry={props?.secureTextEntry}
       />
     </View>
   );

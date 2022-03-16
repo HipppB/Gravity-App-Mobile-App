@@ -23,13 +23,16 @@ const { width, height } = Dimensions.get("screen");
 function ConnexionView(props) {
   const { login } = useAuthentification();
   const { toggleLangage, langage } = useTranslation();
-  console.log(Platform.OS);
+
   const [mailInput, setMailInput] = useState("");
+  const [password, setPassword] = useState("");
+
   return (
     <View style={{ flex: 1, width: "100%" }}>
       <KeyboardAvoidingView
         style={styles.container}
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        contentContainerStyle={styles.container}
+        behavior={Platform.OS === "ios" ? "position" : "height"}
       >
         <View style={styles.logoContainer}>
           <Image
@@ -56,6 +59,16 @@ function ConnexionView(props) {
             placeholder={langage.mailPlaceHolder}
             value={mailInput}
             onChange={setMailInput}
+            keyboardType="email-address"
+          />
+        </ColoredViewComponent>
+        <ColoredViewComponent containerStyle={styles.labelContainer} isBlue>
+          <TextInputComponent
+            // autoFocus
+            secureTextEntry
+            placeholder={langage.passwordPlaceHolder}
+            value={password}
+            onChange={setPassword}
           />
         </ColoredViewComponent>
 
@@ -73,9 +86,10 @@ function ConnexionView(props) {
       </KeyboardAvoidingView>
       <View
         style={{
-          position: "absolute",
-          bottom: Platform.OS === "ios" ? 30 : 10,
-          alignSelf: "center",
+          backgroundColor: "white",
+          width: "100%",
+          paddingBottom: Platform.OS === "ios" ? 30 : 10,
+          alignItems: "center",
         }}
       >
         <ToggleLangageComponent />
@@ -86,6 +100,7 @@ function ConnexionView(props) {
 
 const styles = StyleSheet.create({
   container: {
+    width: "100%",
     flex: 1,
     backgroundColor: "white",
     justifyContent: Platform.OS === "android" ? "flex-end" : "space-evenly",
@@ -116,7 +131,10 @@ const styles = StyleSheet.create({
   },
   labelContainer: {
     width: "70%",
-    marginBottom: 50,
+    marginBottom: 0,
+    paddingBottom: 0,
+    marginTop: 0,
+    backgroundColor: "red",
   },
   labelText: {
     color: "black",

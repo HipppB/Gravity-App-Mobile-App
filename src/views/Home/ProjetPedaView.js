@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, View, Text, Dimensions } from "react-native";
+import { StyleSheet, View, Text, Dimensions, Linking } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 
 import ColorViewComponent from "../../components/ColoredViewComponent.js";
@@ -11,7 +11,9 @@ function ProjetPedaView(props) {
 
   return (
     <View style={styles.bodyContainer}>
-      <TouchableOpacity onPress={() => console.log("Chat")}>
+      <TouchableOpacity
+        onPress={() => Linking.openURL("https://youtu.be/dQw4w9WgXcQ")}
+      >
         <ColorViewComponent coloredViewStyle={[styles.titleContainer]}>
           <Text style={styles.titleText}>{langage.telecharger}</Text>
         </ColorViewComponent>

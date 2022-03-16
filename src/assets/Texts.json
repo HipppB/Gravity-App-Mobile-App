@@ -22,7 +22,17 @@
     "regaleToi": "Régale-toi avec GRAVITY",
     "participant": "Liste des participants",
     "telecharger": "Télécharger",
-    "openOnYoutube": "Écouter sur Youtube"
+    "openOnYoutube": "Écouter sur Youtube",
+    "editProfile": "Modifier mon profil",
+    "namePlaceHolder": "Prénom",
+    "lastnamePlaceHolder": "Nom",
+    "phonePlaceHolder": "Téléphone",
+    "locationPlaceHolder": "Adresse (Approximative)",
+    "instaPlaceHolder": "Instagram",
+    "facebookPlaceHolder": "Facebook",
+    "tiktokPlaceHolder": "TikTok",
+    "snapPlaceHolder": "Snap",
+    "passwordPlaceHolder": "Mot de passe"
   },
   "en": {
     "connexionButton": "Login",
@@ -47,6 +57,16 @@
     "regaleToi": "Eat plenty with GRAVITY",
     "participant": "Participant list",
     "telecharger": "Download",
-    "openOnYoutube": "Open on Youtube"
+    "openOnYoutube": "Open on Youtube",
+    "editProfile": "Edit my profile",
+    "namePlaceHolder": "Name",
+    "lastnamePlaceHolder": "Last Name",
+    "phonePlaceHolder": "Phone",
+    "locationPlaceHolder": "Adress (No need to be precise)",
+    "instaPlaceHolder": "Instagram",
+    "facebookPlaceHolder": "Facebook",
+    "tiktokPlaceHolder": "TikTok",
+    "snapPlaceHolder": "Snap",
+    "passwordPlaceHolder": "Password"
   }
 }
