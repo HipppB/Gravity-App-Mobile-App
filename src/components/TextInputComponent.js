@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import {
   StyleSheet,
   View,
@@ -13,9 +13,9 @@ import {
 function TextInputComponent(props) {
   const [isSecured, setIsSecured] = useState(props?.isSecured);
   const [isSecurityOn, setIsSecurityOn] = useState(true);
-  let topValue = new Animated.Value(12);
-  let fontSizeValue = new Animated.Value(20);
-  let fontOpacity = new Animated.Value(0.8);
+  const topValue = useRef(new Animated.Value(12)).current;
+  const fontSizeValue = useRef(new Animated.Value(20)).current;
+  const fontOpacity = useRef(new Animated.Value(0.8)).current;
   useEffect(() => {
     //In case a default value is given
     if (props?.value) {
