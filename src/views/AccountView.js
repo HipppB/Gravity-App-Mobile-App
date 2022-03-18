@@ -20,11 +20,27 @@ function AccountView(props) {
           <Text style={styles.textSmall}>{langage.question}</Text>
           <Text style={styles.textSmall}>{langage.noHesitation}</Text>
         </View>
-        <TouchableOpacity onPress={() => props.navigation.navigate("Chat")}>
-          <ColorViewComponent coloredViewStyle={[styles.titleContainer]} isBlue>
-            <Text style={styles.titleText}>{langage.contactButton}</Text>
-          </ColorViewComponent>
-        </TouchableOpacity>
+        <View>
+          <TouchableOpacity
+            onPress={() => props.navigation.navigate("EditAccount")}
+            style={{ marginBottom: 20 }}
+          >
+            <ColorViewComponent
+              coloredViewStyle={[styles.titleContainer]}
+              isBlue
+            >
+              <Text style={styles.titleText}>{langage.editProfile}</Text>
+            </ColorViewComponent>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => props.navigation.navigate("Chat")}>
+            <ColorViewComponent
+              coloredViewStyle={[styles.titleContainer]}
+              isBlue
+            >
+              <Text style={styles.titleText}>{langage.contactButton}</Text>
+            </ColorViewComponent>
+          </TouchableOpacity>
+        </View>
       </View>
       <ToggleLangageComponent />
     </SafeAreaView>

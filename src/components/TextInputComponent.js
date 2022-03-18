@@ -81,7 +81,6 @@ function TextInputComponent(props) {
       style={[
         {
           position: "relative",
-
           justifyContent: "flex-end",
         },
         props?.additionalStyleContainer,
@@ -108,6 +107,8 @@ function TextInputComponent(props) {
         onChangeText={props?.onChange}
         value={props?.value}
         editable={props?.disabled}
+        keyboardType={props?.keyboardType}
+        secureTextEntry={props?.secureTextEntry}
       />
     </View>
   );
@@ -116,11 +117,10 @@ function TextInputComponent(props) {
 const styles = StyleSheet.create({
   inputStyle: {
     height: 50,
-    paddingLeft: 20,
+    paddingHorizontal: 20,
     width: "100%",
     fontFamily: "ChangaOne_400Regular",
     color: "white",
-
     fontSize: 20,
     borderBottomColor: "gray",
   },

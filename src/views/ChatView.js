@@ -1,9 +1,11 @@
 import React, { useState } from "react";
-import { StyleSheet, View, Text, Image } from "react-native";
+import { StyleSheet, View, Text, Image, Dimensions } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { Chat, MessageType, defaultTheme } from "@flyerhq/react-native-chat-ui";
 import logoBlanc from "../assets/images/logos/Couleur/LogoNoNom.png";
+
+const { width, height } = Dimensions.get("screen");
 const uuidv4 = () => {
   return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, (c) => {
     const r = Math.floor(Math.random() * 16);
@@ -21,9 +23,6 @@ function ChatView(props) {
     firstName: "Gravity",
     lastName: "Team",
     imageUrl: Image.resolveAssetSource(logoBlanc).uri,
-    // imageUrl: "src/assets/images/logos/Blanc/LogoNoNomNoFond.png",
-    // imageUrl:
-    //   "https://images.bfmtv.com/nFJ4-Adp5X2cEzAXh6sLIkgkz2M=/1x1:1489x838/1600x0/images/-187010.jpg",
   };
   const [messages, setMessages] = useState([
     {
@@ -75,13 +74,13 @@ function ChatView(props) {
       <Image
         source={logoBlanc}
         style={{
-          width: 250,
-          height: 250,
+          width: width * 0.3,
+          height: width * 0.3,
           // position: "absolute",
           top: 0,
           bottom: 0,
           alignSelf: "center",
-          zIndex: 2,
+          zIndex: 1,
         }}
       />
       <View
