@@ -2,7 +2,7 @@ import React from "react";
 import { StyleSheet, Text, View, Dimensions } from "react-native";
 import HeaderComponenent from "../components/HeaderComponenent";
 import { useTranslation } from "../Context/TranslationContext";
-
+import DrawingBoard from "../components/DrawingBoard";
 const { width, height } = Dimensions.get("screen");
 
 function EventView(props) {
@@ -17,7 +17,12 @@ function EventView(props) {
             {langage.noGame}
             {"\n"}
             {langage.comeBackLater}
+            {"\n"}
+            {langage.playWithHeads}
           </Text>
+        </View>
+        <View style={{ flexGrow: 1 }}>
+          <DrawingBoard />
         </View>
       </View>
     </View>
@@ -37,11 +42,7 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     flexGrow: 1,
   },
-  noSponsorContainer: {
-    height: "50%",
-    alignItems: "center",
-    justifyContent: "center",
-  },
+  noSponsorContainer: {},
   noSponsorText: {
     fontSize: 20,
     textAlign: "center",

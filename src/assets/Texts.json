@@ -33,7 +33,8 @@
     "tiktokPlaceHolder": "TikTok",
     "snapPlaceHolder": "Snap",
     "passwordPlaceHolder": "Mot de passe",
-    "saveLabel": "Enregistrer"
+    "saveLabel": "Enregistrer",
+    "playWithHeads": "En attendant vous pouvez jouer avec les têtes de notre bureau (Envoyez nous vos créations !)"
   },
   "en": {
     "connexionButton": "Login",
@@ -69,6 +70,7 @@
     "tiktokPlaceHolder": "TikTok",
     "snapPlaceHolder": "Snap",
     "passwordPlaceHolder": "Password",
-    "saveLabel": "Save"
+    "saveLabel": "Save",
+    "playWithHeads": "You may play with our teams's head to wait (send us your creations !)"
   }
 }
