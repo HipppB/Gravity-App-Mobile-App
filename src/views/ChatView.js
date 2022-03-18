@@ -68,8 +68,7 @@ function ChatView(props) {
   };
   const user2 = {
     id: "06c33e8b-e835-4736-80f4-63f44b66766c",
-    firstName: "GravityTeam",
-    lastName: "",
+    firstName: "Graviteam",
     imageUrl: Image.resolveAssetSource(logoBlanc).uri,
   };
   const [messages, setMessages] = useState([
