@@ -1,7 +1,9 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
-import SponsorView from "../views/SponsorView";
-import RestaurantView from "../views/RestaurantView";
+import SponsorView from "../views/Sponsors/SponsorView";
+import RestaurantView from "../views/Sponsors/RestaurantView";
+import RestaurantDetailView from "../views/Sponsors/RestaurantDetailView";
+
 const SponsorStack = createStackNavigator();
 
 function SponsorNavigator(props) {
@@ -11,6 +13,10 @@ function SponsorNavigator(props) {
       <SponsorStack.Screen
         name="sponsorRestaurant"
         component={RestaurantView}
+      />
+      <SponsorStack.Screen
+        name="DetailResto"
+        component={RestaurantDetailView}
       />
     </SponsorStack.Navigator>
   );

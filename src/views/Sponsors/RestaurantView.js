@@ -9,9 +9,9 @@ import {
 } from "react-native";
 
 import MapView, { PROVIDER_GOOGLE, Marker } from "react-native-maps";
-import { useTranslation } from "../Context/TranslationContext";
+import { useTranslation } from "../../Context/TranslationContext";
 
-import RestaurantPreviewComponent from "../components/RestaurantPreviewComponent";
+import RestaurantPreviewComponent from "../../components/RestaurantPreviewComponent";
 const { width, height } = Dimensions.get("screen");
 
 function RestaurantView(props) {

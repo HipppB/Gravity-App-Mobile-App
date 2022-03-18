@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import { StyleSheet, Text, View, Dimensions } from "react-native";
-import BottomBarComponent from "../components/BottomBarComponent";
-import HeaderComponenent from "../components/HeaderComponenent";
-import getSponsors from "../data/getSponsors";
-import SponsorCompoent from "../components/SponsorCompoent";
+import BottomBarComponent from "../../components/BottomBarComponent";
+import HeaderComponenent from "../../components/HeaderComponenent";
+import getSponsors from "../../data/getSponsors";
+import SponsorCompoent from "../../components/SponsorCompoent";
 import { TouchableOpacity } from "react-native-gesture-handler";
-import { useTranslation } from "../Context/TranslationContext";
+import { useTranslation } from "../../Context/TranslationContext";
 
 const { width, height } = Dimensions.get("screen");
 

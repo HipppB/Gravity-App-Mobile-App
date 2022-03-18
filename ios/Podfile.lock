@@ -32,7 +32,6 @@ PODS:
     - React-jsi (= 0.64.3)
     - ReactCommon/turbomodule/core (= 0.64.3)
   - glog (0.3.5)
-
   - RCT-Folly (2020.01.13.00):
     - boost-for-react-native
     - DoubleConversion
@@ -502,4 +501,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: 31f4bc51c18663e116f585fc811a6cb42a9a9eb9
 
-COCOAPODS: 1.11.2
+COCOAPODS: 1.11.3

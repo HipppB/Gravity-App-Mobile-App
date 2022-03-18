@@ -8,7 +8,7 @@ import ConnexionView from "../views/ConnexionView";
 import TabNavigator from "./TabNavigator";
 
 import NotificationCenterView from "../views/NotificationCenterView";
-import RestaurantView from "../views/RestaurantView";
+
 import ChatView from "../views/ChatView";
 import FirstConnexionPopUp from "../views/FirstConnexionPopUp";
 import ListOfParticipantView from "../views/ListOfParticipantView";
@@ -72,7 +72,7 @@ function MainNavigator(props) {
             options={{ presentation: "modal" }}
             component={PublicProfilView}
           />
-          <Stack.Screen name="Restaurants" component={RestaurantView} />
+
           <Stack.Screen name="Chat" component={ChatView} />
         </Stack.Navigator>
       )}

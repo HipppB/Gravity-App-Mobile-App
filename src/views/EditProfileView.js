@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import {
   StyleSheet,
   View,
@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   KeyboardAvoidingView,
   SafeAreaView,
+  Animated,
 } from "react-native";
 // import { SafeAreaView } from "react-native-safe-area-context";
 import ColorViewComponent from "../components/ColoredViewComponent.js";
@@ -31,10 +32,29 @@ function EditProfileView(props) {
   const [facebook, setFacebook] = useState("");
   const [tikTok, setTikTok] = useState("");
 
+  const loadingopacity = useRef(new Animated.Value(0)).current;
+
   async function changePhoto() {
     const result = await launchImageLibrary({ mediaType: "photo" });
 
     console.log("ASK FOR CHANGE");
+  }
+
+  async function saveInfos() {
+    Animated.timing(loadingopacity, {
+      toValue: 1,
+      duration: 200,
+      useNativeDriver: false,
+    }).start();
+    setTimeout(
+      () =>
+        Animated.timing(loadingopacity, {
+          toValue: 0,
+          duration: 200,
+          useNativeDriver: false,
+        }).start(),
+      1000
+    );
   }
   return (
     <View style={styles.container}>
@@ -154,17 +174,21 @@ function EditProfileView(props) {
               onChange={setTikTok}
             />
           </ColoredViewComponent>
-          <TouchableOpacity
-            style={styles.buttonTouchableContainer}
-            onPress={() => login()}
-          >
-            <ColoredViewComponent
-              coloredViewStyle={styles.buttonContainer}
-              containerStyle={styles.buttonContainerContainer}
+          <View style={styles.buttonTouchableContainer}>
+            <Animated.Text
+              style={{ alignSelf: "center", opacity: loadingopacity }}
             >
-              <Text style={styles.buttonText}>{langage?.saveLabel}</Text>
-            </ColoredViewComponent>
-          </TouchableOpacity>
+              Enregistrement en cours
+            </Animated.Text>
+            <TouchableOpacity onPress={() => saveInfos()}>
+              <ColoredViewComponent
+                coloredViewStyle={styles.buttonContainer}
+                containerStyle={styles.buttonContainerContainer}
+              >
+                <Text style={styles.buttonText}>{langage?.saveLabel}</Text>
+              </ColoredViewComponent>
+            </TouchableOpacity>
+          </View>
         </ScrollView>
       </KeyboardAvoidingView>
     </View>
