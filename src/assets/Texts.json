@@ -32,7 +32,8 @@
     "facebookPlaceHolder": "Facebook",
     "tiktokPlaceHolder": "TikTok",
     "snapPlaceHolder": "Snap",
-    "passwordPlaceHolder": "Mot de passe"
+    "passwordPlaceHolder": "Mot de passe",
+    "saveLabel": "Enregistrer"
   },
   "en": {
     "connexionButton": "Login",
@@ -67,6 +68,7 @@
     "facebookPlaceHolder": "Facebook",
     "tiktokPlaceHolder": "TikTok",
     "snapPlaceHolder": "Snap",
-    "passwordPlaceHolder": "Password"
+    "passwordPlaceHolder": "Password",
+    "saveLabel": "Save"
   }
 }

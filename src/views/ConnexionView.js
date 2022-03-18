@@ -71,18 +71,30 @@ function ConnexionView(props) {
             onChange={setPassword}
           />
         </ColoredViewComponent>
-
-        <TouchableOpacity
-          style={styles.buttonTouchableContainer}
-          onPress={() => login()}
-        >
-          <ColoredViewComponent
-            coloredViewStyle={styles.buttonContainer}
-            containerStyle={styles.buttonContainerContainer}
+        <View style={{ width: "100%", alignItems: "center" }}>
+          <TouchableOpacity
+            style={styles.buttonTouchableContainer}
+            onPress={() => login()}
           >
-            <Text style={styles.buttonText}>{langage?.connexionButton}</Text>
-          </ColoredViewComponent>
-        </TouchableOpacity>
+            <ColoredViewComponent
+              coloredViewStyle={styles.buttonContainer}
+              containerStyle={styles.buttonContainerContainer}
+            >
+              <Text style={styles.buttonText}>{langage?.connexionButton}</Text>
+            </ColoredViewComponent>
+          </TouchableOpacity>
+          <Text
+            style={{
+              marginTop: 5,
+              textAlign: "center",
+              opacity: 0.5,
+              fontFamily: "ChangaOne_400Regular_Italic",
+            }}
+          >
+            Première connexion ? {"\n"} Un mail de vérification vous sera envoyé
+            !
+          </Text>
+        </View>
       </KeyboardAvoidingView>
       <View
         style={{

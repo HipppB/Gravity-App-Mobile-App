@@ -114,6 +114,7 @@ function LoginView(props) {
           <Text style={styles.buttonText}>{langage?.connexionButton}</Text>
         </ColoredViewComponent>
       </TouchableOpacity>
+
       <ToggleLangageComponent />
     </SafeAreaView>
   );

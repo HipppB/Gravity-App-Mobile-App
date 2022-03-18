@@ -154,6 +154,17 @@ function EditProfileView(props) {
               onChange={setTikTok}
             />
           </ColoredViewComponent>
+          <TouchableOpacity
+            style={styles.buttonTouchableContainer}
+            onPress={() => login()}
+          >
+            <ColoredViewComponent
+              coloredViewStyle={styles.buttonContainer}
+              containerStyle={styles.buttonContainerContainer}
+            >
+              <Text style={styles.buttonText}>{langage?.saveLabel}</Text>
+            </ColoredViewComponent>
+          </TouchableOpacity>
         </ScrollView>
       </KeyboardAvoidingView>
     </View>
@@ -197,6 +208,26 @@ const styles = StyleSheet.create({
     width: "70%",
 
     marginTop: 20,
+  },
+  buttonTouchableContainer: {
+    marginTop: 40,
+    width: "70%",
+    justifyContent: "center",
+    marginBottom: 20,
+  },
+  buttonContainerContainer: {},
+  buttonContainer: {
+    width: "100%",
+    height: 50,
+    justifyContent: "center",
+    marginBottom: Platform.OS === "android" ? 100 : 0,
+  },
+
+  buttonText: {
+    textAlign: "center",
+    color: "white",
+    fontFamily: "ChangaOne_400Regular",
+    fontSize: 20,
   },
 });
 

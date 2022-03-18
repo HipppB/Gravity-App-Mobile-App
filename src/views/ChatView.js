@@ -1,7 +1,14 @@
-import React, { useState } from "react";
-import { StyleSheet, View, Text, Image, Dimensions } from "react-native";
+import React, { useState, useRef, useEffect } from "react";
+import {
+  StyleSheet,
+  View,
+  Text,
+  Image,
+  Dimensions,
+  Animated,
+  Keyboard,
+} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { SafeAreaProvider } from "react-native-safe-area-context";
 import { Chat, MessageType, defaultTheme } from "@flyerhq/react-native-chat-ui";
 import logoBlanc from "../assets/images/logos/Couleur/LogoNoNom.png";
 
@@ -15,13 +22,54 @@ const uuidv4 = () => {
 };
 
 function ChatView(props) {
+  // Logo Animation Handler
+  const size = useRef(new Animated.Value(width * 0.3)).current;
+  const left = useRef(new Animated.Value(0)).current;
+  const top = useRef(new Animated.Value(0)).current;
+
+  console.log(size);
+  function onKeyBoardOpen() {}
+  function onKeyBoardClose() {}
+
+  useEffect(() => {
+    const showSubscription = Keyboard.addListener("keyboardWillShow", () => {
+      Animated.timing(size, {
+        toValue: width * 0.15,
+        duration: 200,
+        useNativeDriver: false,
+      }).start();
+      Animated.timing(left, {
+        toValue: (-width * 0.7) / 2,
+        duration: 200,
+        useNativeDriver: false,
+      }).start();
+    });
+    const hideSubscription = Keyboard.addListener("keyboardWillHide", () => {
+      Animated.timing(size, {
+        toValue: width * 0.3,
+        duration: 200,
+        useNativeDriver: false,
+      }).start();
+      Animated.timing(left, {
+        toValue: 0,
+        duration: 200,
+        useNativeDriver: false,
+      }).start();
+    });
+
+    return () => {
+      showSubscription.remove();
+      hideSubscription.remove();
+    };
+  }, []);
+
   const user = {
     id: "06c33e8b-e835-4736-80f4-63f44b66666c",
   };
   const user2 = {
     id: "06c33e8b-e835-4736-80f4-63f44b66766c",
-    firstName: "Gravity",
-    lastName: "Team",
+    firstName: "GravityTeam",
+    lastName: "",
     imageUrl: Image.resolveAssetSource(logoBlanc).uri,
   };
   const [messages, setMessages] = useState([
@@ -70,14 +118,15 @@ function ChatView(props) {
     addMessage(textMessage);
   };
   return (
-    <SafeAreaProvider>
-      <Image
+    <SafeAreaView style={{ flex: 1 }}>
+      <Animated.Image
         source={logoBlanc}
         style={{
-          width: width * 0.3,
-          height: width * 0.3,
+          width: size,
+          height: size,
           // position: "absolute",
-          top: 0,
+          top: top,
+          left: left,
           bottom: 0,
           alignSelf: "center",
           zIndex: 1,
@@ -118,7 +167,7 @@ function ChatView(props) {
           }}
         />
       </View>
-    </SafeAreaProvider>
+    </SafeAreaView>
   );
 }
 
