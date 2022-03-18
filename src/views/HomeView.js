@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import {
   StyleSheet,
   View,
@@ -8,7 +8,6 @@ import {
   TouchableOpacity,
   Platform,
 } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
 
 import HeaderComponenent from "../components/HeaderComponenent";
 import GravityView from "./Home/GravityView";
@@ -17,11 +16,12 @@ import BottomBarComponent from "../components/BottomBarComponent";
 import { useTranslation } from "../Context/TranslationContext";
 import ProjetPedaView from "./Home/ProjetPedaView";
 import SonView from "./Home/SonView";
+import { useAuthentification } from "../Context/AuthContext";
 
 const { width, height } = Dimensions.get("screen");
 function HomeView(props) {
   const { toggleLangage, langage } = useTranslation();
-
+  const { isFirstLogin, setIsFirstLogin } = useAuthentification();
   const [activePage, setActivePage] = useState(0);
   let scrollViewSelector = useRef();
   let scrollViewPages = useRef();
@@ -33,6 +33,14 @@ function HomeView(props) {
       animated: true,
     });
   }
+
+  useEffect(() => {
+    if (isFirstLogin) {
+      setIsFirstLogin(false);
+      console.log("HEY");
+      setTimeout(() => props.navigation.navigate("Welcome"), 500);
+    }
+  }, []);
   return (
     <View style={styles.container}>
       <HeaderComponenent navigation={props.navigation} />

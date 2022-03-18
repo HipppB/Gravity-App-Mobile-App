@@ -8,6 +8,7 @@ import {
   ScrollView,
 } from "react-native";
 import { useTranslation } from "../Context/TranslationContext";
+
 const heads = [
   require("../GravityHeadCrush/images/1.png"),
   require("../GravityHeadCrush/images/2.png"),
@@ -15,7 +16,8 @@ const heads = [
   require("../GravityHeadCrush/images/4.png"),
   require("../GravityHeadCrush/images/5.png"),
   require("../GravityHeadCrush/images/6.png"),
-  require("../GravityHeadCrush/images/7.png"),
+  require("../GravityHeadCrush/images/8.png"),
+  require("../GravityHeadCrush/images/9.png"),
 ];
 
 const { width, height } = Dimensions.get("window");

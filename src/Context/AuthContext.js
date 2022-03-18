@@ -7,11 +7,15 @@ const AuthContext = createContext({
   getApiToken: () => {
     token;
   },
+  isFirstLogin: true,
+  setIsFirstLogin: (status) => {},
 });
 
 // create context
 function AuthProvider({ children }) {
   const [isAuthentificated, setisAuthentificated] = useState(false);
+  const [isFirstLogin, setIsFirstLogin] = useState(true);
+
   const [apiToken, setApiToken] = useState(null);
   const login = (userInfos) => {
     console.log("LOGGED IN");
@@ -35,6 +39,8 @@ function AuthProvider({ children }) {
         login,
         logout,
         getApiToken,
+        isFirstLogin,
+        setIsFirstLogin,
       }}
     >
       {children}
