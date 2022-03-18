@@ -9,7 +9,6 @@ podfile_properties = JSON.parse(File.read('./Podfile.properties.json')) rescue {
 
 target 'MyTestApp' do
   rn_maps_path = '../node_modules/react-native-maps'
-  pod 'react-native-google-maps', :path => rn_maps_path
   use_expo_modules!
   config = use_native_modules!
 
