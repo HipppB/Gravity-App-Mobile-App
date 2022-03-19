@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 
@@ -25,16 +25,19 @@ const Stack = createStackNavigator();
 
 function MainNavigator(props) {
   const { isAuthentificated } = useAuthentification();
-
+  const [isAutoLoging, setAutoLoging] = useState(true);
   let [fontsLoaded] = useFonts({
     ChangaOne_400Regular,
     ChangaOne_400Regular_Italic,
-  });
-  useEffect(() => {
-    console.log("AUTH", isAuthentificated);
+    Neon: require("../assets/fonts/Neon.ttf"),
   });
 
-  if (!fontsLoaded) {
+  const { autoLogin } = useAuthentification();
+  useEffect(() => {
+    autoLogin(setAutoLoging(false));
+  }, []);
+
+  if (!fontsLoaded && isAutoLoging) {
     return <LoginViewOld />;
   }
 

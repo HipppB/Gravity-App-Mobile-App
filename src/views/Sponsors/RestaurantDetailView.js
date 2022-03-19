@@ -1,7 +1,8 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
 
-function RestaurantDetailView(props) {
+function RestaurantDetailView({ restaurant, route, navigation }) {
+  console.log(route);
   return <View></View>;
 }
 

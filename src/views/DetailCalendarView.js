@@ -280,13 +280,16 @@ const styles = StyleSheet.create({
     marginTop: 20,
     justifyContent: "flex-start",
     flexDirection: "row",
-    alignItems: "baseline",
+    alignItems: "center",
+    // backgroundColor: "red",
   },
   labelTextletterContainer: {
     flexDirection: "row",
     alignItems: "baseline",
+    // backgroundColor: "green",
   },
   labelText: {
+    // backgroundColor: "blue",
     color: "black",
     fontSize: 18,
     fontFamily: "ChangaOne_400Regular_Italic",

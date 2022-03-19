@@ -37,49 +37,41 @@ function DrawingBoard(props) {
       >
         <View style={{ width: 60, height: 60 }}>
           {headsList.map((head, index) => {
-            console.log(index);
             return <Head key={index} head={firstHead} />;
           })}
         </View>
         <View style={{ width: 60, height: 60 }}>
           {headsList.map((head, index) => {
-            console.log(index);
             return <Head key={index} head={secondHead} />;
           })}
         </View>
         <View style={{ width: 60, height: 60 }}>
           {headsList.map((head, index) => {
-            console.log(index);
             return <Head key={index} head={thirdHead} />;
           })}
         </View>
         <View style={{ width: 60, height: 60 }}>
           {headsList.map((head, index) => {
-            console.log(index);
             return <Head key={index} head={fourthHead} />;
           })}
         </View>
         <View style={{ width: 60, height: 60 }}>
           {headsList.map((head, index) => {
-            console.log(index);
             return <Head key={index} head={fithHead} />;
           })}
         </View>
         <View style={{ width: 60, height: 60 }}>
           {headsList.map((head, index) => {
-            console.log(index);
             return <Head key={index} head={sixthHead} />;
           })}
         </View>
         <View style={{ width: 60, height: 60 }}>
           {headsList.map((head, index) => {
-            console.log(index);
             return <Head key={index} head={eighthHead} />;
           })}
         </View>
         <View style={{ width: 60, height: 60 }}>
           {headsList.map((head, index) => {
-            console.log(index);
             return <Head key={index} head={nineththHead} />;
           })}
         </View>

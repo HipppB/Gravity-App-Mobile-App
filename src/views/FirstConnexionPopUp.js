@@ -25,20 +25,15 @@ function FirstConnexionPopUp(props) {
   const num = ((Math.random() * 60) % 6).toFixed(0);
 
   return (
-    <SafeAreaView>
+    <SafeAreaView style={{ backgroundColor: "white", flex: 1 }}>
       <BackButtonComponent navigation={props.navigation} />
-      <Text>
-        Pop Up de bienvenue, n'apparait que lors de la premiere connexion (A
-        chaque redemarrage de l'appli pour les testeurs)
-      </Text>
+
       <Image
-        source={heads[num]}
+        source={require("../assets/images/logos/Couleur/Logo.png")}
         style={{
-          width: 0.4 * width,
-          height: 0.4 * width,
-          backgroundColor: "black",
-          borderRadius: width,
-          resizeMode: "cover",
+          width: width * 0.7,
+          height: width * 0.7,
+          resizeMode: "contain",
           alignSelf: "center",
         }}
       />
@@ -48,19 +43,27 @@ function FirstConnexionPopUp(props) {
           height: "auto",
           paddingBottom: 0,
         }}
-        contentContainerStyle={{ alignItems: "center" }}
+        contentContainerStyle={{ alignItems: "center", padding: 20 }}
         showsVerticalScrollIndicator={false}
       >
-        <Text>
-          Cette page n'est pas encore prête, mais vous pouvez prendre quelque
-          secondes pour admirer cette magnifique tête choisie au hasard parmis
-          les têtes du bureau
+        <Text style={styles.text}>
+          Hello [Prénom] ! {"\n"}Merci d’avoir téléchargé notre application !
+          {"\n"}
+          Aventure-toi [avec asso] dans notre galaxie avec [GravityApp] comme
+          seul guide et Feel the Gravity toute la semaine ✨ {"\n"}
+          {"\n"} La Graviteam 💙🧡
         </Text>
       </ScrollView>
     </SafeAreaView>
   );
 }
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  text: {
+    fontSize: 23,
+    lineHeight: 25,
+    fontFamily: "Neon",
+  },
+});
 
 export default FirstConnexionPopUp;

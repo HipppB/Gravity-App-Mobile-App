@@ -8,7 +8,6 @@ function BottomBarComponent({ navigation, ...props }) {
   let active = props.state?.routeNames[props.state?.index];
   const { toggleLangage, langage } = useTranslation();
 
-  console.log(active);
   return (
     <View style={styles.container}>
       <TouchableOpacity

@@ -34,7 +34,11 @@
     "snapPlaceHolder": "Snap",
     "passwordPlaceHolder": "Mot de passe",
     "saveLabel": "Enregistrer",
-    "playWithHeads": "En attendant vous pouvez jouer avec les têtes de notre bureau (Envoyez nous vos créations !)"
+    "playWithHeads": "En attendant vous pouvez jouer avec les têtes de notre bureau (Envoyez nous vos créations !)",
+    "close": "Fermer",
+    "firstConnexion": "Première connexion ?\nUn mail de vérification vous sera envoyé !",
+    "networkErrorTitle": "Impossible de contacter le serveur Gravity.",
+    "networkErrorSubTitle": "Vérifiez votre connexion internet. \n Si le problème persiste contactez Gravity. On ramènera le serveur sur terre."
   },
   "en": {
     "connexionButton": "Login",
@@ -71,6 +75,10 @@
     "snapPlaceHolder": "Snap",
     "passwordPlaceHolder": "Password",
     "saveLabel": "Save",
-    "playWithHeads": "You may play with our teams's head to wait (send us your creations !)"
+    "playWithHeads": "You may play with our teams's head to wait (send us your creations !)",
+    "close": "Close",
+    "firstConnexion": "First login ?\nA verification email is going to be send !",
+    "networkErrorTitle": "We can't join server gravity",
+    "networkErrorSubTitle": "Check your network connexion. \n If the problem persist contact Gravity. We will bring him back on earth"
   }
 }

@@ -29,7 +29,6 @@ function ChatView(props) {
   const left = useRef(new Animated.Value(1)).current;
   const opacity = useRef(new Animated.Value(1)).current;
 
-  console.log(size);
   function onKeyBoardOpen() {}
   function onKeyBoardClose() {}
 
@@ -37,7 +36,6 @@ function ChatView(props) {
     const showSubscription = Keyboard.addListener(
       Platform.OS === "ios" ? "keyboardWillShow" : "keyboardDidShow",
       () => {
-        console.log("Hey");
         Animated.timing(size, {
           toValue: width * 0.15,
           duration: 200,

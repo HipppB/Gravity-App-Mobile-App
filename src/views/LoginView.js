@@ -18,6 +18,8 @@ import letterl from "../assets/Letters/Normal/l.png";
 import lettert from "../assets/Letters/Normal/t.png";
 import { LogBox } from "react-native";
 import { useTranslation } from "../Context/TranslationContext";
+import { useAuthentification } from "../Context/AuthContext";
+
 LogBox.ignoreLogs([
   "[react-native-gesture-handler] Seems like you're using an old API with gesture components, check out new Gestures system!",
 ]);
@@ -27,11 +29,13 @@ import { StatusBar } from "expo-status-bar";
 
 const { width, height } = Dimensions.get("screen");
 function LoginView(props) {
+  const { login } = useAuthentification();
+
   const { toggleLangage, langage } = useTranslation();
-  let [fontsLoaded] = useFonts({
-    Neon: require("../assets/fonts/Neon.ttf"),
-  });
-  console.log(langage);
+  // let [fontsLoaded] = useFonts({
+  //   Neon: require("../assets/fonts/Neon.ttf"),
+  // });
+
   useEffect(() => {
     if (!langage) {
       toggleLangage();
@@ -102,7 +106,9 @@ function LoginView(props) {
             style={{ marginRight: 0 }}
           />
         </View>
-        <Text style={styles.labelText}>GRAVITY</Text>
+        <Text onPress={() => login()} style={styles.labelText}>
+          GRAVITY
+        </Text>
       </View>
 
       <TouchableOpacity
