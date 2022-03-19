@@ -8,25 +8,25 @@ import {
   Image,
   TouchableOpacity,
   ImageBackground,
+  StatusBar,
 } from "react-native";
 
 import bg1 from "../assets/images/bg1.jpg";
-import globe from "../assets/images/globe.gif";
 function LoginViewOld(props) {
   const [isLogging, setIsLogging] = useState(true);
   function toggleLogging() {
     setIsLogging(!isLogging);
   }
-
+  console.log("Status", StatusBar.currentHeight);
   return (
     <View style={styles.container}>
+      <StatusBar hidden />
       <ImageBackground source={bg1} resizeMode="cover" style={styles.image}>
-        <View style={styles.logoContainer}>
-          <Image
-            source={require("../assets/images/globe.gif")}
-            style={styles.logo}
-          />
-        </View>
+        <Image
+          source={require("../assets/images/logos/Couleur/LogoNoNom.png")}
+          style={styles.logo}
+        />
+
         {/* <View style={styles.subContainer}>
           <View style={styles.titleContainer}>
             <Text style={[styles.text, styles.textFirstLine]}>Feel the</Text>

@@ -1,5 +1,12 @@
 import React from "react";
-import { StyleSheet, View, Text, Image, TouchableOpacity } from "react-native";
+import {
+  StyleSheet,
+  View,
+  Text,
+  Image,
+  TouchableOpacity,
+  Platform,
+} from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { useTranslation } from "../Context/TranslationContext";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -55,7 +62,7 @@ function HeaderComponenent(props) {
 
 const styles = StyleSheet.create({
   headerContainer: {
-    // marginTop: 20,
+    paddingTop: Platform.OS === "ios" ? 20 : 0,
     marginTop: 0,
   },
   profileContainer: {

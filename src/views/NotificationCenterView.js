@@ -8,10 +8,12 @@ import {
   ScrollView,
   Linking,
   TouchableOpacity,
+  SafeAreaView,
 } from "react-native";
 
 const { width, height } = Dimensions.get("screen");
 import { useTranslation } from "../Context/TranslationContext";
+import BackButtonComponent from "../components/BackButtonComponent";
 
 function NotificationCenterView(props) {
   const { langage } = useTranslation();
@@ -39,22 +41,9 @@ function NotificationCenterView(props) {
         height: height - 60,
       }}
     >
-      <TouchableOpacity
-        style={{
-          position: "absolute",
-          top: 20,
-          left: 20,
-        }}
-        onPress={() => props.navigation.goBack()}
-      >
-        <Image
-          source={require("../assets/images/left-arrow.png")}
-          style={{
-            width: 20,
-            height: 20,
-          }}
-        />
-      </TouchableOpacity>
+      <SafeAreaView></SafeAreaView>
+      <BackButtonComponent navigation={props.navigation} />
+
       <Image
         source={require("../assets/images/logos/Couleur/Logo.png")}
         style={{
@@ -68,18 +57,18 @@ function NotificationCenterView(props) {
         style={{
           width: "100%",
 
-          paddingHorizontal: "5%",
           marginTop: 20,
           marginBottom: 10,
           paddingTop: 20,
           paddingBottom: 50,
         }}
       >
-        {listViewData.map((notification) => (
+        {listViewData.map((notification, index) => (
           <Notification
             notification={notification}
             key={notification.key}
             navigation={props.navigation}
+            index={index}
           />
         ))}
         {/* <Notification isNew /> */}
@@ -88,7 +77,7 @@ function NotificationCenterView(props) {
   );
 }
 
-function Notification({ notification, navigation }) {
+function Notification({ notification, navigation, index }) {
   const [isNewVisible, setIsNewVisible] = useState(true);
   function callBack() {
     switch (notification.action) {
@@ -110,7 +99,13 @@ function Notification({ notification, navigation }) {
     }
   }
   return (
-    <View>
+    <View
+      style={{
+        width: "100%",
+        paddingHorizontal: "5%",
+        paddingTop: index === 0 ? 20 : 0,
+      }}
+    >
       <TouchableOpacity
         style={{ zIndex: 2 }}
         onPress={() => setIsNewVisible(!isNewVisible)}

@@ -8,7 +8,7 @@ import {
   ScrollView,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-
+import BackButtonComponent from "../components/BackButtonComponent";
 const heads = [
   require("../GravityHeadCrush/images/1.png"),
   require("../GravityHeadCrush/images/2.png"),
@@ -26,6 +26,7 @@ function FirstConnexionPopUp(props) {
 
   return (
     <SafeAreaView>
+      <BackButtonComponent navigation={props.navigation} />
       <Text>
         Pop Up de bienvenue, n'apparait que lors de la premiere connexion (A
         chaque redemarrage de l'appli pour les testeurs)

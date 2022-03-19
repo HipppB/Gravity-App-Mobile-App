@@ -7,11 +7,13 @@ import {
   Dimensions,
   Animated,
   Keyboard,
+  StatusBar,
+  Platform,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Chat, MessageType, defaultTheme } from "@flyerhq/react-native-chat-ui";
 import logoBlanc from "../assets/images/logos/Couleur/LogoNoNom.png";
-
+import BackButtonComponent from "../components/BackButtonComponent";
 const { width, height } = Dimensions.get("screen");
 const uuidv4 = () => {
   return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, (c) => {
@@ -24,38 +26,55 @@ const uuidv4 = () => {
 function ChatView(props) {
   // Logo Animation Handler
   const size = useRef(new Animated.Value(width * 0.3)).current;
-  const left = useRef(new Animated.Value(0)).current;
-  const top = useRef(new Animated.Value(0)).current;
+  const left = useRef(new Animated.Value(1)).current;
+  const opacity = useRef(new Animated.Value(1)).current;
 
   console.log(size);
   function onKeyBoardOpen() {}
   function onKeyBoardClose() {}
 
   useEffect(() => {
-    const showSubscription = Keyboard.addListener("keyboardWillShow", () => {
-      Animated.timing(size, {
-        toValue: width * 0.15,
-        duration: 200,
-        useNativeDriver: false,
-      }).start();
-      Animated.timing(left, {
-        toValue: (-width * 0.7) / 2,
-        duration: 200,
-        useNativeDriver: false,
-      }).start();
-    });
-    const hideSubscription = Keyboard.addListener("keyboardWillHide", () => {
-      Animated.timing(size, {
-        toValue: width * 0.3,
-        duration: 200,
-        useNativeDriver: false,
-      }).start();
-      Animated.timing(left, {
-        toValue: 0,
-        duration: 200,
-        useNativeDriver: false,
-      }).start();
-    });
+    const showSubscription = Keyboard.addListener(
+      Platform.OS === "ios" ? "keyboardWillShow" : "keyboardDidShow",
+      () => {
+        console.log("Hey");
+        Animated.timing(size, {
+          toValue: width * 0.15,
+          duration: 200,
+          useNativeDriver: false,
+        }).start();
+        Animated.timing(left, {
+          toValue: (-width * 0.7) / 2,
+          duration: 200,
+          useNativeDriver: false,
+        }).start();
+        Animated.timing(opacity, {
+          toValue: 0,
+          duration: 200,
+          useNativeDriver: false,
+        }).start();
+      }
+    );
+    const hideSubscription = Keyboard.addListener(
+      Platform.OS === "ios" ? "keyboardWillHide" : "keyboardDidHide",
+      () => {
+        Animated.timing(size, {
+          toValue: width * 0.3,
+          duration: 200,
+          useNativeDriver: false,
+        }).start();
+        Animated.timing(left, {
+          toValue: 0,
+          duration: 200,
+          useNativeDriver: false,
+        }).start();
+        Animated.timing(opacity, {
+          toValue: 1,
+          duration: 200,
+          useNativeDriver: false,
+        }).start();
+      }
+    );
 
     return () => {
       showSubscription.remove();
@@ -118,18 +137,30 @@ function ChatView(props) {
   };
   return (
     <SafeAreaView style={{ flex: 1 }}>
+      <StatusBar
+        backgroundColor="#0C1316"
+        hideTransitionAnimation="true"
+        animated={false}
+      />
+
       <Animated.Image
         source={logoBlanc}
         style={{
           width: size,
           height: size,
           // position: "absolute",
-          top: top,
+          top: 0,
           left: left,
           bottom: 0,
           alignSelf: "center",
           zIndex: 1,
+          opacity: opacity,
         }}
+      />
+      <BackButtonComponent
+        navigation={props.navigation}
+        top={Platform.OS == "ios" ? 60 : 0}
+        color={"white"}
       />
       <View
         style={{

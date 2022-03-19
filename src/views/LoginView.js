@@ -23,6 +23,7 @@ LogBox.ignoreLogs([
 ]);
 import ToggleLangageComponent from "../components/ToggleLangageComponent";
 import { useFonts } from "expo-font";
+import { StatusBar } from "expo-status-bar";
 
 const { width, height } = Dimensions.get("screen");
 function LoginView(props) {
@@ -38,6 +39,8 @@ function LoginView(props) {
   });
   return (
     <SafeAreaView style={styles.container}>
+      <StatusBar backgroundColor="white" hideTransitionAnimation="false" />
+
       <View style={styles.logoContainer}>
         {/* <Text>Animation logo</Text>
         <Text>version noir</Text>

@@ -1,5 +1,12 @@
 import React from "react";
-import { StyleSheet, View, Text, Dimensions } from "react-native";
+import {
+  StyleSheet,
+  View,
+  Text,
+  Dimensions,
+  StatusBar,
+  Platform,
+} from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
 import ColorViewComponent from "../components/ColoredViewComponent.js";
@@ -11,6 +18,12 @@ function AccountView(props) {
 
   return (
     <SafeAreaView style={styles.container}>
+      <StatusBar
+        backgroundColor="white"
+        hideTransitionAnimation="true"
+        animated={false}
+      />
+
       <ColorViewComponent coloredViewStyle={styles.titleContainer}>
         <Text style={styles.titleText}>{langage.myAccount}</Text>
       </ColorViewComponent>
@@ -32,7 +45,7 @@ function AccountView(props) {
               <Text style={styles.titleText}>{langage.editProfile}</Text>
             </ColorViewComponent>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => props.navigation.navigate("Chat")}>
+          <TouchableOpacity onPress={() => props.navigation.push("Chat")}>
             <ColorViewComponent
               coloredViewStyle={[styles.titleContainer]}
               isBlue
@@ -54,6 +67,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   titleContainer: {
+    marginTop: Platform.OS === "ios" ? 40 : 0,
     width: width * 0.5,
     alignItems: "center",
     height: 50,

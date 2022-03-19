@@ -11,14 +11,14 @@ import {
   Animated,
 } from "react-native";
 // import { SafeAreaView } from "react-native-safe-area-context";
-import ColorViewComponent from "../components/ColoredViewComponent.js";
+
 import { useTranslation } from "../Context/TranslationContext";
-import ToggleLangageComponent from "../components/ToggleLangageComponent.js";
+
 import ColoredViewComponent from "../components/ColoredViewComponent.js";
 import TextInputComponent from "../components/TextInputComponent.js";
 import { ScrollView } from "react-native-gesture-handler";
 import { launchCamera, launchImageLibrary } from "react-native-image-picker";
-
+import BackButtonComponent from "../components/BackButtonComponent.js";
 const { width, height } = Dimensions.get("screen");
 function EditProfileView(props) {
   const { toggleLangage, langage } = useTranslation();
@@ -57,19 +57,19 @@ function EditProfileView(props) {
     );
   }
   return (
-    <View style={styles.container}>
-      <SafeAreaView></SafeAreaView>
+    <SafeAreaView style={styles.container}>
       <KeyboardAvoidingView
         style={{
           width: "100%",
           flex: 1,
           paddingBottom: 0,
-
           justifyContent: "space-between",
           alignItems: "center",
         }}
         behavior={Platform.OS === "ios" ? "padding" : "height"}
       >
+        <BackButtonComponent navigation={props.navigation} />
+
         <ScrollView
           style={{
             width: "100%",
@@ -191,7 +191,7 @@ function EditProfileView(props) {
           </View>
         </ScrollView>
       </KeyboardAvoidingView>
-    </View>
+    </SafeAreaView>
   );
 }
 
@@ -244,7 +244,7 @@ const styles = StyleSheet.create({
     width: "100%",
     height: 50,
     justifyContent: "center",
-    marginBottom: Platform.OS === "android" ? 100 : 0,
+    marginBottom: Platform.OS === "android" ? 0 : 0,
   },
 
   buttonText: {
