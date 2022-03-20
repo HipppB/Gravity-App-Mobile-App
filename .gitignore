@@ -113,6 +113,8 @@ buck-out/
 
 # Bundle artifacts
 *.jsbundle
+android/gradle.properties
+android/gradle.properties
 
 # CocoaPods
 /ios/Pods/
