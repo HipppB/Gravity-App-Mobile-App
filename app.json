@@ -2,6 +2,8 @@
   "expo": {
     "name": "My App",
     "slug": "my-test-app",
+    "displayName": "Gravity",
+
     "version": "1.0.1",
     "icon": "src/assets/images/logos/LogoApp.png",
     "android": {

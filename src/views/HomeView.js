@@ -17,12 +17,14 @@ import { useTranslation } from "../Context/TranslationContext";
 import ProjetPedaView from "./Home/ProjetPedaView";
 import SonView from "./Home/SonView";
 import { useAuthentification } from "../Context/AuthContext";
-
+import FirstConnexionPopUp from "./FirstConnexionPopUp";
 const { width, height } = Dimensions.get("screen");
 function HomeView(props) {
   const { toggleLangage, langage } = useTranslation();
   const { isFirstLogin, setIsFirstLogin } = useAuthentification();
   const [activePage, setActivePage] = useState(0);
+  const [isModalVisible, setModalVisible] = useState(false);
+
   let scrollViewSelector = useRef();
   let scrollViewPages = useRef();
   function changeActivePage(pageNumber) {
@@ -38,11 +40,16 @@ function HomeView(props) {
     if (isFirstLogin) {
       setIsFirstLogin(false);
       console.log("HEY");
-      setTimeout(() => props.navigation.navigate("Welcome"), 500);
+      setTimeout(() => setModalVisible(true), 100);
     }
   }, []);
   return (
     <View style={styles.container}>
+      <FirstConnexionPopUp
+        isModalVisible={isModalVisible}
+        setModalVisible={setModalVisible}
+        navigation={props.navigation}
+      />
       <HeaderComponenent navigation={props.navigation} />
       <View style={{ alignItems: "center" }}>
         <ScrollView

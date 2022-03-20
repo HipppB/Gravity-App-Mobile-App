@@ -100,6 +100,7 @@ function TextInputComponent(props) {
       </Animated.Text>
 
       <TextInput
+        selectionColor={"white"}
         autoFocus={props?.autoFocus}
         onFocus={inputFocus}
         onBlur={inputUnFocus}
@@ -117,7 +118,7 @@ function TextInputComponent(props) {
 const styles = StyleSheet.create({
   inputStyle: {
     height: 50,
-    paddingHorizontal: 20,
+    paddingHorizontal: 10,
     width: "100%",
     fontFamily: "ChangaOne_400Regular",
     color: "white",

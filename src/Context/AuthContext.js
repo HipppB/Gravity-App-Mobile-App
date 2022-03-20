@@ -30,27 +30,35 @@ function AuthProvider({ children }) {
         email: email,
         password: password,
       });
-      if (result?.content?.message === "User not found") {
-        console.warn("No user");
-        return "EXISTANCE";
-      } else if (result?.content?.message === "Your account is not verified") {
-        console.warn("Not verified");
 
-        return "VERIFICATION";
-      } else if (result?.content?.access_token) {
+      // If access token = User logged in
+      if (result?.content?.access_token) {
         setApiToken(result?.content?.access_token);
         storeToken(result?.content?.access_token);
         setisAuthentificated(true);
         return "LOGGED IN";
-      } else {
-        console.warn("Wait what ?", result);
-        return "WHAT";
+      }
+
+      // If not we test all messages
+      switch (result?.content?.message) {
+        case "User not found":
+          console.log("No user");
+          return "EXISTANCE";
+        case "Your account is not verified":
+          console.log("Not verified");
+          return "VERIFICATION";
+        case "Unauthorized":
+          console.log("Wrong Password");
+          return "PASSWORD";
+        case "User not found":
+          break;
+        default:
+          console.log("Wait what ?", result); //IT IS NOT SUPPOSED TO ACCESS HERE
+          return "NETWORK";
       }
     } catch (e) {
       return "NETWORK";
     }
-
-    //setisAuthentificated(true);
   }
 
   async function signup(
@@ -62,15 +70,6 @@ function AuthProvider({ children }) {
     description,
     phoneNumber
   ) {
-    console.log({
-      email: email,
-      password: password,
-      language: language,
-      name: name || null,
-      lastname: lastname || null,
-      description: description || null,
-      phone_number: phoneNumber || null,
-    });
     try {
       const result = await newRequest("auth/signup", "POST", {
         email: email,
@@ -81,15 +80,17 @@ function AuthProvider({ children }) {
         description: description || null,
         phone_number: phoneNumber || null,
       });
-
-      if (result?.content?.statusCode === 400) {
-        return "WRONG";
-      } else if (result?.content?.statusCode === 500) {
-        return "NETWORK";
-      } else if (result?.content?.email) {
-        return "CREATED";
-      } else {
-        console.warn("Wait what ?", result);
+      console.log(result);
+      switch (result?.content?.statusCode) {
+        case 400:
+          return "WRONG";
+        case 500:
+          return "NETWORK";
+        default:
+          if (result?.content?.email) {
+            return "CREATED";
+          }
+          return "NETWORK";
       }
     } catch (e) {
       return "NETWORK";
@@ -97,7 +98,8 @@ function AuthProvider({ children }) {
   }
   const logout = (cb) => {
     setisAuthentificated(false);
-    if (cb()) {
+    deleteTokenFromStorage();
+    if (cb) {
       cb();
     }
   };

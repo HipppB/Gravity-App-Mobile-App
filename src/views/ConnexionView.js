@@ -32,8 +32,8 @@ function ConnexionView(props) {
   const { login, signup } = useAuthentification();
   const { toggleLangage, langage, selectedLangage } = useTranslation();
 
-  const [mailInput, setMailInput] = useState("e@eleve.isep.fr");
-  const [password, setPassword] = useState("d");
+  const [mailInput, setMailInput] = useState("");
+  const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const errorOpacity = useRef(new Animated.Value(0)).current;
@@ -106,64 +106,100 @@ function ConnexionView(props) {
     } else {
       const request = await login(mailInput, password);
       console.warn("FINAL RESULT", request);
-      if (request === "LOGGED IN") {
-        setIsLoading(false);
-        return;
-      }
-      if (request === "NETWORK") {
-        setIsLoading(false);
-        setError({
-          title: langage.networkErrorTitle,
-          description: langage.networkErrorSubTitle,
-        });
-        setModalVisible(true);
-      } else if (request === "EXISTANCE") {
-        let regex = /[a-zA-Z]+\.[a-zA-Z]+@eleve\.isep\.fr/i;
-        let words = [null, null];
-        if (regex.test(mailInput)) {
-          words = mailInput.split(".").split("@");
-        }
-        const result = await signup(
-          mailInput,
-          password,
-          selectedLangage,
-          words[0],
-          words[1],
-          (description = " "),
-          (phoneNumber = "+33 6 73 63 32 07")
-        );
-        console.warn("SIGNUP RESULT", result);
-        if (result === "NETWORK") {
+      switch (request) {
+        case "LOGGED IN":
+          setIsLoading(false);
+          return;
+        case "NETWORK":
           setIsLoading(false);
           setError({
             title: langage.networkErrorTitle,
             description: langage.networkErrorSubTitle,
           });
           setModalVisible(true);
-        } else if (result === "CREATED") {
+          break;
+        case "VERIFICATION":
           setIsLoading(false);
           setError({
-            title: "Votre compte a été créé !",
+            title: "Veuillez verifier vos mails",
             description:
-              "Vous avez reçu un lien par email permettant de verifier votre adresse e-mail.",
+              "Vous devez avoir vérifié votre adresse email pour pouvoir vous connecter.",
           });
           setModalVisible(true);
-        }
-      } else if (request === "VERIFICATION") {
-        setIsLoading(false);
-        setError({
-          title: "Veuillez verifier vos mails",
-          description:
-            "Vous devez avoir vérifié votre adresse email pour pouvoir vous connecter.",
-        });
-        setModalVisible(true);
-      } else if (request === "INVALID") {
-        setIsLoading(false);
-        setError({
-          title: "Qui êtes vous ?",
-          description: langage.networkErrorSubTitle,
-        });
-        setModalVisible(true);
+          break;
+        case "PASSWORD":
+          setIsLoading(false);
+          setError({
+            title: "Mot de passe incorrect",
+            description: "Votre mot de passe est incorrect, merci de réessayer",
+          });
+          setModalVisible(true);
+          break;
+        case "EXISTANCE":
+          let regex = /[a-zA-Z]+\.[a-zA-Z]+@eleve\.isep\.fr/i;
+
+          let name = null;
+          let lastname = null;
+          if (regex.test(mailInput)) {
+            let words = mailInput.split(".");
+            name = words[0];
+            lastname = words[1].split("@")[0];
+          }
+          console.warn(name, lastname);
+          const result = await signup(
+            mailInput,
+            password,
+            selectedLangage,
+            name,
+            lastname,
+            (description = " "),
+            (phoneNumber = "+33 6 73 63 32 07")
+          );
+          console.warn("SIGNUP RESULT", result);
+          switch (result) {
+            case "NETWORK":
+              setIsLoading(false);
+              setError({
+                title: langage.networkErrorTitle,
+                description: langage.networkErrorSubTitle,
+              });
+              setModalVisible(true);
+              break;
+            case "CREATED":
+              setIsLoading(false);
+              setError({
+                title: "Votre compte a été créé !",
+                description:
+                  "Vous avez reçu un lien par email permettant de verifier votre adresse e-mail.",
+              });
+              setModalVisible(true);
+              break;
+            case "WRONG":
+              setIsLoading(false);
+              setError({
+                title: "Votre compte n'a  pas pu être créé !",
+                description: "Les informations rentrés semblent invalides",
+              });
+              setModalVisible(true);
+              break;
+            default:
+              setIsLoading(false);
+              setError({
+                title: langage.networkErrorTitle,
+                description: langage.networkErrorSubTitle,
+              });
+              setModalVisible(true);
+              break;
+          }
+          break;
+        default:
+          setIsLoading(false);
+          setError({
+            title: langage.networkErrorTitle,
+            description: langage.networkErrorSubTitle,
+          });
+          setModalVisible(true);
+          break;
       }
     }
   }

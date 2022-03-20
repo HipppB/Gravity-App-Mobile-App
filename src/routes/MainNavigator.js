@@ -37,7 +37,7 @@ function MainNavigator(props) {
     autoLogin(setAutoLoging(false));
   }, []);
 
-  if (!fontsLoaded && isAutoLoging) {
+  if (!fontsLoaded || isAutoLoging) {
     return <LoginViewOld />;
   }
 

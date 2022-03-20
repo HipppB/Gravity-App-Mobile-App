@@ -38,7 +38,8 @@
     "close": "Fermer",
     "firstConnexion": "Première connexion ?\nUn mail de vérification vous sera envoyé !",
     "networkErrorTitle": "Impossible de contacter le serveur Gravity.",
-    "networkErrorSubTitle": "Vérifiez votre connexion internet. \n Si le problème persiste contactez Gravity. On ramènera le serveur sur terre."
+    "networkErrorSubTitle": "Vérifiez votre connexion internet. \n Si le problème persiste contactez Gravity. On ramènera le serveur sur terre.",
+    "disconnect": "Déconnexion"
   },
   "en": {
     "connexionButton": "Login",
@@ -79,6 +80,7 @@
     "close": "Close",
     "firstConnexion": "First login ?\nA verification email is going to be send !",
     "networkErrorTitle": "We can't join server gravity",
-    "networkErrorSubTitle": "Check your network connexion. \n If the problem persist contact Gravity. We will bring him back on earth"
+    "networkErrorSubTitle": "Check your network connexion. \n If the problem persist contact Gravity. We will bring him back on earth",
+    "disconnect": "Logout"
   }
 }

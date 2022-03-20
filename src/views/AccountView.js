@@ -12,9 +12,11 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import ColorViewComponent from "../components/ColoredViewComponent.js";
 import { useTranslation } from "../Context/TranslationContext";
 import ToggleLangageComponent from "../components/ToggleLangageComponent.js";
+import { useAuthentification } from "../Context/AuthContext";
 const { width, height } = Dimensions.get("screen");
 function AccountView(props) {
   const { toggleLangage, langage } = useTranslation();
+  const { logout } = useAuthentification();
 
   return (
     <SafeAreaView style={styles.container}>
@@ -51,6 +53,14 @@ function AccountView(props) {
               isBlue
             >
               <Text style={styles.titleText}>{langage.contactButton}</Text>
+            </ColorViewComponent>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => logout()}>
+            <ColorViewComponent
+              coloredViewStyle={[styles.titleContainer]}
+              isBlue
+            >
+              <Text style={styles.titleText}>{langage.disconnect}</Text>
             </ColorViewComponent>
           </TouchableOpacity>
         </View>
