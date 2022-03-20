@@ -3,6 +3,7 @@
     "@expo-google-fonts/changa-one": "^0.2.2",
     "@flyerhq/react-native-chat-ui": "^1.4.3",
     "@react-native-async-storage/async-storage": "~1.15.0",
+    "@react-native-clipboard/clipboard": "^1.8.5",
     "@react-navigation/bottom-tabs": "^6.2.0",
     "@react-navigation/native": "^6.0.6",
     "@react-navigation/native-stack": "^6.2.5",

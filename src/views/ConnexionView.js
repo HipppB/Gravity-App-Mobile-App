@@ -92,7 +92,9 @@ function ConnexionView(props) {
       }),
     ]).start();
   }
-
+  function test() {
+    console.warn("RESR");
+  }
   async function manageRegister() {
     setRegisterModalVisible(false);
     let regex = /[a-zA-Z]+\.[a-zA-Z]+@eleve\.isep\.fr/i;
@@ -126,29 +128,35 @@ function ConnexionView(props) {
         setModalVisible(true);
         break;
       case "CREATED":
-        setIsLoading(false);
         setError({
           title: "Votre compte a été créé !",
           description:
             "Vous avez reçu un lien par email permettant de verifier votre adresse e-mail.",
         });
-        setModalVisible(true);
+        console.warn("HEY");
+
+        setTimeout(() => {
+          setModalVisible(true), setIsLoading(false);
+        }, 200);
+        return;
         break;
       case "WRONG":
-        setIsLoading(false);
         setError({
           title: "Votre compte n'a  pas pu être créé !",
           description: "Les informations rentrés semblent invalides",
         });
-        setModalVisible(true);
+        setTimeout(() => {
+          setModalVisible(true), setIsLoading(false);
+        }, 200);
         break;
       default:
-        setIsLoading(false);
         setError({
           title: langage.networkErrorTitle,
           description: langage.networkErrorSubTitle,
         });
-        setModalVisible(true);
+        setTimeout(() => {
+          setModalVisible(true), setIsLoading(false);
+        }, 200);
         break;
     }
   }
@@ -200,7 +208,8 @@ function ConnexionView(props) {
         case "EXISTANCE":
           setRegisterModalVisible(true);
           setIsLoading(false);
-          break;
+          return;
+
         default:
           setIsLoading(false);
           setError({
@@ -250,6 +259,7 @@ function ConnexionView(props) {
     }).start();
   }
 
+  useEffect(() => console.warn(isModalVisible), [isModalVisible]);
   return (
     <View style={{ flex: 1, width: "100%" }}>
       <Modal

@@ -1,4 +1,4 @@
-package com.gravity.app;
+package com.gravitylesvraisdevrais.app;
 
 import android.os.Build;
 import android.os.Bundle;

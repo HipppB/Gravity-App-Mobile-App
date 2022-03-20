@@ -7,7 +7,7 @@
     "version": "1.0.1",
     "icon": "src/assets/images/logos/LogoApp.png",
     "android": {
-      "package": "com.gravity.app",
+      "package": "com.gravitylesvraisdevrais.app",
       "permissions": [
         "READ_EXTERNAL_STORAGE",
         "WRITE_EXTERNAL_STORAGE",
