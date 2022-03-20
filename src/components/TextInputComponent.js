@@ -37,6 +37,9 @@ function TextInputComponent(props) {
     }
   }, []);
   function inputFocus() {
+    if (props?.onFocusCallBack) {
+      props?.onFocusCallBack();
+    }
     if (!props?.value) {
       Animated.timing(topValue, {
         toValue: 0,
@@ -56,6 +59,9 @@ function TextInputComponent(props) {
     }
   }
   function inputUnFocus() {
+    if (props?.onUnFocuseCallBack) {
+      props?.onUnFocuseCallBack();
+    }
     if (!props?.value) {
       Animated.timing(topValue, {
         toValue: 12,
@@ -82,6 +88,7 @@ function TextInputComponent(props) {
         {
           position: "relative",
           justifyContent: "flex-end",
+          width: "100%",
         },
         props?.additionalStyleContainer,
       ]}

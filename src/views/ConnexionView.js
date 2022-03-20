@@ -204,6 +204,43 @@ function ConnexionView(props) {
     }
   }
 
+  // const inputEmailPercent = 0.7;
+
+  // const inputEmailPercent = useRef(0.7);
+
+  // const inputEmailPercent = useRef(new Animated.Value(0.7)).current;
+  const inputEmailPercent = useRef(new Animated.Value(0.7 * width)).current;
+  const inputPasswordPercent = useRef(new Animated.Value(0.7 * width)).current;
+
+  function onMailFocus() {
+    Animated.timing(inputEmailPercent, {
+      toValue: 0.9 * width,
+      duration: 200,
+      useNativeDriver: false,
+    }).start();
+  }
+  function onMailUnFocus() {
+    Animated.timing(inputEmailPercent, {
+      toValue: 0.7 * width,
+      duration: 200,
+      useNativeDriver: false,
+    }).start();
+  }
+  function onPasswordFocus() {
+    Animated.timing(inputPasswordPercent, {
+      toValue: 0.9 * width,
+      duration: 200,
+      useNativeDriver: false,
+    }).start();
+  }
+  function onPasswordUnFocus() {
+    Animated.timing(inputPasswordPercent, {
+      toValue: 0.7 * width,
+      duration: 200,
+      useNativeDriver: false,
+    }).start();
+  }
+
   return (
     <View style={{ flex: 1, width: "100%" }}>
       <Modal
@@ -372,9 +409,19 @@ function ConnexionView(props) {
             },
           ]}
         >
-          <ColoredViewComponent containerStyle={styles.labelContainer} isBlue>
+          <ColoredViewComponent
+            containerStyle={{
+              width: inputEmailPercent,
+              marginBottom: Platform.OS === "android" ? 20 : 0,
+              paddingBottom: 0,
+              marginTop: 0,
+            }}
+            isBlue
+          >
             <TextInputComponent
               // autoFocus
+              onFocusCallBack={() => onMailFocus()}
+              onUnFocuseCallBack={() => onMailUnFocus()}
               placeholder={langage.mailPlaceHolder}
               value={mailInput}
               onChange={onChangeEmail}
@@ -410,9 +457,19 @@ function ConnexionView(props) {
             },
           ]}
         >
-          <ColoredViewComponent containerStyle={styles.labelContainer} isBlue>
+          <ColoredViewComponent
+            containerStyle={{
+              width: inputPasswordPercent,
+              marginBottom: Platform.OS === "android" ? 20 : 0,
+              paddingBottom: 0,
+              marginTop: 0,
+            }}
+            isBlue
+          >
             <TextInputComponent
               // autoFocus
+              onFocusCallBack={() => onPasswordFocus()}
+              onUnFocuseCallBack={() => onPasswordUnFocus()}
               secureTextEntry
               placeholder={langage.passwordPlaceHolder}
               value={password}

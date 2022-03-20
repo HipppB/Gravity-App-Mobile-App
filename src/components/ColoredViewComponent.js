@@ -1,7 +1,7 @@
-import React from "react";
-import { StyleSheet, View, Platform } from "react-native";
+import React, { useRef } from "react";
+import { StyleSheet, View, Platform, Animated, Dimensions } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
-
+const { width, height } = Dimensions.get("screen");
 function ColoredViewComponent({
   isBlue,
   containerStyle,
@@ -10,7 +10,7 @@ function ColoredViewComponent({
 }) {
   if (isBlue === true) {
     return (
-      <View style={[styles.container, containerStyle]}>
+      <Animated.View style={[styles.container, containerStyle]}>
         <LinearGradient
           colors={["#0C1316", "#203C42", "#2293D0"]}
           end={{ x: 1, y: 0 }}
@@ -20,11 +20,11 @@ function ColoredViewComponent({
         >
           {props.children}
         </LinearGradient>
-      </View>
+      </Animated.View>
     );
   } else {
     return (
-      <View style={[styles.container, containerStyle]}>
+      <Animated.View style={[styles.container, containerStyle]}>
         <LinearGradient
           colors={["#E65F02", "#F4C182", "#FFF0C1"]}
           locations={[0.3, 0.7, 0.98]}
@@ -34,7 +34,7 @@ function ColoredViewComponent({
         >
           {props.children}
         </LinearGradient>
-      </View>
+      </Animated.View>
     );
   }
 }
