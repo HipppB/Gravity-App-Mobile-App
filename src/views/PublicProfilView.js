@@ -7,8 +7,10 @@ import {
   TouchableOpacity,
   Image,
   Dimensions,
+  Linking,
 } from "react-native";
 import BackButtonComponent from "../components/BackButtonComponent";
+import Clipboard from "@react-native-clipboard/clipboard";
 
 import email from "../assets/icons/email.png";
 import facebook from "../assets/icons/facebook.png";
@@ -16,7 +18,7 @@ import instagram from "../assets/icons/instagram.png";
 import phone from "../assets/icons/phone.png";
 import snapchat from "../assets/icons/snapchat.png";
 import tiktok from "../assets/icons/tiktok.png";
-
+import ColoredViewComponent from "../components/ColoredViewComponent";
 const heads = [
   require("../GravityHeadCrush/images/1.png"),
   require("../GravityHeadCrush/images/2.png"),
@@ -66,42 +68,107 @@ function PublicProfilView(props) {
         showsVerticalScrollIndicator={false}
       >
         <Text style={styles.pageSubTitle}>Description à tomber</Text>
-        <Text>
-          Cette page n'est pas encore prête, mais vous pouvez prendre quelque
-          secondes pour admirer cette magnifique tête choisie au hasard parmis
-          les têtes du bureau. N'hésitez cependant pas à donner vos idées
+        <Text style={styles.description}>
+          Si vous avez des suggestion pour cette page n'hésitez pas, je trouve
+          personnllement qu'elle manque un peu de couleur. Tout les retours sont
+          bon à prendre !
         </Text>
         <Text style={styles.pageSubTitle}>Contacts et réseaux</Text>
 
-        <Item icon={instagram} contact={"Xx__SnapDekevinDu75__xX"} />
-        <Item icon={tiktok} contact={"Xx__SnapDekevinDu75__xX"} />
-        <Item icon={snapchat} contact={"Xx__SnapDekevinDu75__xX"} />
+        <Item
+          network={"instagram"}
+          icon={instagram}
+          contact={"Xx__InstaDekevinDu75__xX"}
+        />
+        <Item
+          network={"tiktok"}
+          icon={tiktok}
+          contact={"Xx__TikTokDekevinDu75__xX"}
+        />
+        <Item
+          network={"snapchat"}
+          icon={snapchat}
+          contact={"Xx__SnapDekevinDu75__xX"}
+        />
 
-        <Item icon={facebook} contact={"Xx__SnapDekevinDu75__xX"} />
-        <Item icon={phone} contact={"+ 33 6 07 48 34 54"} />
-        <Item icon={email} contact={"Jean.kevin@eleve.isep.fr"} />
+        <Item
+          network={"facebook"}
+          icon={facebook}
+          contact={"Xx__FacebookDekevinDu75__xX"}
+        />
+        <Item network={"phone"} icon={phone} contact={"+ 33 6 07 48 34 54"} />
+        <Item
+          network={"email"}
+          icon={email}
+          contact={"Jean.kevin@eleve.isep.fr"}
+        />
       </ScrollView>
     </View>
   );
 }
 
-function Item({ icon, contact }) {
+function Item({ icon, contact, network }) {
   if (Math.random() > 1.5) return <View></View>;
+  function openSocialLink() {
+    switch (network) {
+      case "instagram":
+        Linking.openURL("https://www.instagram.com/" + contact);
+        break;
+      case "tiktok":
+        Linking.openURL("https://www.tiktok.com/@" + contact);
+        break;
+
+      case "snapchat":
+        Linking.openURL("https://www.snapchat.com/add/" + contact);
+        break;
+      case "facebook":
+        Linking.openURL("https://www.instagram.com/" + contact);
+        break;
+      default:
+        Clipboard.setString(contact);
+
+        break;
+    }
+  }
   return (
-    <View
+    <TouchableOpacity
       style={{
         flexDirection: "row",
         alignItems: "center",
-
         width: "100%",
       }}
+      onPress={() => openSocialLink()}
     >
-      <Image
-        source={icon}
-        style={{ width: 30, height: 30, margin: 10, marginLeft: 0 }}
-      />
-      <Text>{contact}</Text>
-    </View>
+      <ColoredViewComponent
+        containerStyle={{
+          borderRadius: 105,
+
+          margin: 10,
+          shadowOffset: { width: 0, height: 0 },
+          shadowRadius: 0,
+          elevation: 0,
+          alignItems: "center",
+        }}
+        coloredViewStyle={{
+          width: 40,
+          height: 40,
+          padding: 0,
+          alignItems: "center",
+          justifyContent: "center",
+          borderRadius: 20,
+        }}
+      >
+        <Image
+          source={icon}
+          style={{
+            width: 25,
+            height: 25,
+            tintColor: "white",
+          }}
+        />
+      </ColoredViewComponent>
+      <Text style={styles.pseudo}>{contact}</Text>
+    </TouchableOpacity>
   );
 }
 
@@ -113,14 +180,26 @@ const styles = StyleSheet.create({
     fontSize: 30,
     marginTop: 20,
     marginBottom: 20,
+    color: "#172D35",
   },
   pageSubTitle: {
     fontFamily: "ChangaOne_400Regular",
     fontSize: 20,
     marginTop: 20,
     marginBottom: 20,
-
+    color: "#172D35",
     width: "100%",
+  },
+  pseudo: {
+    fontFamily: "ChangaOne_400Regular",
+    fontSize: 15,
+    marginTop: 20,
+    marginBottom: 20,
+    color: "#ED8A33",
+  },
+  description: {
+    fontFamily: "Neon",
+    fontSize: 20,
   },
 });
 
