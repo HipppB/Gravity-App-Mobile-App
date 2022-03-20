@@ -47,7 +47,10 @@ function AccountView(props) {
               <Text style={styles.titleText}>{langage.editProfile}</Text>
             </ColorViewComponent>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => props.navigation.push("Chat")}>
+          <TouchableOpacity
+            onPress={() => props.navigation.push("Chat")}
+            style={{ marginBottom: 20 }}
+          >
             <ColorViewComponent
               coloredViewStyle={[styles.titleContainer]}
               isBlue

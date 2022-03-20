@@ -43,6 +43,9 @@ function BottomBarComponent({ navigation, ...props }) {
             style={[
               styles.icons,
               active === "Calendar" ? styles.activeIcon : styles.inactiveIcon,
+              {
+                top: -1,
+              },
             ]}
           />
         </LinearGradient>

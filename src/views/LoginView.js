@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import {
   StyleSheet,
   Text,
@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   Image,
   Dimensions,
+  Animated,
 } from "react-native";
 
 import ColoredViewComponent from "../components/ColoredViewComponent";
@@ -41,6 +42,17 @@ function LoginView(props) {
       toggleLangage();
     }
   });
+  const gravityFontSize = useRef(new Animated.Value(50)).current;
+  let actualSize = 50;
+  function growGravity() {
+    actualSize += 2;
+    Animated.timing(gravityFontSize, {
+      toValue: actualSize,
+      duration: 200,
+      useNativeDriver: false,
+    }).start();
+  }
+
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar backgroundColor="white" hideTransitionAnimation="false" />
@@ -106,9 +118,20 @@ function LoginView(props) {
             style={{ marginRight: 0 }}
           />
         </View>
-        <Text onPress={() => login()} style={styles.labelText}>
+        <Animated.Text
+          onPress={() => growGravity()}
+          style={[
+            styles.labelText,
+            {
+              fontSize: gravityFontSize,
+              zIndex: 2,
+              position: "absolute",
+              bottom: 10,
+            },
+          ]}
+        >
           GRAVITY
-        </Text>
+        </Animated.Text>
       </View>
 
       <TouchableOpacity

@@ -61,24 +61,17 @@ function AuthProvider({ children }) {
     }
   }
 
-  async function signup(
-    email,
-    password,
-    language,
-    name,
-    lastname,
-    description,
-    phoneNumber
-  ) {
+  async function signup(userInfos) {
     try {
       const result = await newRequest("auth/signup", "POST", {
-        email: email,
-        password: password,
-        language: language,
-        name: name || null,
-        lastname: lastname || null,
-        description: description || null,
-        phone_number: phoneNumber || null,
+        email: userInfos?.email,
+        password: userInfos?.password,
+        language: userInfos?.language,
+        promo: userInfos?.promo,
+        name: userInfos?.name || null,
+        lastname: userInfos?.lastname || null,
+        description: userInfos?.description || null,
+        phone_number: userInfos?.phoneNumber || null,
       });
       console.log(result);
       switch (result?.content?.statusCode) {

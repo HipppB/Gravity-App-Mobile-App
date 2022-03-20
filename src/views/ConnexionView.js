@@ -39,6 +39,8 @@ function ConnexionView(props) {
   const errorOpacity = useRef(new Animated.Value(0)).current;
   const [isModalVisible, setModalVisible] = useState(false);
   const [isRegisterModalVisible, setRegisterModalVisible] = useState(false);
+  const [selectedPromo, setPromo] = useState(null);
+
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
   };
@@ -90,6 +92,66 @@ function ConnexionView(props) {
       }),
     ]).start();
   }
+
+  async function manageRegister() {
+    setRegisterModalVisible(false);
+    let regex = /[a-zA-Z]+\.[a-zA-Z]+@eleve\.isep\.fr/i;
+
+    let name = null;
+    let lastname = null;
+    if (regex.test(mailInput)) {
+      let words = mailInput.split(".");
+      name = words[0];
+      lastname = words[1].split("@")[0];
+    }
+    console.warn(name, lastname, selectedPromo);
+    const result = await signup({
+      email: mailInput,
+      password: password,
+      language: selectedLangage,
+      promo: selectedPromo,
+      name: name,
+      lastname: lastname,
+      description: " ",
+      phoneNumber: "+33 6 73 63 32 07",
+    });
+    console.warn("SIGNUP RESULT", result);
+    switch (result) {
+      case "NETWORK":
+        setIsLoading(false);
+        setError({
+          title: langage.networkErrorTitle,
+          description: langage.networkErrorSubTitle,
+        });
+        setModalVisible(true);
+        break;
+      case "CREATED":
+        setIsLoading(false);
+        setError({
+          title: "Votre compte a été créé !",
+          description:
+            "Vous avez reçu un lien par email permettant de verifier votre adresse e-mail.",
+        });
+        setModalVisible(true);
+        break;
+      case "WRONG":
+        setIsLoading(false);
+        setError({
+          title: "Votre compte n'a  pas pu être créé !",
+          description: "Les informations rentrés semblent invalides",
+        });
+        setModalVisible(true);
+        break;
+      default:
+        setIsLoading(false);
+        setError({
+          title: langage.networkErrorTitle,
+          description: langage.networkErrorSubTitle,
+        });
+        setModalVisible(true);
+        break;
+    }
+  }
   async function manageLogin() {
     setIsLoading(true);
     if (mailInput === "" || mailInput.search("@eleve.isep.fr") < 0) {
@@ -136,61 +198,8 @@ function ConnexionView(props) {
           setModalVisible(true);
           break;
         case "EXISTANCE":
-          let regex = /[a-zA-Z]+\.[a-zA-Z]+@eleve\.isep\.fr/i;
-
-          let name = null;
-          let lastname = null;
-          if (regex.test(mailInput)) {
-            let words = mailInput.split(".");
-            name = words[0];
-            lastname = words[1].split("@")[0];
-          }
-          console.warn(name, lastname);
-          const result = await signup(
-            mailInput,
-            password,
-            selectedLangage,
-            name,
-            lastname,
-            (description = " "),
-            (phoneNumber = "+33 6 73 63 32 07")
-          );
-          console.warn("SIGNUP RESULT", result);
-          switch (result) {
-            case "NETWORK":
-              setIsLoading(false);
-              setError({
-                title: langage.networkErrorTitle,
-                description: langage.networkErrorSubTitle,
-              });
-              setModalVisible(true);
-              break;
-            case "CREATED":
-              setIsLoading(false);
-              setError({
-                title: "Votre compte a été créé !",
-                description:
-                  "Vous avez reçu un lien par email permettant de verifier votre adresse e-mail.",
-              });
-              setModalVisible(true);
-              break;
-            case "WRONG":
-              setIsLoading(false);
-              setError({
-                title: "Votre compte n'a  pas pu être créé !",
-                description: "Les informations rentrés semblent invalides",
-              });
-              setModalVisible(true);
-              break;
-            default:
-              setIsLoading(false);
-              setError({
-                title: langage.networkErrorTitle,
-                description: langage.networkErrorSubTitle,
-              });
-              setModalVisible(true);
-              break;
-          }
+          setRegisterModalVisible(true);
+          setIsLoading(false);
           break;
         default:
           setIsLoading(false);
@@ -307,70 +316,14 @@ function ConnexionView(props) {
           </TouchableOpacity>
         </View>
       </Modal>
-      <Modal
+      <ModalInscription
+        langage={langage}
         isVisible={isRegisterModalVisible}
-        onSwipeComplete={() => setRegisterModalVisible(false)}
-        swipeDirection="down"
-        customBackdrop={
-          <Pressable
-            onPress={() => setRegisterModalVisible(false)}
-            style={{ flex: 1, width: "100%", backgroundColor: "white" }}
-          ></Pressable>
-        }
-      >
-        <View
-          style={{
-            width: "80%",
-            minHeight: "20%",
-            backgroundColor: "white",
-            borderRadius: 20,
-            alignSelf: "center",
-            alignItems: "center",
-            padding: 15,
-            shadowColor: "#000",
-            shadowOffset: {
-              width: 0,
-              height: 2,
-            },
-            shadowOpacity: 0.25,
-            shadowRadius: 3.84,
-
-            elevation: 15,
-          }}
-        >
-          <Text
-            style={{
-              fontFamily: "ChangaOne_400Regular",
-              fontSize: 20,
-              marginBottom: 20,
-              textAlign: "center",
-            }}
-          >
-            {error.title}
-          </Text>
-          <Text
-            style={{
-              fontFamily: "Neon",
-              fontSize: 20,
-              marginBottom: 20,
-              textAlign: "center",
-            }}
-          >
-            {error.description}
-          </Text>
-          <TouchableOpacity
-            style={[styles.buttonTouchableContainer]}
-            onPress={() => setRegisterModalVisible(false)}
-          >
-            <ColoredViewComponent
-              coloredViewStyle={styles.buttonContainer}
-              containerStyle={styles.buttonContainerContainer}
-            >
-              <Text style={styles.buttonText}>{langage?.close}</Text>
-            </ColoredViewComponent>
-          </TouchableOpacity>
-        </View>
-      </Modal>
+        setVisible={setRegisterModalVisible}
+        selectedPromo={selectedPromo}
+        setPromo={setPromo}
+        callBack={manageRegister}
+      />
       <StatusBar
         backgroundColor="white"
         hideTransitionAnimation="true"
@@ -537,6 +490,122 @@ function ConnexionView(props) {
   );
 }
 
+function ModalInscription({
+  langage,
+  isVisible,
+  setVisible,
+  selectedPromo,
+  setPromo,
+  callBack,
+}) {
+  const promos = ["I1", "P1", "I2", "P2", "A1", "A2", "A3"];
+  return (
+    <Modal
+      isVisible={isVisible}
+      onSwipeComplete={() => setVisible(false)}
+      swipeDirection="down"
+      customBackdrop={
+        <Pressable
+          onPress={() => setVisible(false)}
+          style={{ flex: 1, width: "100%", backgroundColor: "white" }}
+        ></Pressable>
+      }
+    >
+      <View
+        style={{
+          width: "90%",
+          minHeight: "20%",
+          backgroundColor: "white",
+          borderRadius: 20,
+          alignSelf: "center",
+          alignItems: "center",
+          padding: 15,
+          shadowColor: "#000",
+          shadowOffset: {
+            width: 0,
+            height: 2,
+          },
+          shadowOpacity: 0.25,
+          shadowRadius: 3.84,
+
+          elevation: 15,
+        }}
+      >
+        <Text
+          style={{
+            fontFamily: "ChangaOne_400Regular",
+            fontSize: 20,
+            marginBottom: 20,
+            textAlign: "center",
+          }}
+        >
+          Inscription
+        </Text>
+        <Text
+          style={{
+            fontFamily: "Neon",
+            fontSize: 20,
+            marginBottom: 20,
+            textAlign: "center",
+          }}
+        >
+          Cette email n'est associé à aucun compte.{"\n"}Indique ta promo pour
+          t'inscrire !
+        </Text>
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "space-between",
+            width: "100%",
+            marginBottom: 20,
+          }}
+        >
+          {promos.map((promo) => (
+            <TouchableOpacity
+              key={promo}
+              style={{
+                backgroundColor: promo == selectedPromo ? "#E65F02" : "#F4C182",
+                justifyContent: "center",
+                alignItems: "center",
+                width: 30,
+                height: 30,
+                borderRadius: 20,
+              }}
+              onPress={() => setPromo(promo)}
+            >
+              <Text style={{ fontSize: 15 }}>{promo}</Text>
+            </TouchableOpacity>
+          ))}
+        </View>
+        {selectedPromo ? (
+          <TouchableOpacity
+            style={[styles.buttonTouchableContainer]}
+            onPress={() => callBack()}
+          >
+            <ColoredViewComponent
+              coloredViewStyle={styles.buttonContainer}
+              containerStyle={styles.buttonContainerContainer}
+            >
+              <Text style={styles.buttonText}>M'inscrire</Text>
+            </ColoredViewComponent>
+          </TouchableOpacity>
+        ) : (
+          <TouchableOpacity
+            style={[styles.buttonTouchableContainer]}
+            onPress={() => setVisible(false)}
+          >
+            <ColoredViewComponent
+              coloredViewStyle={styles.buttonContainer}
+              containerStyle={styles.buttonContainerContainer}
+            >
+              <Text style={styles.buttonText}>Annuler</Text>
+            </ColoredViewComponent>
+          </TouchableOpacity>
+        )}
+      </View>
+    </Modal>
+  );
+}
 const styles = StyleSheet.create({
   container: {
     width: "100%",
