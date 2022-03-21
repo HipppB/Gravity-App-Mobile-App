@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   StyleSheet,
   View,
@@ -21,15 +21,25 @@ import lettere from "../assets/Letters/Italique/e.png";
 import OutlinedText from "../components/OutlinedText";
 import MapView, { Marker } from "react-native-maps";
 import { useTranslation } from "../Context/TranslationContext";
+import ModalPersonList from "../components/ModalPersonList";
 
 const { width, height } = Dimensions.get("screen");
 
 function DetailCalendarView(props) {
   const { toggleLangage, langage } = useTranslation();
-
+  const [isModalParticipantVisible, setModalParticipantVisible] =
+    useState(false);
+  function openModal() {
+    setModalParticipantVisible(!isModalParticipantVisible);
+  }
   const event = props.route.params.event;
   return (
     <View style={styles.container}>
+      <ModalPersonList
+        isVisible={isModalParticipantVisible}
+        setVisible={setModalParticipantVisible}
+        navigation={props.navigation}
+      />
       <HeaderComponenent navigation={props.navigation} />
       <ScrollView style={styles.bodyScrollContainer}>
         <View style={styles.bodyContainer}>
@@ -169,6 +179,7 @@ function DetailCalendarView(props) {
                 ]}
                 number={50}
                 navigation={props.navigation}
+                setVisible={openModal}
               />
             </View>
             <TouchableOpacity
@@ -188,7 +199,7 @@ function DetailCalendarView(props) {
     </View>
   );
 }
-function PersonsHeads({ listOfHeads, number, navigation }) {
+function PersonsHeads({ listOfHeads, number, navigation, setVisible }) {
   return (
     <View
       style={{
@@ -215,7 +226,7 @@ function PersonsHeads({ listOfHeads, number, navigation }) {
           justifyContent: "center",
           alignItems: "flex-end",
         }}
-        onPress={() => navigation.navigate("ParticipantList")}
+        onPress={() => setVisible()}
       >
         <Text
           style={{

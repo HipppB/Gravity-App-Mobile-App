@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   StyleSheet,
   View,
@@ -6,9 +6,9 @@ import {
   Image,
   Dimensions,
   ScrollView,
+  Platform,
 } from "react-native";
 import { useTranslation } from "../Context/TranslationContext";
-
 const heads = [
   require("../GravityHeadCrush/images/1.png"),
   require("../GravityHeadCrush/images/2.png"),
@@ -26,7 +26,14 @@ function ListOfParticipantView(props) {
   const num = ((Math.random() * 60) % 6).toFixed(0);
 
   return (
-    <View style={{ padding: 20, paddingTop: 70 }}>
+    <View
+      style={{
+        padding: 20,
+        paddingTop: Platform.OS === "ios" ? 70 : 20,
+        backgroundColor: "white",
+        flex: 1,
+      }}
+    >
       <Text style={styles.pageTitle}>{langage.participant}</Text>
       <Text>Aucun participant. Rip.</Text>
       <Image

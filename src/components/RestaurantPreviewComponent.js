@@ -50,7 +50,6 @@ function RestaurantPreviewComponent({ restaurant, navigation, ...props }) {
 
 const styles = StyleSheet.create({
   mainContainer: {
-    backgroundColor: "red",
     width: "80%",
     alignSelf: "center",
     height: "90%",

@@ -1,7 +1,18 @@
 import React, { useRef } from "react";
-import { StyleSheet, View, Platform, Animated, Dimensions } from "react-native";
+import {
+  StyleSheet,
+  View,
+  Platform,
+  Animated,
+  Dimensions,
+  Appearance,
+} from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 const { width, height } = Dimensions.get("screen");
+const colorScheme = Appearance.getColorScheme();
+if (colorScheme === "dark") {
+  // Use dark color scheme
+}
 function ColoredViewComponent({
   isBlue,
   containerStyle,
