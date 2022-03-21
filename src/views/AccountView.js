@@ -6,6 +6,7 @@ import {
   Dimensions,
   StatusBar,
   Platform,
+  Image,
 } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -25,16 +26,24 @@ function AccountView(props) {
         hideTransitionAnimation="true"
         animated={false}
       />
+      <Image
+        source={require("../assets/images/logos/Couleur/Logo.png")}
+        style={{
+          width: width * 0.7,
+          height: width * 0.7,
+          resizeMode: "contain",
+        }}
+      />
 
-      <ColorViewComponent coloredViewStyle={styles.titleContainer}>
+      <ColorViewComponent coloredViewStyle={styles.realtitleContainer}>
         <Text style={styles.titleText}>{langage.myAccount}</Text>
       </ColorViewComponent>
       <View style={styles.bodyContainer}>
-        <View>
+        {/* <View>
           <Text style={styles.text}>{langage.hello} Hippolyte,</Text>
           <Text style={styles.textSmall}>{langage.question}</Text>
           <Text style={styles.textSmall}>{langage.noHesitation}</Text>
-        </View>
+        </View> */}
         <View>
           <TouchableOpacity
             onPress={() => props.navigation.navigate("EditAccount")}
@@ -79,8 +88,17 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     alignItems: "center",
   },
+  realtitleContainer: {
+    marginBottom: Platform.OS === "ios" ? 40 : 0,
+    marginTop: 20,
+    width: width * 0.5,
+    alignItems: "center",
+    height: 50,
+    justifyContent: "center",
+  },
   titleContainer: {
-    marginTop: Platform.OS === "ios" ? 40 : 0,
+    // marginBottom: Platform.OS === "ios" ? 40 : 0,
+
     width: width * 0.5,
     alignItems: "center",
     height: 50,

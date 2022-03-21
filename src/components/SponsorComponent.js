@@ -11,6 +11,7 @@ import {
   Dimensions,
 } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
+import ColoredViewComponent from "./ColoredViewComponent";
 
 function SponsorComponent(props) {
   const [isOpen, setisOpen] = useState(false);
@@ -107,25 +108,24 @@ function SponsorComponent(props) {
           </View>
         </View>
         <View
+          onLayout={(event) => {
+            var { x, y, width, height } = event.nativeEvent.layout;
+            console.log(height);
+
+            setContentHeight(height);
+          }}
           style={[
             {
               position: "absolute",
               top: 75,
               flexShrink: 1,
               opacity: isOpen ? 1 : 0,
-
               left: 0,
               right: 0,
             },
           ]}
         >
           <Text
-            onLayout={(event) => {
-              var { x, y, width, height } = event.nativeEvent.layout;
-              console.log(height);
-
-              setContentHeight(height);
-            }}
             style={{
               paddingHorizontal: 10,
 
@@ -139,8 +139,17 @@ function SponsorComponent(props) {
             POURQUOI J'ECRIS EN MAJUSCULE ? CAR JE DOIS TESTER L'ANIMATION QUE
             JE VIENS DE PRENDRE 4 PUTAINS D'HEURES A FAIRE. SI ELLE MARCHE PAS
             NE ME LE DIS PAS MERCI{"\n"} (En vrai dit le moi car tout doit être
-            parfait surtout quand ça concerne la moula)
+            parfait surtout quand ça concerne nos sous)
           </Text>
+          <TouchableOpacity style={[styles.buttonTouchableContainer]}>
+            <ColoredViewComponent
+              coloredViewStyle={styles.buttonContainer}
+              containerStyle={styles.buttonContainerContainer}
+              isBlue
+            >
+              <Text style={styles.buttonText}>Plus d'infos</Text>
+            </ColoredViewComponent>
+          </TouchableOpacity>
         </View>
       </Animated.View>
     </Pressable>
@@ -180,6 +189,24 @@ const styles = StyleSheet.create({
     backgroundColor: "black",
   },
   textContainer: {},
+  buttonTouchableContainer: {
+    width: "70%",
+    alignSelf: "center",
+    marginTop: 15,
+  },
+  buttonContainerContainer: {},
+  buttonContainer: {
+    width: "100%",
+    height: 50,
+    justifyContent: "center",
+    marginBottom: 0,
+  },
+  buttonText: {
+    textAlign: "center",
+    color: "white",
+    fontFamily: "ChangaOne_400Regular",
+    fontSize: 20,
+  },
 });
 
 export default SponsorComponent;
