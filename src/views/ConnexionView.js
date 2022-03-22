@@ -16,6 +16,7 @@ import {
   Alert,
   Button,
   Pressable,
+  ScrollView,
 } from "react-native";
 
 import ColoredViewComponent from "../components/ColoredViewComponent";
@@ -26,6 +27,7 @@ import { useTranslation } from "../Context/TranslationContext";
 import ToggleLangageComponent from "../components/ToggleLangageComponent";
 import Modal from "react-native-modal";
 import useFetch from "../data/useFetch";
+
 const { width, height } = Dimensions.get("screen");
 
 function ConnexionView(props) {
@@ -41,6 +43,7 @@ function ConnexionView(props) {
   const [isModalVisible, setModalVisible] = useState(false);
   const [isRegisterModalVisible, setRegisterModalVisible] = useState(false);
   const [selectedPromo, setPromo] = useState(null);
+  const [selectedDestination, setDestination] = useState(null);
   const [resendMailbutton, setResendMailbutton] = useState(true);
 
   const toggleModal = () => {
@@ -112,10 +115,9 @@ function ConnexionView(props) {
       password: password,
       language: selectedLangage,
       promo: selectedPromo,
+      destination: selectedDestination,
       name: name,
       lastname: lastname,
-      description: " ",
-      phoneNumber: "+33 6 73 63 32 07",
     });
     console.warn("SIGNUP RESULT", result);
     switch (result) {
@@ -355,6 +357,8 @@ function ConnexionView(props) {
         selectedPromo={selectedPromo}
         setPromo={setPromo}
         callBack={manageRegister}
+        setDestination={setDestination}
+        selectedDestination={selectedDestination}
       />
       <StatusBar
         backgroundColor="white"
@@ -537,15 +541,35 @@ function ModalInscription({
   isVisible,
   setVisible,
   selectedPromo,
+  selectedDestination,
+  setDestination,
   setPromo,
   callBack,
 }) {
-  const promos = ["I1", "P1", "I2", "P2", "A1", "A2", "A3"];
+  const promos = [
+    { id: "i1", disp: "I1" },
+    { id: "p1", disp: "P1" },
+    { id: "i2", disp: "I2" },
+    { id: "p2", disp: "P2" },
+    { id: "A1", disp: "A1" },
+    { id: "A2", disp: "A2" },
+    { id: "A3", disp: "A3" },
+  ];
+
+  const destinations = [
+    { id: "prague", disp: "Prague" },
+    { id: "paris", disp: "Paris" },
+    { id: "canada", disp: "Canada" },
+    { id: "coree", disp: "Corée" },
+    { id: "riga", disp: "Riga" },
+    { id: "pdg", disp: "Pays de galles" },
+  ];
   return (
     <Modal
       isVisible={isVisible}
-      onSwipeComplete={() => setVisible(false)}
-      swipeDirection="down"
+      // onSwipeComplete={() => setVisible(false)}
+      // swipeDirection="down"
+      propagateSwipe
       customBackdrop={
         <Pressable
           onPress={() => setVisible(false)}
@@ -604,22 +628,70 @@ function ModalInscription({
         >
           {promos.map((promo) => (
             <TouchableOpacity
-              key={promo}
+              key={promo.id}
               style={{
-                backgroundColor: promo == selectedPromo ? "#E65F02" : "#F4C182",
+                backgroundColor:
+                  promo.id == selectedPromo ? "#E65F02" : "#F4C182",
                 justifyContent: "center",
                 alignItems: "center",
                 width: 30,
                 height: 30,
                 borderRadius: 20,
               }}
-              onPress={() => setPromo(promo)}
+              onPress={() => setPromo(promo.id)}
             >
-              <Text style={{ fontSize: 15 }}>{promo}</Text>
+              <Text
+                style={{
+                  fontSize: 15,
+                  fontFamily: "ChangaOne_400Regular",
+                  opacity: 0.7,
+                }}
+              >
+                {promo.disp}
+              </Text>
             </TouchableOpacity>
           ))}
         </View>
-        {selectedPromo ? (
+        {selectedPromo === "i2" ? (
+          <ScrollView
+            horizontal
+            style={{ width: "100%", marginBottom: 20 }}
+            showsHorizontalScrollIndicator={false}
+          >
+            {destinations.map((destination) => (
+              <TouchableOpacity
+                key={destination.id}
+                style={{
+                  backgroundColor:
+                    destination.id == selectedDestination
+                      ? "#E65F02"
+                      : "#F4C182",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  marginRight: 20,
+
+                  paddingHorizontal: 10,
+                  height: 30,
+                  borderRadius: 10,
+                }}
+                onPress={() => setDestination(destination.id)}
+              >
+                <Text
+                  style={{
+                    fontSize: 15,
+                    fontFamily: "ChangaOne_400Regular",
+                    opacity: 0.7,
+                  }}
+                >
+                  {destination.disp}
+                </Text>
+              </TouchableOpacity>
+            ))}
+          </ScrollView>
+        ) : (
+          <></>
+        )}
+        {selectedPromo && (selectedPromo !== "i2" || selectedDestination) ? (
           <TouchableOpacity
             style={[styles.buttonTouchableContainer]}
             onPress={() => callBack()}

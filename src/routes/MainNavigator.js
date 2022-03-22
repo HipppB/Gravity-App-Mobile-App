@@ -8,7 +8,7 @@ import ConnexionView from "../views/ConnexionView";
 import TabNavigator from "./TabNavigator";
 
 import NotificationCenterView from "../views/NotificationCenterView";
-
+import DrawWithHeads from "../views/Events/DrawWithHeads";
 import ChatView from "../views/ChatView";
 import FirstConnexionPopUp from "../views/FirstConnexionPopUp";
 import ListOfParticipantView from "../views/ListOfParticipantView";
@@ -77,6 +77,7 @@ function MainNavigator(props) {
           />
 
           <Stack.Screen name="Chat" component={ChatView} />
+          <Stack.Screen name="DrawWithHeads" component={DrawWithHeads} />
         </Stack.Navigator>
       )}
     </NavigationContainer>

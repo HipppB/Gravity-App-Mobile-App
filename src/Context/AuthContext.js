@@ -62,14 +62,26 @@ function AuthProvider({ children }) {
   }
 
   async function signup(userInfos) {
+    let selectedPromo = userInfos.promo;
+
+    if (selectedPromo === "i2" && userInfos?.destination) {
+      selectedPromo = selectedPromo + "-" + userInfos?.destination;
+    }
+    console.warn(
+      "HEY YOU HERE",
+      userInfos?.promo,
+      userInfos?.destination,
+      selectedPromo
+    );
+
     try {
       const result = await newRequest("auth/signup", "POST", {
         email: userInfos?.email,
         password: userInfos?.password,
         language: userInfos?.language,
-        promo: userInfos?.promo,
-        name: userInfos?.name || null,
-        lastname: userInfos?.lastname || null,
+        promo: selectedPromo,
+        first_name: userInfos?.name || null,
+        last_name: userInfos?.lastname || null,
         description: userInfos?.description || null,
         phone_number: userInfos?.phoneNumber || null,
       });

@@ -39,7 +39,9 @@
     "firstConnexion": "Première connexion ?\nUn mail de vérification vous sera envoyé !",
     "networkErrorTitle": "Impossible de contacter le serveur Gravity.",
     "networkErrorSubTitle": "Vérifiez votre connexion internet. \n Si le problème persiste contactez Gravity. On ramènera le serveur sur terre.",
-    "disconnect": "Déconnexion"
+    "disconnect": "Déconnexion",
+    "publicDesription": "Description à tomber",
+    "publicNetwork": "Contacts et réseaux"
   },
   "en": {
     "connexionButton": "Login",

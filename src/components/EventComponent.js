@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import {
   StyleSheet,
   View,
@@ -10,21 +10,18 @@ import {
   Button,
   Dimensions,
 } from "react-native";
+
 import ColoredViewComponent from "./ColoredViewComponent";
 
-function SponsorComponent(props) {
+function EventComponent(props) {
   const [isOpen, setisOpen] = useState(false);
   const containerHeight = useRef(new Animated.Value(0)).current;
+  const opacityContent = useRef(new Animated.Value(0)).current;
 
   const [contentHeight, setContentHeight] = useState(0);
+  useEffect(() => console.log(opacityContent), [opacityContent]);
   function open() {
-    console.log("hey");
     Animated.parallel([
-      Animated.timing(containerHeight, {
-        toValue: 1, // return to start
-        useNativeDriver: false,
-        duration: 300,
-      }),
       Animated.timing(containerHeight, {
         toValue: 1, // return to start
         useNativeDriver: false,
@@ -33,14 +30,7 @@ function SponsorComponent(props) {
     ]).start();
   }
   function close() {
-    console.log("ho");
-
     Animated.parallel([
-      Animated.timing(containerHeight, {
-        toValue: 0, // return to start
-        useNativeDriver: false,
-        duration: 300,
-      }),
       Animated.timing(containerHeight, {
         toValue: 0, // return to start
         useNativeDriver: false,
@@ -79,7 +69,7 @@ function SponsorComponent(props) {
       >
         <View style={[styles.containerHeader]}>
           <Image
-            source={require("../GravityHeadCrush/images/2.png")}
+            source={require("../GravityHeadCrush/images/6.png")}
             style={styles.image}
           />
           <View style={styles.textContainer}>
@@ -91,7 +81,7 @@ function SponsorComponent(props) {
                 lineHeight: 20,
               }}
             >
-              Nom du sponsor
+              Nom du défis
             </Text>
             <Text
               style={{
@@ -101,7 +91,7 @@ function SponsorComponent(props) {
                 lineHeight: 20,
               }}
             >
-              Sous titre du sponsor
+              Phrase "Agguicheuse"
             </Text>
           </View>
         </View>
@@ -118,6 +108,7 @@ function SponsorComponent(props) {
               top: 75,
               flexShrink: 1,
               opacity: isOpen ? 1 : 0,
+
               left: 0,
               right: 0,
             },
@@ -133,19 +124,20 @@ function SponsorComponent(props) {
               lineHeight: 20,
             }}
           >
-            CE SUPER SPONSOR TE FERA GAGNER PLEIN D'ARGENT ET A NOUS AUSSI,
-            POURQUOI J'ECRIS EN MAJUSCULE ? CAR JE DOIS TESTER L'ANIMATION QUE
-            JE VIENS DE PRENDRE 4 PUTAINS D'HEURES A FAIRE. SI ELLE MARCHE PAS
-            NE ME LE DIS PAS MERCI{"\n"} (En vrai dit le moi car tout doit être
-            parfait surtout quand ça concerne nos sous)
+            Bizzarement sur cette page ça m'a pris 10 minutes (mais c'est pas
+            fini j'attend les instructions, en attendant vous pouvez jouer avec
+            les têtes du bureau avec ce gros bouton bleu juste en dessus)
           </Text>
-          <TouchableOpacity style={[styles.buttonTouchableContainer]}>
+          <TouchableOpacity
+            style={[styles.buttonTouchableContainer]}
+            onPress={() => props.navigation.navigate("DrawWithHeads")}
+          >
             <ColoredViewComponent
               coloredViewStyle={styles.buttonContainer}
               containerStyle={styles.buttonContainerContainer}
               isBlue
             >
-              <Text style={styles.buttonText}>Plus d'infos</Text>
+              <Text style={styles.buttonText}>Je joue avec le bureau</Text>
             </ColoredViewComponent>
           </TouchableOpacity>
         </View>
@@ -207,4 +199,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default SponsorComponent;
+export default EventComponent;
