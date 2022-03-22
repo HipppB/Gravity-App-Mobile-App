@@ -1,6 +1,6 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
-import EventView from "../views/EventView";
+import EventView from "../views/Events/EventView";
 import BottomBarComponent from "../components/BottomBarComponent";
 const Tab = createBottomTabNavigator();
 

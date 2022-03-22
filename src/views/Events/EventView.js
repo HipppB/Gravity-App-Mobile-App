@@ -1,10 +1,10 @@
 import React from "react";
 import { StyleSheet, Text, View, Dimensions } from "react-native";
-import HeaderComponenent from "../components/HeaderComponenent";
-import { useTranslation } from "../Context/TranslationContext";
-import DrawingBoard from "../components/DrawingBoard";
+import HeaderComponenent from "../../components/HeaderComponenent";
+import { useTranslation } from "../../Context/TranslationContext";
+import DrawingBoard from "../../components/DrawingBoard";
 const { width, height } = Dimensions.get("screen");
-
+import EventComponent from "../../components/CalendarComponent";
 function EventView(props) {
   const { toggleLangage, langage } = useTranslation();
 
@@ -20,9 +20,7 @@ function EventView(props) {
             {"\n"}
             {langage.playWithHeads}
           </Text>
-        </View>
-        <View style={{ flexGrow: 1 }}>
-          <DrawingBoard />
+          {/* <EventComponent /> */}
         </View>
       </View>
     </View>
