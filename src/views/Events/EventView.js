@@ -4,7 +4,8 @@ import HeaderComponenent from "../../components/HeaderComponenent";
 import { useTranslation } from "../../Context/TranslationContext";
 import DrawingBoard from "../../components/DrawingBoard";
 const { width, height } = Dimensions.get("screen");
-import EventComponent from "../../components/CalendarComponent";
+import EventComponent from "../../components/EventComponent";
+import { ScrollView } from "react-native-gesture-handler";
 function EventView(props) {
   const { toggleLangage, langage } = useTranslation();
 
@@ -12,7 +13,7 @@ function EventView(props) {
     <View style={styles.container}>
       <HeaderComponenent navigation={props.navigation} />
       <View style={styles.bodyContainer}>
-        <View style={styles.noSponsorContainer}>
+        {/* <View style={styles.noSponsorContainer}>
           <Text style={styles.noSponsorText}>
             {langage.noGame}
             {"\n"}
@@ -20,8 +21,11 @@ function EventView(props) {
             {"\n"}
             {langage.playWithHeads}
           </Text>
-          {/* <EventComponent /> */}
-        </View>
+        </View> */}
+        <ScrollView>
+          <EventComponent navigation={props.navigation} />
+          <EventComponent navigation={props.navigation} />
+        </ScrollView>
       </View>
     </View>
   );
@@ -39,6 +43,7 @@ const styles = StyleSheet.create({
   bodyContainer: {
     backgroundColor: "white",
     flexGrow: 1,
+    flex: 1,
   },
   noSponsorContainer: {},
   noSponsorText: {

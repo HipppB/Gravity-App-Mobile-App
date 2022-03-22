@@ -19,6 +19,8 @@ import phone from "../assets/icons/phone.png";
 import snapchat from "../assets/icons/snapchat.png";
 import tiktok from "../assets/icons/tiktok.png";
 import ColoredViewComponent from "../components/ColoredViewComponent";
+import { useTranslation } from "../Context/TranslationContext";
+
 const heads = [
   require("../GravityHeadCrush/images/1.png"),
   require("../GravityHeadCrush/images/2.png"),
@@ -32,6 +34,8 @@ const heads = [
 
 const { width, height } = Dimensions.get("window");
 function PublicProfilView(props) {
+  const { langage } = useTranslation();
+
   const num = ((Math.random() * 60) % 6).toFixed(0);
 
   return (
@@ -67,13 +71,13 @@ function PublicProfilView(props) {
         contentContainerStyle={{ alignItems: "center" }}
         showsVerticalScrollIndicator={false}
       >
-        <Text style={styles.pageSubTitle}>Description à tomber</Text>
+        <Text style={styles.pageSubTitle}>{langage.publicDesription}</Text>
         <Text style={styles.description}>
           Si vous avez des suggestion pour cette page n'hésitez pas, je trouve
           personnllement qu'elle manque un peu de couleur. Tout les retours sont
           bon à prendre !
         </Text>
-        <Text style={styles.pageSubTitle}>Contacts et réseaux</Text>
+        <Text style={styles.pageSubTitle}>{langage.publicNetwork}</Text>
 
         <Item
           network={"instagram"}
