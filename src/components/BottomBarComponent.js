@@ -7,7 +7,7 @@ import { useTranslation } from "../Context/TranslationContext";
 function BottomBarComponent({ navigation, ...props }) {
   let active = props.state?.routeNames[props.state?.index];
   const { toggleLangage, langage } = useTranslation();
-
+  console.log(active);
   return (
     <View style={styles.container}>
       <TouchableOpacity
@@ -51,9 +51,9 @@ function BottomBarComponent({ navigation, ...props }) {
         </LinearGradient>
       </TouchableOpacity>
       <TouchableOpacity
-        onPress={() =>
-          navigation.navigate("Sponsor", { screen: "sponsorHome" })
-        }
+        onPress={() => {
+          navigation.navigate("Sponsor", { screen: "sponsorHome" });
+        }}
         style={active === "Sponsor" ? styles.active : {}}
       >
         <LinearGradient
