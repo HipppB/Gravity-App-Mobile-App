@@ -41,7 +41,29 @@
     "networkErrorSubTitle": "Vérifiez votre connexion internet. \n Si le problème persiste contactez Gravity. On ramènera le serveur sur terre.",
     "disconnect": "Déconnexion",
     "publicDesription": "Description à tomber",
-    "publicNetwork": "Contacts et réseaux"
+    "publicNetwork": "Contacts et réseaux",
+    "isSaving": "Enregistrement en cours...",
+    "checkMail": "Veuillez verifier vos mails",
+    "checkMailDesc": "Vous devez avoir vérifié votre adresse email pour pouvoir vous connecter.",
+    "wrongPassword": "Mot de passe incorrect",
+    "wrongPasswordDesc": "Votre mot de passe est incorrect, merci de réessayer",
+    "mailFormat": "Format : prénom.nom@eleve.isep.fr",
+    "mailSend": "Un mail de vérification vous à été envoyé !",
+    "countries": {
+      "prague": "Prague",
+      "paris": "Paris",
+      "canada": "Canada",
+      "coree": "Corée",
+      "riga": "Riga",
+      "pdg": "Pays de galles"
+    },
+    "signup": "Inscription",
+    "noAccountLinked": "Cette email n'est associé à aucun compte.\nIndique ta promo pour t'inscrire !",
+    "goSignup": "M'inscrire",
+    "cancel": "Annuler",
+    "affiliatedRestaurant": "Restaurants partenaires",
+    "moreDetails": "Plus d'infos",
+    "presentPersons": "Ils y seront !"
   },
   "en": {
     "connexionButton": "Login",
@@ -83,6 +105,30 @@
     "firstConnexion": "First login ?\nA verification email is going to be send !",
     "networkErrorTitle": "We can't join server gravity",
     "networkErrorSubTitle": "Check your network connexion. \n If the problem persist contact Gravity. We will bring him back on earth",
-    "disconnect": "Logout"
+    "disconnect": "Logout",
+    "publicDesription": "Description to die for",
+    "publicNetwork": "Contacts and social networks",
+    "isSaving": "Saving...",
+    "checkMail": "Please check your emails",
+    "checkMailDesc": "You should have receive an email to verify your mail.",
+    "wrongPassword": "Wrong password",
+    "wrongPasswordDesc": "Your password is incorrect. Please retry",
+    "mailFormat": "Format : name.lastname@eleve.isep.fr",
+    "mailSend": "A verification email has been sent !",
+    "countries": {
+      "prague": "Prague",
+      "paris": "Paris",
+      "canada": "Canada",
+      "coree": "Korea",
+      "riga": "Riga",
+      "pdg": "Wales"
+    },
+    "signup": "Sign Up",
+    "noAccountLinked": "This email is not assigned to any account.\nIndicate your class to sign up !",
+    "goSignup": "Sign Up",
+    "cancel": "Cancel",
+    "affiliatedRestaurant": "Partner restaurants",
+    "moreDetails": "More details",
+    "presentPersons": "They will be there !"
   }
 }

@@ -193,9 +193,8 @@ function ConnexionView(props) {
         case "VERIFICATION":
           setIsLoading(false);
           setError({
-            title: "Veuillez verifier vos mails",
-            description:
-              "Vous devez avoir vérifié votre adresse email pour pouvoir vous connecter.",
+            title: langage.checkMail,
+            description: langage.checkMailDesc,
           });
           setResendMailbutton(true);
 
@@ -204,8 +203,8 @@ function ConnexionView(props) {
         case "PASSWORD":
           setIsLoading(false);
           setError({
-            title: "Mot de passe incorrect",
-            description: "Votre mot de passe est incorrect, merci de réessayer",
+            title: langage.wrongPassword,
+            description: langage.wrongPasswordDesc,
           });
           setModalVisible(true);
           break;
@@ -328,7 +327,7 @@ function ConnexionView(props) {
               <Text style={styles.buttonText}>{langage?.close}</Text>
             </ColoredViewComponent>
           </TouchableOpacity>
-          {error.title === "Veuillez verifier vos mails" && resendMailbutton ? (
+          {error.title === langage.checkMail && resendMailbutton ? (
             <Text
               style={{
                 marginTop: 15,
@@ -414,7 +413,7 @@ function ConnexionView(props) {
               borderRadius: 50,
             }}
           >
-            Format : prénom.nom@eleve.isep.fr
+            {langage.mailFormat}
           </Animated.Text>
           <ColoredViewComponent
             containerStyle={{
@@ -515,9 +514,7 @@ function ConnexionView(props) {
               marginBottom: Platform.OS === "ios" ? 0 : "10%",
             }}
           >
-            {resendMailbutton
-              ? langage.firstConnexion
-              : "Un mail de vérification vous à été envoyé !"}
+            {resendMailbutton ? langage.firstConnexion : langage.mailSend}
           </Text>
         </View>
       </KeyboardAvoidingView>
@@ -557,12 +554,12 @@ function ModalInscription({
   ];
 
   const destinations = [
-    { id: "prague", disp: "Prague" },
-    { id: "paris", disp: "Paris" },
-    { id: "canada", disp: "Canada" },
-    { id: "coree", disp: "Corée" },
-    { id: "riga", disp: "Riga" },
-    { id: "pdg", disp: "Pays de galles" },
+    { id: "prague", disp: langage.countries.prague },
+    { id: "paris", disp: langage.countries.paris },
+    { id: "canada", disp: langage.countries.canada },
+    { id: "coree", disp: langage.countries.coree },
+    { id: "riga", disp: langage.countries.riga },
+    { id: "pdg", disp: langage.countries.pdg },
   ];
   return (
     <Modal
@@ -605,7 +602,7 @@ function ModalInscription({
             textAlign: "center",
           }}
         >
-          Inscription
+          {langage.signup}
         </Text>
         <Text
           style={{
@@ -615,8 +612,7 @@ function ModalInscription({
             textAlign: "center",
           }}
         >
-          Cette email n'est associé à aucun compte.{"\n"}Indique ta promo pour
-          t'inscrire !
+          {langage.noAccountLinked}
         </Text>
         <View
           style={{
@@ -700,7 +696,7 @@ function ModalInscription({
               coloredViewStyle={styles.buttonContainer}
               containerStyle={styles.buttonContainerContainer}
             >
-              <Text style={styles.buttonText}>M'inscrire</Text>
+              <Text style={styles.buttonText}>{langage.goSignup}</Text>
             </ColoredViewComponent>
           </TouchableOpacity>
         ) : (
@@ -712,7 +708,7 @@ function ModalInscription({
               coloredViewStyle={styles.buttonContainer}
               containerStyle={styles.buttonContainerContainer}
             >
-              <Text style={styles.buttonText}>Annuler</Text>
+              <Text style={styles.buttonText}>{langage.cancel}</Text>
             </ColoredViewComponent>
           </TouchableOpacity>
         )}

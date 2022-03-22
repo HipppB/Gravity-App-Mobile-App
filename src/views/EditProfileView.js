@@ -178,7 +178,7 @@ function EditProfileView(props) {
             <Animated.Text
               style={{ alignSelf: "center", opacity: loadingopacity }}
             >
-              Enregistrement en cours
+              {langage.isSaving}
             </Animated.Text>
             <TouchableOpacity onPress={() => saveInfos()}>
               <ColoredViewComponent

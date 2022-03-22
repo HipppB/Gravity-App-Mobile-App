@@ -40,7 +40,9 @@ function SponsorView(props) {
                   width: "90%",
                 }}
               >
-                <Text style={styles.titleText}>Restaurants partenaires</Text>
+                <Text style={styles.titleText}>
+                  {langage.affiliatedRestaurant}
+                </Text>
                 <Image
                   source={leftArrow}
                   style={{

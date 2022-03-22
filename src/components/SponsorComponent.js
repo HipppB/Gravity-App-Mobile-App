@@ -12,15 +12,16 @@ import {
 } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import ColoredViewComponent from "./ColoredViewComponent";
+import { useTranslation } from "../Context/TranslationContext";
 
 function SponsorComponent(props) {
   const [isOpen, setisOpen] = useState(false);
   const containerHeight = useRef(new Animated.Value(0)).current;
   const opacityContent = useRef(new Animated.Value(0)).current;
+  const { toggleLangage, langage } = useTranslation();
 
   const [contentHeight, setContentHeight] = useState(0);
   function open() {
-    console.log("hey");
     Animated.parallel([
       Animated.timing(containerHeight, {
         toValue: 1, // return to start
@@ -35,8 +36,6 @@ function SponsorComponent(props) {
     ]).start();
   }
   function close() {
-    console.log("ho");
-
     Animated.parallel([
       Animated.timing(containerHeight, {
         toValue: 0, // return to start
@@ -147,7 +146,7 @@ function SponsorComponent(props) {
               containerStyle={styles.buttonContainerContainer}
               isBlue
             >
-              <Text style={styles.buttonText}>Plus d'infos</Text>
+              <Text style={styles.buttonText}>{langage.moreDetails}</Text>
             </ColoredViewComponent>
           </TouchableOpacity>
         </View>

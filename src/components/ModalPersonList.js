@@ -11,6 +11,7 @@ import {
 import Modal from "react-native-modal";
 import ColoredViewComponent from "./ColoredViewComponent";
 const DATA = [];
+import { useTranslation } from "../Context/TranslationContext";
 
 const getItem = (data, index) => ({
   id: Math.random().toString(12).substring(0),
@@ -50,6 +51,8 @@ const Item = ({ title, navigation, setVisible }) => {
 };
 
 function ModalPersonList({ isVisible, setVisible, navigation }) {
+  const { langage, selectedLangage } = useTranslation();
+
   return (
     <Modal
       isVisible={isVisible}
@@ -73,7 +76,7 @@ function ModalPersonList({ isVisible, setVisible, navigation }) {
             textAlign: "center",
           }}
         >
-          Ils y seront !
+          {langage.presentPersons}
         </Text>
         <VirtualizedList
           style={{
@@ -103,7 +106,7 @@ function ModalPersonList({ isVisible, setVisible, navigation }) {
             coloredViewStyle={styles.buttonContainer}
             containerStyle={styles.buttonContainerContainer}
           >
-            <Text style={styles.buttonText}>Fermer</Text>
+            <Text style={styles.buttonText}>{langage.close}</Text>
           </ColoredViewComponent>
         </TouchableOpacity>
       </View>
