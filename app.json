@@ -4,7 +4,7 @@
     "slug": "my-test-app",
     "displayName": "Gravity",
 
-    "version": "1.0.1",
+    "version": "1.1.1",
     "icon": "src/assets/images/logos/LogoApp.png",
     "android": {
       "package": "com.gravitylesvraisdevrais.app",

@@ -25,12 +25,13 @@ import { useAuthentification } from "../Context/AuthContext";
 import { useTranslation } from "../Context/TranslationContext";
 import ToggleLangageComponent from "../components/ToggleLangageComponent";
 import Modal from "react-native-modal";
-
+import useFetch from "../data/useFetch";
 const { width, height } = Dimensions.get("screen");
 
 function ConnexionView(props) {
   const { login, signup } = useAuthentification();
-  const { toggleLangage, langage, selectedLangage } = useTranslation();
+  const { langage, selectedLangage } = useTranslation();
+  const [request, newRequest] = useFetch();
 
   const [mailInput, setMailInput] = useState("");
   const [password, setPassword] = useState("");
@@ -40,6 +41,7 @@ function ConnexionView(props) {
   const [isModalVisible, setModalVisible] = useState(false);
   const [isRegisterModalVisible, setRegisterModalVisible] = useState(false);
   const [selectedPromo, setPromo] = useState(null);
+  const [resendMailbutton, setResendMailbutton] = useState(true);
 
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
@@ -92,9 +94,7 @@ function ConnexionView(props) {
       }),
     ]).start();
   }
-  function test() {
-    console.warn("RESR");
-  }
+
   async function manageRegister() {
     setRegisterModalVisible(false);
     let regex = /[a-zA-Z]+\.[a-zA-Z]+@eleve\.isep\.fr/i;
@@ -195,6 +195,8 @@ function ConnexionView(props) {
             description:
               "Vous devez avoir vérifié votre adresse email pour pouvoir vous connecter.",
           });
+          setResendMailbutton(true);
+
           setModalVisible(true);
           break;
         case "PASSWORD":
@@ -324,6 +326,26 @@ function ConnexionView(props) {
               <Text style={styles.buttonText}>{langage?.close}</Text>
             </ColoredViewComponent>
           </TouchableOpacity>
+          {error.title === "Veuillez verifier vos mails" && resendMailbutton ? (
+            <Text
+              style={{
+                marginTop: 15,
+                marginBottom: 5,
+                textAlign: "center",
+                opacity: 0.5,
+                fontFamily: "ChangaOne_400Regular_Italic",
+              }}
+              onPress={async () => {
+                newRequest("auth/confirmation/resend/" + mailInput, "POST");
+                setResendMailbutton(false);
+                toggleModal();
+              }}
+            >
+              Renvoyer le mail.
+            </Text>
+          ) : (
+            <></>
+          )}
         </View>
       </Modal>
       <ModalInscription
@@ -372,6 +394,24 @@ function ConnexionView(props) {
             },
           ]}
         >
+          <Animated.Text
+            style={{
+              alignSelf: "center",
+              position: "absolute",
+              opacity: errorOpacity,
+              // bottom: Platform.OS === "ios" ? -20 : 0,
+              top: -25,
+              textAlign: "center",
+              opacity: 0.5,
+              fontFamily: "ChangaOne_400Regular_Italic",
+              backgroundColor: "white",
+              paddingHorizontal: 10,
+              paddingVertical: 5,
+              borderRadius: 50,
+            }}
+          >
+            Format : prénom.nom@eleve.isep.fr
+          </Animated.Text>
           <ColoredViewComponent
             containerStyle={{
               width: inputEmailPercent,
@@ -391,16 +431,6 @@ function ConnexionView(props) {
               keyboardType="email-address"
             />
           </ColoredViewComponent>
-          <Animated.Text
-            style={{
-              alignSelf: "center",
-              position: "absolute",
-              opacity: errorOpacity,
-              bottom: Platform.OS === "ios" ? -20 : 0,
-            }}
-          >
-            Format : prénom.nom@eleve.isep.fr
-          </Animated.Text>
         </Animated.View>
         <Animated.View
           style={[
@@ -481,7 +511,9 @@ function ConnexionView(props) {
               marginBottom: Platform.OS === "ios" ? 0 : "10%",
             }}
           >
-            {langage.firstConnexion}
+            {resendMailbutton
+              ? langage.firstConnexion
+              : "Un mail de vérification vous à été envoyé !"}
           </Text>
         </View>
       </KeyboardAvoidingView>

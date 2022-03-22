@@ -18,6 +18,7 @@ const useFetch = () => {
     setData({ status: "Loading", content: null });
     console.info(API + endPoint, options);
     const response = await fetch(API + endPoint, options);
+
     const json = await response.json();
     setData({ status: "Done", content: json });
     return { status: "Done", content: json };
