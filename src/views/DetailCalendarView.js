@@ -334,7 +334,7 @@ const styles = StyleSheet.create({
   },
   mapContainer: {
     marginTop: 20,
-    height: 150,
+    height: width * 0.8,
     width: "100%",
     borderRadius: 30,
   },
