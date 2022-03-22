@@ -26,58 +26,58 @@ function AccountView(props) {
         hideTransitionAnimation="true"
         animated={false}
       />
-      <Image
-        source={require("../assets/images/logos/Couleur/Logo.png")}
+      <View
         style={{
-          width: width * 0.7,
-          height: width * 0.7,
-          resizeMode: "contain",
+          alignItems: "center",
         }}
-      />
+      >
+        <Image
+          source={require("../assets/images/logos/Couleur/Logo.png")}
+          style={{
+            maxWidth: width * 0.65,
+            maxHeight: width * 0.65,
+            resizeMode: "contain",
+          }}
+        />
 
-      <ColorViewComponent coloredViewStyle={styles.realtitleContainer}>
-        <Text style={styles.titleText}>{langage.myAccount}</Text>
-      </ColorViewComponent>
-      <View style={styles.bodyContainer}>
-        {/* <View>
-          <Text style={styles.text}>{langage.hello} Hippolyte,</Text>
-          <Text style={styles.textSmall}>{langage.question}</Text>
-          <Text style={styles.textSmall}>{langage.noHesitation}</Text>
-        </View> */}
-        <View>
-          <TouchableOpacity
-            onPress={() => props.navigation.navigate("EditAccount")}
-            style={{ marginBottom: 20 }}
-          >
-            <ColorViewComponent
-              coloredViewStyle={[styles.titleContainer]}
-              isBlue
-            >
-              <Text style={styles.titleText}>{langage.editProfile}</Text>
-            </ColorViewComponent>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => props.navigation.push("Chat")}
-            style={{ marginBottom: 20 }}
-          >
-            <ColorViewComponent
-              coloredViewStyle={[styles.titleContainer]}
-              isBlue
-            >
-              <Text style={styles.titleText}>{langage.contactButton}</Text>
-            </ColorViewComponent>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => logout()}>
-            <ColorViewComponent
-              coloredViewStyle={[styles.titleContainer]}
-              isBlue
-            >
-              <Text style={styles.titleText}>{langage.disconnect}</Text>
-            </ColorViewComponent>
-          </TouchableOpacity>
-        </View>
+        <TouchableOpacity
+          onPress={() => props.navigation.navigate("PublicProfil")}
+        >
+          <ColorViewComponent coloredViewStyle={styles.realtitleContainer}>
+            <Text style={styles.titleText}>{langage.myAccount}</Text>
+          </ColorViewComponent>
+        </TouchableOpacity>
       </View>
-      <ToggleLangageComponent />
+      <View
+        style={{
+          alignItems: "center",
+          paddingTop: 25,
+        }}
+      >
+        <TouchableOpacity
+          onPress={() => props.navigation.navigate("EditAccount")}
+          style={{ marginBottom: 20 }}
+        >
+          <ColorViewComponent coloredViewStyle={[styles.titleContainer]} isBlue>
+            <Text style={styles.titleText}>{langage.editProfile}</Text>
+          </ColorViewComponent>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => props.navigation.push("Chat")}
+          style={{ marginBottom: 20 }}
+        >
+          <ColorViewComponent coloredViewStyle={[styles.titleContainer]} isBlue>
+            <Text style={styles.titleText}>{langage.contactButton}</Text>
+          </ColorViewComponent>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => logout()}>
+          <ColorViewComponent coloredViewStyle={[styles.titleContainer]} isBlue>
+            <Text style={styles.titleText}>{langage.disconnect}</Text>
+          </ColorViewComponent>
+        </TouchableOpacity>
+
+        <ToggleLangageComponent containerStyle={{ marginTop: 10 }} />
+      </View>
     </SafeAreaView>
   );
 }
@@ -87,10 +87,12 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "white",
     alignItems: "center",
+    justifyContent: "space-around",
+    paddingBottom: 20,
   },
   realtitleContainer: {
     marginBottom: Platform.OS === "ios" ? 40 : 0,
-    marginTop: 20,
+
     width: width * 0.5,
     alignItems: "center",
     height: 50,
@@ -113,6 +115,8 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "space-evenly",
     alignItems: "center",
+    backgroundColor: "yellow",
+    flexShrink: 1,
   },
   text: {
     fontFamily: "Neon",

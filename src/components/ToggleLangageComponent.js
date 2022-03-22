@@ -8,7 +8,10 @@ function ToggleLangageComponent(props) {
   const { toggleLangage, langage, selectedLangage } = useTranslation();
 
   return (
-    <TouchableOpacity style={styles.container} onPress={() => toggleLangage()}>
+    <TouchableOpacity
+      style={[styles.container, props?.containerStyle]}
+      onPress={() => toggleLangage()}
+    >
       <Image
         source={selectedLangage === "fr" ? english : french}
         style={styles.icon}
