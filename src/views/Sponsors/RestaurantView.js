@@ -121,7 +121,7 @@ function RestaurantView(props) {
               }}
               style={{
                 borderRadius: 20,
-                backgroundColor: index == scrolledPage ? "#203042" : "#2293D0",
+                backgroundColor: index !== scrolledPage ? "#203042" : "#2293D0",
                 marginHorizontal: 10,
 
                 width: 20,
