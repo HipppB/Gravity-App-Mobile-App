@@ -57,10 +57,14 @@
 			</dict>
 		</dict>
 	</dict>
+	<key>NSCameraUsageDescription</key>
+	<string>Gravity à besoin de l'accès à ta camera pour que tu puisse prendre les meilleurs photos et vidéos !</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Utilisation de la localisation pour indiquer les différents lieux sur une carte. Aucune donnée n'est conservée.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Qu'est ce qu'une vidéo sans son ? Permet à l'app d'enregistrer le son !</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>NSCameraUsageDescription</string>
+	<string>Utilisation de la librairie de photo pour pouvoir envoyer des photos à la graviteam.</string>
 	<key>UILaunchStoryboardName</key>
 	<string>SplashScreen</string>
 	<key>UIRequiredDeviceCapabilities</key>

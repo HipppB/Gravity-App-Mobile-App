@@ -77,7 +77,7 @@ function BottomBarComponent({ navigation, ...props }) {
         </LinearGradient>
       </TouchableOpacity>
       <TouchableOpacity
-        onPress={() => navigation.navigate("Event")}
+        onPress={() => navigation.navigate("Event", { screen: "EventHome" })}
         style={active === "Event" ? styles.active : {}}
       >
         <LinearGradient

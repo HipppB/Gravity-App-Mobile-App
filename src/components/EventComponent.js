@@ -11,7 +11,8 @@ import {
   Dimensions,
 } from "react-native";
 
-import ColoredViewComponent from "./ColoredViewComponent";
+import ColoredViewComponent from "../components/ColoredViewComponent";
+import { LinearGradient } from "expo-linear-gradient";
 
 function EventComponent(props) {
   const [isOpen, setisOpen] = useState(false);
@@ -47,100 +48,200 @@ function EventComponent(props) {
       close();
     }
   }
+  const colorgrad = props?.wrong
+    ? ["#710000", "#710000", "#bc2222"]
+    : ["#0C1316", "#203C42", "#2293D0"];
+  console.log(colorgrad);
+  if (props?.validate) {
+    return (
+      <Pressable onPress={() => props.navigation.navigate("DrawWithHeads")}>
+        <View
+          style={{
+            width: "80%",
+            display: "flex",
+            height: 75,
+            marginTop: 20,
+            alignSelf: "center",
+            borderRadius: 15,
+            shadowColor: "#000",
+
+            shadowOffset:
+              Platform.OS === "ios"
+                ? {
+                    width: 0,
+                    height: 2,
+                  }
+                : {},
+            shadowOpacity: 0.25,
+            shadowRadius: Platform.OS === "ios" ? 3.84 : 0,
+
+            elevation: Platform.OS === "ios" ? 5 : 0,
+          }}
+        >
+          <LinearGradient
+            colors={["#007204", "#038a05", "#86d78b"]}
+            end={{ x: 1, y: 0 }}
+            locations={[0.0, 0.25, 0.75]}
+            start={{ x: -0.3, y: 0 }}
+            style={{ width: "100%", height: "100%", borderRadius: 15 }}
+          >
+            <View style={[styles.containerHeader]}>
+              <Image
+                source={require("../GravityHeadCrush/images/6.png")}
+                style={styles.image}
+              />
+              <View style={styles.textContainer}>
+                <Text
+                  style={{
+                    fontFamily: "ChangaOne_400Regular",
+                    fontSize: 19,
+                    color: "white",
+                    lineHeight: 20,
+                  }}
+                >
+                  Nom du défis
+                </Text>
+                <Text
+                  style={{
+                    color: "white",
+
+                    fontFamily: "ChangaOne_400Regular_Italic",
+                    fontSize: 17,
+
+                    lineHeight: 20,
+                  }}
+                >
+                  Défis validé !
+                </Text>
+              </View>
+            </View>
+          </LinearGradient>
+        </View>
+      </Pressable>
+    );
+  }
 
   return (
     <Pressable onPress={() => toggleOpen()}>
       <Animated.View
-        style={[
-          styles.container,
-          {
-            display: "flex",
+        style={{
+          width: "80%",
+          display: "flex",
 
-            flex: 1,
-            flexGrow: 1,
-            height: containerHeight.interpolate({
-              inputRange: [0, 1],
-              outputRange: [70, contentHeight + 100],
-            }),
+          flex: 1,
+          flexGrow: 1,
+          height: containerHeight.interpolate({
+            inputRange: [0, 1],
+            outputRange: [70, contentHeight + 100],
+          }),
+          marginTop: 20,
+          alignSelf: "center",
+          borderRadius: 15,
+          shadowColor: "#000",
+          shadowOffset:
+            Platform.OS === "ios"
+              ? {
+                  width: 0,
+                  height: 2,
+                }
+              : {},
+          shadowOpacity: 0.25,
+          shadowRadius: Platform.OS === "ios" ? 3.84 : 0,
 
-            minHeight: 70,
-          },
-        ]}
+          elevation: Platform.OS === "ios" ? 5 : 0,
+        }}
       >
-        <View style={[styles.containerHeader]}>
-          <Image
-            source={require("../GravityHeadCrush/images/6.png")}
-            style={styles.image}
-          />
-          <View style={styles.textContainer}>
-            <Text
-              style={{
-                fontFamily: "ChangaOne_400Regular",
-                fontSize: 19,
-
-                lineHeight: 20,
-              }}
-            >
-              Nom du défis
-            </Text>
-            <Text
-              style={{
-                fontFamily: "ChangaOne_400Regular_Italic",
-                fontSize: 17,
-
-                lineHeight: 20,
-              }}
-            >
-              Phrase "Agguicheuse"
-            </Text>
-          </View>
-        </View>
-        <View
-          onLayout={(event) => {
-            var { x, y, width, height } = event.nativeEvent.layout;
-            console.log(height);
-
-            setContentHeight(height);
-          }}
-          style={[
-            {
-              position: "absolute",
-              top: 75,
-              flexShrink: 1,
-              opacity: isOpen ? 1 : 0,
-
-              left: 0,
-              right: 0,
-            },
-          ]}
+        <LinearGradient
+          colors={colorgrad}
+          end={{ x: 1, y: 0 }}
+          locations={[0.0, 0.25, 0.75]}
+          start={{ x: -0.3, y: 0 }}
+          style={{ width: "100%", height: "100%", borderRadius: 15 }}
         >
-          <Text
-            style={{
-              paddingHorizontal: 10,
+          <View style={[styles.containerHeader]}>
+            <Image
+              source={require("../GravityHeadCrush/images/6.png")}
+              style={styles.image}
+            />
+            <View style={styles.textContainer}>
+              <Text
+                style={{
+                  fontFamily: "ChangaOne_400Regular",
+                  fontSize: 19,
+                  color: "white",
+                  lineHeight: 20,
+                }}
+              >
+                Nom du défis
+              </Text>
+              <Text
+                style={{
+                  color: "white",
 
-              fontFamily: "ChangaOne_400Regular_Italic",
-              fontSize: 15,
-              opacity: 0.7,
-              lineHeight: 20,
+                  fontFamily: "ChangaOne_400Regular_Italic",
+                  fontSize: 17,
+
+                  lineHeight: 20,
+                }}
+              >
+                {props?.wrong ? "Défis refusé" : 'Phrase "Agguicheuse"'}
+              </Text>
+            </View>
+          </View>
+          <View
+            onLayout={(event) => {
+              var { x, y, width, height } = event.nativeEvent.layout;
+              console.log(height);
+
+              setContentHeight(height);
             }}
+            style={[
+              {
+                position: "absolute",
+                top: 75,
+                flexShrink: 1,
+                opacity: isOpen ? 1 : 0,
+
+                left: 0,
+                right: 0,
+              },
+            ]}
           >
-            Bizzarement sur cette page ça m'a pris 10 minutes (mais c'est pas
-            fini j'attend les instructions, en attendant vous pouvez jouer avec
-            les têtes du bureau avec ce gros bouton bleu juste en dessus)
-          </Text>
-          <TouchableOpacity
-            style={[styles.buttonTouchableContainer]}
-            onPress={() => props.navigation.navigate("DrawWithHeads")}
-          >
-            <ColoredViewComponent
-              coloredViewStyle={styles.buttonContainer}
-              containerStyle={styles.buttonContainerContainer}
-              isBlue
+            <Text
+              style={{
+                paddingHorizontal: 10,
+
+                fontFamily: "ChangaOne_400Regular_Italic",
+                fontSize: 15,
+                opacity: 0.9,
+                lineHeight: 20,
+                color: "white",
+              }}
             >
-              <Text style={styles.buttonText}>Je joue avec le bureau</Text>
-            </ColoredViewComponent>
-          </TouchableOpacity>
-        </View>
+              {props?.wrong
+                ? props.wrong
+                : " Bizzarement sur cette page ça m'a pris 10 minutes (mais c'est pas fini j'attend les instructions, en attendant vous pouvez jouer avec les têtes du bureau avec ce gros bouton bleu juste en dessus"}
+            </Text>
+            <TouchableOpacity
+              style={[styles.buttonTouchableContainer]}
+              onPress={() => props.navigation.navigate("DrawWithHeads")}
+            >
+              <ColoredViewComponent
+                coloredViewStyle={styles.buttonContainer}
+                containerStyle={styles.buttonContainerContainer}
+                isBlue
+              >
+                <Text style={styles.buttonText}>
+                  {props?.wrong
+                    ? "Retenter le défis"
+                    : props?.validating
+                    ? "Rajouter des éléments"
+                    : "Participer au Défis"}
+                </Text>
+              </ColoredViewComponent>
+            </TouchableOpacity>
+          </View>
+        </LinearGradient>
       </Animated.View>
     </Pressable>
   );
