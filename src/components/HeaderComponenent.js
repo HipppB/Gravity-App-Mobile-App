@@ -10,9 +10,11 @@ import {
 import { LinearGradient } from "expo-linear-gradient";
 import { useTranslation } from "../Context/TranslationContext";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { useAuthentification } from "../Context/AuthContext";
 
 function HeaderComponenent(props) {
-  const { toggleLangage, langage } = useTranslation();
+  const { langage } = useTranslation();
+  const { userInfos } = useAuthentification();
 
   return (
     <SafeAreaView style={styles.headerContainer}>
@@ -40,7 +42,9 @@ function HeaderComponenent(props) {
 
           <View style={styles.textContainer}>
             <Text style={styles.welcomeText}>{langage.bienvenueText}</Text>
-            <Text style={styles.nameText}>Hippolyte</Text>
+            <Text style={styles.nameText}>
+              {userInfos?.first_name || langage.stranger}
+            </Text>
           </View>
         </TouchableOpacity>
         <TouchableOpacity

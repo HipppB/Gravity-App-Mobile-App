@@ -63,7 +63,8 @@
     "cancel": "Annuler",
     "affiliatedRestaurant": "Restaurants partenaires",
     "moreDetails": "Plus d'infos",
-    "presentPersons": "Ils y seront !"
+    "presentPersons": "Ils y seront !",
+    "stranger": "Inconnu"
   },
   "en": {
     "connexionButton": "Login",
@@ -129,6 +130,7 @@
     "cancel": "Cancel",
     "affiliatedRestaurant": "Partner restaurants",
     "moreDetails": "More details",
-    "presentPersons": "They will be there !"
+    "presentPersons": "They will be there !",
+    "stranger": "Stranger"
   }
 }

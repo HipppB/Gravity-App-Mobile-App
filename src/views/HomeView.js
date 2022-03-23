@@ -18,8 +18,11 @@ import ProjetPedaView from "./Home/ProjetPedaView";
 import SonView from "./Home/SonView";
 import { useAuthentification } from "../Context/AuthContext";
 import FirstConnexionPopUp from "./FirstConnexionPopUp";
+import useFetch from "../data/useFetch";
+
 const { width, height } = Dimensions.get("screen");
 function HomeView(props) {
+  const [data, newRequest] = useFetch();
   const { toggleLangage, langage } = useTranslation();
   const { isFirstLogin, setIsFirstLogin } = useAuthentification();
   const [activePage, setActivePage] = useState(0);
@@ -36,10 +39,9 @@ function HomeView(props) {
     });
   }
 
-  useEffect(() => {
+  useEffect(async () => {
     if (isFirstLogin) {
       setIsFirstLogin(false);
-      console.log("HEY");
       setTimeout(() => setModalVisible(true), 100);
     }
   }, []);

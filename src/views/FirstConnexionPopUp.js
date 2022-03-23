@@ -14,6 +14,7 @@ import BackButtonComponent from "../components/BackButtonComponent";
 import ColoredViewComponent from "../components/ColoredViewComponent";
 import { useTranslation } from "../Context/TranslationContext";
 import Modal from "react-native-modal";
+import { useAuthentification } from "../Context/AuthContext";
 
 const heads = [
   require("../GravityHeadCrush/images/1.png"),
@@ -28,6 +29,8 @@ const heads = [
 const { width, height } = Dimensions.get("window");
 
 function FirstConnexionPopUp({ isModalVisible, setModalVisible, navigation }) {
+  const { userInfos } = useAuthentification();
+
   const { langage } = useTranslation();
   const num = ((Math.random() * 60) % 6).toFixed(0);
 
@@ -82,11 +85,11 @@ function FirstConnexionPopUp({ isModalVisible, setModalVisible, navigation }) {
           showsVerticalScrollIndicator={false}
         >
           <Text style={styles.text}>
-            Hello [Prénom] ! {"\n"}Merci d’avoir téléchargé notre application !
-            {"\n"}
-            Aventure-toi [avec asso] dans notre galaxie avec [GravityApp] comme
+            Hello {userInfos.first_name} ! {"\n"}Merci d’avoir téléchargé notre
+            application !{"\n"}
+            Aventure-toi dans notre galaxie avec l'application Gravity comme
             seul guide et Feel the Gravity toute la semaine ✨ {"\n"}
-            {"\n"} La Graviteam 💙🧡
+            {"\n"} La Graviteam 💙 🧡
           </Text>
         </ScrollView>
         <View

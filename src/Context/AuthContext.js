@@ -8,12 +8,11 @@ const AuthContext = createContext({
   login: (email, password) => error,
   signup: (email, password, more) => error,
   logout: (cb) => {},
-  getApiToken: () => {
-    token;
-  },
+  apiToken: "",
   isFirstLogin: true,
   setIsFirstLogin: (status) => {},
   autoLogin: (callback) => {},
+  userInfos: {},
 });
 
 // create context
@@ -23,6 +22,20 @@ function AuthProvider({ children }) {
   const [request, newRequest] = useFetch();
 
   const [apiToken, setApiToken] = useState(null);
+
+  const [userInfos, setUserInfos] = useState({});
+  useEffect(async () => {
+    if (apiToken) {
+      const result = await newRequest("user/profile", "GET", null, apiToken);
+      if (result?.content?.email) {
+        setUserInfos(result.content);
+      } else {
+        deleteTokenFromStorage();
+        setApiToken(null);
+        setisAuthentificated(false);
+      }
+    }
+  }, [apiToken]);
 
   async function login(email, password) {
     try {
@@ -168,11 +181,12 @@ function AuthProvider({ children }) {
         isAuthentificated,
         login,
         logout,
-        getApiToken,
+        apiToken,
         isFirstLogin,
         setIsFirstLogin,
         signup,
         autoLogin,
+        userInfos,
       }}
     >
       {children}

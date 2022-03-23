@@ -13,6 +13,7 @@ import {
 // import { SafeAreaView } from "react-native-safe-area-context";
 
 import { useTranslation } from "../Context/TranslationContext";
+import { useAuthentification } from "../Context/AuthContext";
 
 import ColoredViewComponent from "../components/ColoredViewComponent.js";
 import TextInputComponent from "../components/TextInputComponent.js";
@@ -21,23 +22,24 @@ import { launchCamera, launchImageLibrary } from "react-native-image-picker";
 import BackButtonComponent from "../components/BackButtonComponent.js";
 const { width, height } = Dimensions.get("screen");
 function EditProfileView(props) {
-  const { toggleLangage, langage } = useTranslation();
+  const { langage } = useTranslation();
+  const { userInfos } = useAuthentification();
 
-  const [name, setName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [phone, setPhone] = useState("+33 ");
+  const [name, setName] = useState(userInfos?.first_name);
+  const [lastName, setLastName] = useState(userInfos?.last_name);
+  const [phone, setPhone] = useState(userInfos?.phone_number);
   const [approximativeLocation, setApproximativeLocation] = useState("");
   const [insta, setInsta] = useState("");
   const [snap, setSnap] = useState("");
   const [facebook, setFacebook] = useState("");
   const [tikTok, setTikTok] = useState("");
-
+  const [profileUrl, setProfileUrl] = useState(userInfos.profile_picture);
   const loadingopacity = useRef(new Animated.Value(0)).current;
 
   async function changePhoto() {
     const result = await launchImageLibrary({ mediaType: "photo" });
 
-    console.log("ASK FOR CHANGE");
+    setProfileUrl(result.assets[0].uri);
   }
 
   async function saveInfos() {
@@ -91,11 +93,12 @@ function EditProfileView(props) {
             }}
           >
             <Image
-              source={require("../GravityHeadCrush/images/1.png")}
+              source={{ uri: profileUrl }}
               style={{
                 width: 0.4 * width,
                 height: 0.4 * width,
-                backgroundColor: "black",
+                borderColor: "#E65F02",
+                borderWidth: 2,
                 borderRadius: width,
                 resizeMode: "cover",
               }}
@@ -106,7 +109,7 @@ function EditProfileView(props) {
                 position: "absolute",
                 width: 0.2 * width,
                 height: 0.2 * width,
-                tintColor: "white",
+                tintColor: "#E65F02",
               }}
             />
           </TouchableOpacity>
