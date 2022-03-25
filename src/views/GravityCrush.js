@@ -9,7 +9,6 @@ import {
   Text,
   Button,
 } from "react-native";
-import { FlatList } from "react-native-web";
 
 const { width, height } = Dimensions.get("window");
 

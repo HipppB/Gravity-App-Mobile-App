@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 
@@ -8,7 +8,7 @@ import ConnexionView from "../views/ConnexionView";
 import TabNavigator from "./TabNavigator";
 
 import NotificationCenterView from "../views/NotificationCenterView";
-import RestaurantView from "../views/RestaurantView";
+import DrawWithHeads from "../views/Events/DrawWithHeads";
 import ChatView from "../views/ChatView";
 import FirstConnexionPopUp from "../views/FirstConnexionPopUp";
 import ListOfParticipantView from "../views/ListOfParticipantView";
@@ -21,20 +21,32 @@ import {
 
 import LoginViewOld from "../views/LoginViewOld";
 import { useAuthentification } from "../Context/AuthContext";
+import PushNotification from "react-native-push-notification";
+
 const Stack = createStackNavigator();
 
 function MainNavigator(props) {
+  function createChannels() {
+    PushNotification.createChannel({
+      channelId: "test-channel",
+      channelName: "Test Channel",
+    });
+  }
   const { isAuthentificated } = useAuthentification();
-
+  const [isAutoLoging, setAutoLoging] = useState(true);
   let [fontsLoaded] = useFonts({
     ChangaOne_400Regular,
     ChangaOne_400Regular_Italic,
-  });
-  useEffect(() => {
-    console.log("AUTH", isAuthentificated);
+    Neon: require("../assets/fonts/Neon.ttf"),
   });
 
-  if (!fontsLoaded) {
+  const { autoLogin } = useAuthentification();
+  useEffect(() => {
+    createChannels();
+    autoLogin(setAutoLoging(false));
+  }, []);
+
+  if (!fontsLoaded || isAutoLoging) {
     return <LoginViewOld />;
   }
 
@@ -46,7 +58,11 @@ function MainNavigator(props) {
           <Stack.Screen name="Connexion" component={ConnexionView} />
         </Stack.Navigator>
       ) : (
-        <Stack.Navigator screenOptions={{ headerShown: false }}>
+        <Stack.Navigator
+          screenOptions={{
+            headerShown: false,
+          }}
+        >
           <Stack.Screen name="TabNavigator" component={TabNavigator} />
           <Stack.Screen
             name="Notifications"
@@ -68,8 +84,9 @@ function MainNavigator(props) {
             options={{ presentation: "modal" }}
             component={PublicProfilView}
           />
-          <Stack.Screen name="Restaurants" component={RestaurantView} />
+
           <Stack.Screen name="Chat" component={ChatView} />
+          <Stack.Screen name="DrawWithHeads" component={DrawWithHeads} />
         </Stack.Navigator>
       )}
     </NavigationContainer>

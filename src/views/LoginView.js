@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import {
   StyleSheet,
   Text,
@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   Image,
   Dimensions,
+  Animated,
 } from "react-native";
 
 import ColoredViewComponent from "../components/ColoredViewComponent";
@@ -18,26 +19,44 @@ import letterl from "../assets/Letters/Normal/l.png";
 import lettert from "../assets/Letters/Normal/t.png";
 import { LogBox } from "react-native";
 import { useTranslation } from "../Context/TranslationContext";
+import { useAuthentification } from "../Context/AuthContext";
+
 LogBox.ignoreLogs([
   "[react-native-gesture-handler] Seems like you're using an old API with gesture components, check out new Gestures system!",
 ]);
 import ToggleLangageComponent from "../components/ToggleLangageComponent";
 import { useFonts } from "expo-font";
+import { StatusBar } from "expo-status-bar";
 
 const { width, height } = Dimensions.get("screen");
 function LoginView(props) {
+  const { login } = useAuthentification();
+
   const { toggleLangage, langage } = useTranslation();
-  let [fontsLoaded] = useFonts({
-    Neon: require("../assets/fonts/Neon.ttf"),
-  });
-  console.log(langage);
+  // let [fontsLoaded] = useFonts({
+  //   Neon: require("../assets/fonts/Neon.ttf"),
+  // });
+
   useEffect(() => {
     if (!langage) {
       toggleLangage();
     }
   });
+  const gravityFontSize = useRef(new Animated.Value(50)).current;
+  let actualSize = 50;
+  function growGravity() {
+    actualSize += 2;
+    Animated.timing(gravityFontSize, {
+      toValue: actualSize,
+      duration: 200,
+      useNativeDriver: false,
+    }).start();
+  }
+
   return (
     <SafeAreaView style={styles.container}>
+      <StatusBar backgroundColor="white" hideTransitionAnimation="false" />
+
       <View style={styles.logoContainer}>
         {/* <Text>Animation logo</Text>
         <Text>version noir</Text>
@@ -99,7 +118,20 @@ function LoginView(props) {
             style={{ marginRight: 0 }}
           />
         </View>
-        <Text style={styles.labelText}>GRAVITY</Text>
+        <Animated.Text
+          onPress={() => growGravity()}
+          style={[
+            styles.labelText,
+            {
+              fontSize: gravityFontSize,
+              zIndex: 2,
+              position: "absolute",
+              bottom: 10,
+            },
+          ]}
+        >
+          GRAVITY
+        </Animated.Text>
       </View>
 
       <TouchableOpacity
@@ -114,6 +146,7 @@ function LoginView(props) {
           <Text style={styles.buttonText}>{langage?.connexionButton}</Text>
         </ColoredViewComponent>
       </TouchableOpacity>
+
       <ToggleLangageComponent />
     </SafeAreaView>
   );
@@ -162,7 +195,6 @@ const styles = StyleSheet.create({
     resizeMode: "contain",
 
     tintColor: "black",
-    backgroundColor: "red",
   },
   buttonTouchableContainer: {
     width: "70%",

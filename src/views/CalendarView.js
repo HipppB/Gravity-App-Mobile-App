@@ -2,7 +2,7 @@ import React from "react";
 import { StyleSheet, Text, View, Dimensions, ScrollView } from "react-native";
 import BottomBarComponent from "../components/BottomBarComponent";
 import HeaderComponenent from "../components/HeaderComponenent";
-import EventComponent from "../components/EventComponent";
+import CalendarComponent from "../components/CalendarComponent";
 import getCalendar from "../data/getCalendar";
 const { width, height } = Dimensions.get("screen");
 
@@ -14,7 +14,7 @@ function CalendarView(props) {
       <ScrollView style={styles.bodyScrollContainer}>
         <View style={styles.bodyContainer}>
           {eventList.map((event) => (
-            <EventComponent
+            <CalendarComponent
               event={event}
               key={event.id}
               navigation={props.navigation}
@@ -28,7 +28,7 @@ function CalendarView(props) {
 
 const styles = StyleSheet.create({
   container: {
-    paddingTop: height * 0.05,
+    // paddingTop: height * 0.05,
     backgroundColor: "white",
     justifyContent: "space-between",
     height: "100%",

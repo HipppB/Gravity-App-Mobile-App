@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>MyTestApp.ipa</key>
+	<array>
+		<dict>
+			<key>architectures</key>
+			<array>
+				<string>arm64</string>
+			</array>
+			<key>buildNumber</key>
+			<string>1</string>
+			<key>certificate</key>
+			<dict>
+				<key>SHA1</key>
+				<string>538E74181390A6876B848C13782BB8CD9F00BFAD</string>
+				<key>dateExpires</key>
+				<string>13/03/2023</string>
+				<key>type</key>
+				<string>Cloud Managed Apple Distribution</string>
+			</dict>
+			<key>entitlements</key>
+			<dict>
+				<key>application-identifier</key>
+				<string>P36CK899BN.com.arthurCann.app</string>
+				<key>aps-environment</key>
+				<string>production</string>
+				<key>com.apple.developer.team-identifier</key>
+				<string>P36CK899BN</string>
+				<key>get-task-allow</key>
+				<false/>
+			</dict>
+			<key>name</key>
+			<string>MyTestApp.app</string>
+			<key>profile</key>
+			<dict>
+				<key>UUID</key>
+				<string>af808289-6ad7-4f30-b457-ef25980f8e46</string>
+				<key>dateExpires</key>
+				<string>13/03/2023</string>
+				<key>name</key>
+				<string>iOS Team Ad Hoc Provisioning Profile: com.arthurCann.app</string>
+			</dict>
+			<key>team</key>
+			<dict>
+				<key>id</key>
+				<string>P36CK899BN</string>
+				<key>name</key>
+				<string>Arthur Cann</string>
+			</dict>
+			<key>versionNumber</key>
+			<string>1.0.0</string>
+		</dict>
+	</array>
+</dict>
+</plist>

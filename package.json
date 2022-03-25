@@ -1,7 +1,13 @@
 {
   "dependencies": {
     "@expo-google-fonts/changa-one": "^0.2.2",
+    "@flyerhq/react-native-chat-ui": "^1.4.3",
+    "@notifee/react-native": "^5.0.3",
     "@react-native-async-storage/async-storage": "~1.15.0",
+    "@react-native-clipboard/clipboard": "^1.8.5",
+    "@react-native-community/push-notification-ios": "^1.10.1",
+    "@react-native-firebase/app": "^14.7.0",
+    "@react-native-firebase/messaging": "^14.7.0",
     "@react-navigation/bottom-tabs": "^6.2.0",
     "@react-navigation/native": "^6.0.6",
     "@react-navigation/native-stack": "^6.2.5",
@@ -9,11 +15,16 @@
     "expo": "^44.0.0",
     "expo-font": "~10.0.4",
     "expo-linear-gradient": "~11.0.3",
+    "expo-splash-screen": "~0.14.1",
+    "expo-status-bar": "~1.2.0",
     "react": "17.0.1",
     "react-dom": "17.0.1",
     "react-native": "0.64.3",
     "react-native-gesture-handler": "^2.3.0",
+    "react-native-image-picker": "^4.7.3",
     "react-native-maps": "0.29.4",
+    "react-native-modal": "^13.0.1",
+    "react-native-push-notification": "^8.1.1",
     "react-native-safe-area-context": "3.3.2",
     "react-native-screens": "~3.10.1",
     "react-native-svg": "12.1.1",
@@ -23,9 +34,9 @@
     "@babel/core": "^7.12.9"
   },
   "scripts": {
-    "start": "expo start",
-    "android": "expo start --android",
-    "ios": "expo start --ios",
+    "start": "expo start --dev-client",
+    "android": "expo run:android",
+    "ios": "expo run:ios",
     "web": "expo start --web",
     "eject": "expo eject"
   },

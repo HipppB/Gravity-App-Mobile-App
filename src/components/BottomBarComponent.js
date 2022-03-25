@@ -7,7 +7,6 @@ import { useTranslation } from "../Context/TranslationContext";
 function BottomBarComponent({ navigation, ...props }) {
   let active = props.state?.routeNames[props.state?.index];
   const { toggleLangage, langage } = useTranslation();
-
   console.log(active);
   return (
     <View style={styles.container}>
@@ -44,14 +43,17 @@ function BottomBarComponent({ navigation, ...props }) {
             style={[
               styles.icons,
               active === "Calendar" ? styles.activeIcon : styles.inactiveIcon,
+              {
+                top: -1,
+              },
             ]}
           />
         </LinearGradient>
       </TouchableOpacity>
       <TouchableOpacity
-        onPress={() =>
-          navigation.navigate("Sponsor", { screen: "sponsorHome" })
-        }
+        onPress={() => {
+          navigation.navigate("Sponsor", { screen: "sponsorHome" });
+        }}
         style={active === "Sponsor" ? styles.active : {}}
       >
         <LinearGradient
@@ -75,7 +77,7 @@ function BottomBarComponent({ navigation, ...props }) {
         </LinearGradient>
       </TouchableOpacity>
       <TouchableOpacity
-        onPress={() => navigation.navigate("Event")}
+        onPress={() => navigation.navigate("Event", { screen: "EventHome" })}
         style={active === "Event" ? styles.active : {}}
       >
         <LinearGradient

@@ -5,13 +5,16 @@ import {
   Text,
   Image,
   TouchableOpacity,
-  SafeAreaView,
+  Platform,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { useTranslation } from "../Context/TranslationContext";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { useAuthentification } from "../Context/AuthContext";
 
 function HeaderComponenent(props) {
-  const { toggleLangage, langage } = useTranslation();
+  const { langage } = useTranslation();
+  const { userInfos } = useAuthentification();
 
   return (
     <SafeAreaView style={styles.headerContainer}>
@@ -39,7 +42,9 @@ function HeaderComponenent(props) {
 
           <View style={styles.textContainer}>
             <Text style={styles.welcomeText}>{langage.bienvenueText}</Text>
-            <Text style={styles.nameText}>Hippolyte</Text>
+            <Text style={styles.nameText}>
+              {userInfos?.first_name || langage.stranger}
+            </Text>
           </View>
         </TouchableOpacity>
         <TouchableOpacity
@@ -53,7 +58,7 @@ function HeaderComponenent(props) {
         </TouchableOpacity>
       </View>
       <View style={styles.titleContainer}>
-        <Text style={styles.title}>Feel the GRAVITY</Text>
+        <Text style={styles.title}>{props?.title || "Feel the GRAVITY"}</Text>
       </View>
     </SafeAreaView>
   );
@@ -61,8 +66,8 @@ function HeaderComponenent(props) {
 
 const styles = StyleSheet.create({
   headerContainer: {
-    backgroundColor: "white",
-    marginTop: 20,
+    paddingTop: Platform.OS === "ios" ? 20 : 0,
+    marginTop: 0,
   },
   profileContainer: {
     width: 50,
@@ -71,6 +76,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     marginLeft: 30,
+
     marginRight: 10,
   },
   profileSubContainer: {
@@ -108,7 +114,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     width: 10,
     height: 10,
-    backgroundColor: "red",
+
     bottom: 0,
     left: 30,
     borderRadius: 30,

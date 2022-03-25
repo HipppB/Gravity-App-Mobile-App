@@ -1,7 +1,18 @@
-import React from "react";
-import { StyleSheet, View, Text } from "react-native";
+import React, { useRef } from "react";
+import {
+  StyleSheet,
+  View,
+  Platform,
+  Animated,
+  Dimensions,
+  Appearance,
+} from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
-
+const { width, height } = Dimensions.get("screen");
+const colorScheme = Appearance.getColorScheme();
+if (colorScheme === "dark") {
+  // Use dark color scheme
+}
 function ColoredViewComponent({
   isBlue,
   containerStyle,
@@ -10,7 +21,7 @@ function ColoredViewComponent({
 }) {
   if (isBlue === true) {
     return (
-      <View style={[styles.container, containerStyle]}>
+      <Animated.View style={[styles.container, containerStyle]}>
         <LinearGradient
           colors={["#0C1316", "#203C42", "#2293D0"]}
           end={{ x: 1, y: 0 }}
@@ -20,11 +31,11 @@ function ColoredViewComponent({
         >
           {props.children}
         </LinearGradient>
-      </View>
+      </Animated.View>
     );
   } else {
     return (
-      <View style={[styles.container, containerStyle]}>
+      <Animated.View style={[styles.container, containerStyle]}>
         <LinearGradient
           colors={["#E65F02", "#F4C182", "#FFF0C1"]}
           locations={[0.3, 0.7, 0.98]}
@@ -34,7 +45,7 @@ function ColoredViewComponent({
         >
           {props.children}
         </LinearGradient>
-      </View>
+      </Animated.View>
     );
   }
 }
@@ -43,14 +54,17 @@ const styles = StyleSheet.create({
   container: {
     borderRadius: 15,
     shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
+    shadowOffset:
+      Platform.OS === "ios"
+        ? {
+            width: 0,
+            height: 2,
+          }
+        : {},
     shadowOpacity: 0.25,
-    shadowRadius: 3.84,
+    shadowRadius: Platform.OS === "ios" ? 3.84 : 0,
 
-    elevation: 5,
+    elevation: Platform.OS === "ios" ? 5 : 0,
   },
   gradient: {
     borderRadius: 15,

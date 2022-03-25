@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import {
   StyleSheet,
   View,
@@ -13,9 +13,9 @@ import {
 function TextInputComponent(props) {
   const [isSecured, setIsSecured] = useState(props?.isSecured);
   const [isSecurityOn, setIsSecurityOn] = useState(true);
-  let topValue = new Animated.Value(12);
-  let fontSizeValue = new Animated.Value(20);
-  let fontOpacity = new Animated.Value(0.8);
+  const topValue = useRef(new Animated.Value(12)).current;
+  const fontSizeValue = useRef(new Animated.Value(20)).current;
+  const fontOpacity = useRef(new Animated.Value(0.8)).current;
   useEffect(() => {
     //In case a default value is given
     if (props?.value) {
@@ -37,6 +37,9 @@ function TextInputComponent(props) {
     }
   }, []);
   function inputFocus() {
+    if (props?.onFocusCallBack) {
+      props?.onFocusCallBack();
+    }
     if (!props?.value) {
       Animated.timing(topValue, {
         toValue: 0,
@@ -56,6 +59,9 @@ function TextInputComponent(props) {
     }
   }
   function inputUnFocus() {
+    if (props?.onUnFocuseCallBack) {
+      props?.onUnFocuseCallBack();
+    }
     if (!props?.value) {
       Animated.timing(topValue, {
         toValue: 12,
@@ -81,8 +87,8 @@ function TextInputComponent(props) {
       style={[
         {
           position: "relative",
-
           justifyContent: "flex-end",
+          width: "100%",
         },
         props?.additionalStyleContainer,
       ]}
@@ -101,6 +107,7 @@ function TextInputComponent(props) {
       </Animated.Text>
 
       <TextInput
+        selectionColor={"white"}
         autoFocus={props?.autoFocus}
         onFocus={inputFocus}
         onBlur={inputUnFocus}
@@ -108,6 +115,8 @@ function TextInputComponent(props) {
         onChangeText={props?.onChange}
         value={props?.value}
         editable={props?.disabled}
+        keyboardType={props?.keyboardType}
+        secureTextEntry={props?.secureTextEntry}
       />
     </View>
   );
@@ -116,11 +125,10 @@ function TextInputComponent(props) {
 const styles = StyleSheet.create({
   inputStyle: {
     height: 50,
-    paddingLeft: 20,
+    paddingHorizontal: 10,
     width: "100%",
     fontFamily: "ChangaOne_400Regular",
     color: "white",
-
     fontSize: 20,
     borderBottomColor: "gray",
   },

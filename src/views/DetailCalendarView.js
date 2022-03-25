@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   StyleSheet,
   View,
@@ -7,6 +7,7 @@ import {
   ScrollView,
   TouchableOpacity,
   Image,
+  Linking,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import HeaderComponenent from "../components/HeaderComponenent";
@@ -19,17 +20,34 @@ import letters from "../assets/Letters/Italique/s.png";
 import letterd from "../assets/Letters/Italique/d.png";
 import lettere from "../assets/Letters/Italique/e.png";
 import OutlinedText from "../components/OutlinedText";
-import MapView, { PROVIDER_GOOGLE, Marker } from "react-native-maps";
+import MapView, { Marker } from "react-native-maps";
 import { useTranslation } from "../Context/TranslationContext";
+import ModalPersonList from "../components/ModalPersonList";
 
 const { width, height } = Dimensions.get("screen");
 
 function DetailCalendarView(props) {
+  function openInApp() {
+    let lat = 48.84554;
+    let lon = 2.32779;
+    Linking.openURL(
+      "https://www.google.com/maps/search/?api=1&query=" + lat + "%2C" + lon
+    );
+  }
   const { toggleLangage, langage } = useTranslation();
-
+  const [isModalParticipantVisible, setModalParticipantVisible] =
+    useState(false);
+  function openModal() {
+    setModalParticipantVisible(!isModalParticipantVisible);
+  }
   const event = props.route.params.event;
   return (
     <View style={styles.container}>
+      <ModalPersonList
+        isVisible={isModalParticipantVisible}
+        setVisible={setModalParticipantVisible}
+        navigation={props.navigation}
+      />
       <HeaderComponenent navigation={props.navigation} />
       <ScrollView style={styles.bodyScrollContainer}>
         <View style={styles.bodyContainer}>
@@ -126,7 +144,6 @@ function DetailCalendarView(props) {
             </Text>
             <MapView
               style={styles.mapContainer}
-              provider={PROVIDER_GOOGLE}
               showsUserLocation
               initialRegion={{
                 latitude: 48.84554,
@@ -141,6 +158,21 @@ function DetailCalendarView(props) {
                 description={"Des crêpes à tomber"}
               />
             </MapView>
+            <TouchableOpacity
+              onPress={() => openInApp()}
+              style={[
+                styles.buttonTouchableContainer,
+                { marginTop: 20, marginBottom: 10 },
+              ]}
+            >
+              <ColoredViewComponent
+                coloredViewStyle={styles.buttonContainer}
+                containerStyle={styles.buttonContainerContainer}
+                isBlue
+              >
+                <Text style={styles.buttonText}>Ouvrir dans maps</Text>
+              </ColoredViewComponent>
+            </TouchableOpacity>
             <View
               style={{
                 flexDirection: "row",
@@ -170,6 +202,7 @@ function DetailCalendarView(props) {
                 ]}
                 number={50}
                 navigation={props.navigation}
+                setVisible={openModal}
               />
             </View>
             <TouchableOpacity
@@ -189,7 +222,7 @@ function DetailCalendarView(props) {
     </View>
   );
 }
-function PersonsHeads({ listOfHeads, number, navigation }) {
+function PersonsHeads({ listOfHeads, number, navigation, setVisible }) {
   return (
     <View
       style={{
@@ -216,7 +249,7 @@ function PersonsHeads({ listOfHeads, number, navigation }) {
           justifyContent: "center",
           alignItems: "flex-end",
         }}
-        onPress={() => navigation.navigate("ParticipantList")}
+        onPress={() => setVisible()}
       >
         <Text
           style={{
@@ -261,7 +294,7 @@ function PersonHead({ image, position, onPress }) {
 
 const styles = StyleSheet.create({
   container: {
-    paddingTop: height * 0.05,
+    // paddingTop: height * 0.05,
     backgroundColor: "white",
     justifyContent: "space-between",
     height: "100%",
@@ -281,13 +314,16 @@ const styles = StyleSheet.create({
     marginTop: 20,
     justifyContent: "flex-start",
     flexDirection: "row",
-    alignItems: "baseline",
+    alignItems: "center",
+    // backgroundColor: "red",
   },
   labelTextletterContainer: {
     flexDirection: "row",
     alignItems: "baseline",
+    // backgroundColor: "green",
   },
   labelText: {
+    // backgroundColor: "blue",
     color: "black",
     fontSize: 18,
     fontFamily: "ChangaOne_400Regular_Italic",
@@ -299,7 +335,6 @@ const styles = StyleSheet.create({
     resizeMode: "contain",
 
     tintColor: "black",
-    backgroundColor: "red",
   },
   buttonTouchableContainer: {
     marginTop: 10,
@@ -322,7 +357,7 @@ const styles = StyleSheet.create({
   },
   mapContainer: {
     marginTop: 20,
-    height: 150,
+    height: width * 0.8,
     width: "100%",
     borderRadius: 30,
   },

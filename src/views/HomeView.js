@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import {
   StyleSheet,
   View,
@@ -6,8 +6,8 @@ import {
   ScrollView,
   Dimensions,
   TouchableOpacity,
+  Platform,
 } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
 
 import HeaderComponenent from "../components/HeaderComponenent";
 import GravityView from "./Home/GravityView";
@@ -16,12 +16,18 @@ import BottomBarComponent from "../components/BottomBarComponent";
 import { useTranslation } from "../Context/TranslationContext";
 import ProjetPedaView from "./Home/ProjetPedaView";
 import SonView from "./Home/SonView";
+import { useAuthentification } from "../Context/AuthContext";
+import FirstConnexionPopUp from "./FirstConnexionPopUp";
+import useFetch from "../data/useFetch";
 
 const { width, height } = Dimensions.get("screen");
 function HomeView(props) {
+  const [data, newRequest] = useFetch();
   const { toggleLangage, langage } = useTranslation();
-
+  const { isFirstLogin, setIsFirstLogin } = useAuthentification();
   const [activePage, setActivePage] = useState(0);
+  const [isModalVisible, setModalVisible] = useState(false);
+
   let scrollViewSelector = useRef();
   let scrollViewPages = useRef();
   function changeActivePage(pageNumber) {
@@ -32,8 +38,21 @@ function HomeView(props) {
       animated: true,
     });
   }
+
+  useEffect(async () => {
+    if (isFirstLogin) {
+      setIsFirstLogin(false);
+      setTimeout(() => setModalVisible(true), 100);
+    }
+  }, []);
+
   return (
     <View style={styles.container}>
+      <FirstConnexionPopUp
+        isModalVisible={isModalVisible}
+        setModalVisible={setModalVisible}
+        navigation={props.navigation}
+      />
       <HeaderComponenent navigation={props.navigation} />
       <View style={{ alignItems: "center" }}>
         <ScrollView
@@ -193,7 +212,7 @@ function HomeView(props) {
 
 const styles = StyleSheet.create({
   container: {
-    paddingTop: height * 0.05,
+    // paddingTop: height * 0.05,
     backgroundColor: "white",
     // justifyContent: "space-between",
     height: height - 100,
@@ -206,6 +225,7 @@ const styles = StyleSheet.create({
   pageContainer: {
     marginTop: 10,
     flexGrow: 1,
+    marginBottom: Platform.OS === "ios" ? 0 : 80,
     width: width,
   },
   pageInPageContainer: {
