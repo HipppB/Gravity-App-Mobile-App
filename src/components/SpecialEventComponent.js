@@ -44,8 +44,8 @@ function SpecialEventComponent(props) {
             display: "flex",
 
             flex: 1,
-            flexGrow: 1,
             height: 70,
+            marginBottom: 10,
           },
         ]}
       >

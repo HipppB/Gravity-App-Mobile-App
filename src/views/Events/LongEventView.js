@@ -67,14 +67,17 @@ function LongEventView(props) {
 
   return (
     <View style={styles.pageContainer}>
-      <HeaderComponenent navigation={props.navigation} />
+      <HeaderComponenent
+        navigation={props.navigation}
+        title={"Titre du défis"}
+      />
 
       <ScrollView
         style={styles.scrollStyle}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.scrollStyleContent}
       >
-        <ColoredViewComponent
+        {/* <ColoredViewComponent
           coloredViewStyle={{ height: 40, minWidth: "60%" }}
         >
           <View
@@ -95,7 +98,7 @@ function LongEventView(props) {
               Titre du défis
             </Text>
           </View>
-        </ColoredViewComponent>
+        </ColoredViewComponent> */}
         <View
           style={{
             alignSelf: "center",
@@ -109,7 +112,7 @@ function LongEventView(props) {
                 fontFamily: "ChangaOne_400Regular_Italic",
                 fontSize: 19,
                 marginBottom: 10,
-                marginTop: 20,
+                // marginTop: 20,
               }}
             >
               Description du défis :

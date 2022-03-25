@@ -58,7 +58,7 @@ function HeaderComponenent(props) {
         </TouchableOpacity>
       </View>
       <View style={styles.titleContainer}>
-        <Text style={styles.title}>Feel the GRAVITY</Text>
+        <Text style={styles.title}>{props?.title || "Feel the GRAVITY"}</Text>
       </View>
     </SafeAreaView>
   );

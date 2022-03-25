@@ -64,7 +64,12 @@
     "affiliatedRestaurant": "Restaurants partenaires",
     "moreDetails": "Plus d'infos",
     "presentPersons": "Ils y seront !",
-    "stranger": "Inconnu"
+    "stranger": "Inconnu",
+    "accountCreated": "Votre compte a été créé",
+    "accountCreatedDesc": "Vous avez reçu un lien par email permettant de verifier votre adresse e-mail.",
+    "accountNotCreated": "Votre compte n'a  pas pu être créé !",
+    "accountNotCreatedDesc": "Les informations rentrés semblent invalides. Si le problème persiste contactez Gravity.",
+    "toggleNotif": "Gerer les notifications"
   },
   "en": {
     "connexionButton": "Login",
@@ -131,6 +136,11 @@
     "affiliatedRestaurant": "Partner restaurants",
     "moreDetails": "More details",
     "presentPersons": "They will be there !",
-    "stranger": "Stranger"
+    "stranger": "Stranger",
+    "accountCreated": "Your account has been created !",
+    "accountCreatedDesc": "You received a link on your email to confirm your email.",
+    "accountNotCreated": "Your account has not been created !",
+    "accountNotCreatedDesc": "The entered data seems incorrect. If you suspect a problem contact a member of Gravity !",
+    "toggleNotif": "Manage notifications"
   }
 }

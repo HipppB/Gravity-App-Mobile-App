@@ -7,6 +7,7 @@ import {
   ScrollView,
   TouchableOpacity,
   Image,
+  Linking,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import HeaderComponenent from "../components/HeaderComponenent";
@@ -26,6 +27,13 @@ import ModalPersonList from "../components/ModalPersonList";
 const { width, height } = Dimensions.get("screen");
 
 function DetailCalendarView(props) {
+  function openInApp() {
+    let lat = 48.84554;
+    let lon = 2.32779;
+    Linking.openURL(
+      "https://www.google.com/maps/search/?api=1&query=" + lat + "%2C" + lon
+    );
+  }
   const { toggleLangage, langage } = useTranslation();
   const [isModalParticipantVisible, setModalParticipantVisible] =
     useState(false);
@@ -150,6 +158,21 @@ function DetailCalendarView(props) {
                 description={"Des crêpes à tomber"}
               />
             </MapView>
+            <TouchableOpacity
+              onPress={() => openInApp()}
+              style={[
+                styles.buttonTouchableContainer,
+                { marginTop: 20, marginBottom: 10 },
+              ]}
+            >
+              <ColoredViewComponent
+                coloredViewStyle={styles.buttonContainer}
+                containerStyle={styles.buttonContainerContainer}
+                isBlue
+              >
+                <Text style={styles.buttonText}>Ouvrir dans maps</Text>
+              </ColoredViewComponent>
+            </TouchableOpacity>
             <View
               style={{
                 flexDirection: "row",

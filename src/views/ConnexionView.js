@@ -131,9 +131,8 @@ function ConnexionView(props) {
         break;
       case "CREATED":
         setError({
-          title: "Votre compte a été créé !",
-          description:
-            "Vous avez reçu un lien par email permettant de verifier votre adresse e-mail.",
+          title: langage.accountCreated,
+          description: langage.accountCreatedDesc,
         });
         console.warn("HEY");
 
@@ -144,8 +143,8 @@ function ConnexionView(props) {
         break;
       case "WRONG":
         setError({
-          title: "Votre compte n'a  pas pu être créé !",
-          description: "Les informations rentrés semblent invalides",
+          title: langage.accountNotCreated,
+          description: langage.accountNotCreatedDesc,
         });
         setTimeout(() => {
           setModalVisible(true), setIsLoading(false);

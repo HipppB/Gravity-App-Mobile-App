@@ -54,7 +54,7 @@ function EventComponent(props) {
   console.log(colorgrad);
   if (props?.validate) {
     return (
-      <Pressable onPress={() => props.navigation.navigate("DrawWithHeads")}>
+      <Pressable onPress={() => props.navigation.navigate("LongEvent")}>
         <View
           style={{
             width: "80%",
@@ -224,7 +224,7 @@ function EventComponent(props) {
             </Text>
             <TouchableOpacity
               style={[styles.buttonTouchableContainer]}
-              onPress={() => props.navigation.navigate("DrawWithHeads")}
+              onPress={() => props.navigation.navigate("LongEvent")}
             >
               <ColoredViewComponent
                 coloredViewStyle={styles.buttonContainer}

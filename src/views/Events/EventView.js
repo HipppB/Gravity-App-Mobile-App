@@ -154,6 +154,7 @@ function EventView(props) {
                   navigation={props.navigation}
                   validating
                 />
+                <EventComponent navigation={props.navigation} validating />
               </View>
               <Text
                 style={{
@@ -198,7 +199,9 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontFamily: "Neon",
   },
-  buttonSelectorContainer: {},
+  buttonSelectorContainer: {
+    marginTop: 10,
+  },
 
   buttonSelectorView: {
     paddingHorizontal: 20,

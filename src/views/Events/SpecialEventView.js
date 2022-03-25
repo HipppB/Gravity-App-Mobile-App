@@ -121,14 +121,17 @@ function SpecialEventView(props) {
 
   return (
     <View style={styles.pageContainer}>
-      <HeaderComponenent navigation={props.navigation} />
-
+      <HeaderComponenent
+        navigation={props.navigation}
+        title={"Titre du défis"}
+      />
+      {/* <BackButtonComponent navigation={props.navigation} top={40} /> */}
       <ScrollView
         style={styles.scrollStyle}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.scrollStyleContent}
       >
-        <ColoredViewComponent
+        {/* <ColoredViewComponent
           coloredViewStyle={{ height: 40, minWidth: "60%" }}
         >
           <View
@@ -149,7 +152,7 @@ function SpecialEventView(props) {
               Titre du défis
             </Text>
           </View>
-        </ColoredViewComponent>
+        </ColoredViewComponent> */}
         <View
           style={{
             alignSelf: "center",

@@ -179,7 +179,11 @@ function EditProfileView(props) {
           </ColoredViewComponent>
           <View style={styles.buttonTouchableContainer}>
             <Animated.Text
-              style={{ alignSelf: "center", opacity: loadingopacity }}
+              style={{
+                alignSelf: "center",
+                opacity: loadingopacity,
+                fontFamily: "ChangaOne_400Regular_Italic",
+              }}
             >
               {langage.isSaving}
             </Animated.Text>
@@ -255,6 +259,19 @@ const styles = StyleSheet.create({
     color: "white",
     fontFamily: "ChangaOne_400Regular",
     fontSize: 20,
+  },
+  realtitleContainer: {
+    marginBottom: 30,
+    marginTop: 20,
+    width: width * 0.7,
+    alignItems: "center",
+    height: 50,
+    justifyContent: "center",
+  },
+  titleText: {
+    color: "white",
+    fontFamily: "ChangaOne_400Regular",
+    fontSize: 18,
   },
 });
 
