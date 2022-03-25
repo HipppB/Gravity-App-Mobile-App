@@ -11,6 +11,8 @@ target 'MyTestApp' do
   rn_maps_path = '../node_modules/react-native-maps'
   use_expo_modules!
   config = use_native_modules!
+  pod 'Firebase/Core'
+  pod 'Firebase/Messaging'
 
   use_react_native!(
     :path => config[:reactNativePath],

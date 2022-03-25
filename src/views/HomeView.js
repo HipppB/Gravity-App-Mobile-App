@@ -45,6 +45,7 @@ function HomeView(props) {
       setTimeout(() => setModalVisible(true), 100);
     }
   }, []);
+
   return (
     <View style={styles.container}>
       <FirstConnexionPopUp
