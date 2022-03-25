@@ -21,9 +21,17 @@ import {
 
 import LoginViewOld from "../views/LoginViewOld";
 import { useAuthentification } from "../Context/AuthContext";
+import PushNotification from "react-native-push-notification";
+
 const Stack = createStackNavigator();
 
 function MainNavigator(props) {
+  function createChannels() {
+    PushNotification.createChannel({
+      channelId: "test-channel",
+      channelName: "Test Channel",
+    });
+  }
   const { isAuthentificated } = useAuthentification();
   const [isAutoLoging, setAutoLoging] = useState(true);
   let [fontsLoaded] = useFonts({
@@ -34,6 +42,7 @@ function MainNavigator(props) {
 
   const { autoLogin } = useAuthentification();
   useEffect(() => {
+    createChannels();
     autoLogin(setAutoLoging(false));
   }, []);
 

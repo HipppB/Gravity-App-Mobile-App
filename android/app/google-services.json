@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "366815488775",
+    "project_id": "mysupertestapp-e2adb",
+    "storage_bucket": "mysupertestapp-e2adb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:366815488775:android:3c92031ff0892cfd3573a2",
+        "android_client_info": {
+          "package_name": "com.gravitylesvraisdevrais.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "366815488775-l2e1h7f8k8h62brd3k616f0v4ipnk97v.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAPHNzTiOo8flydrwu-VD8yYHbvFIdBgkg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "366815488775-l2e1h7f8k8h62brd3k616f0v4ipnk97v.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -18,6 +18,8 @@ import BackButtonComponent from "../components/BackButtonComponent";
 import settingIcon from "../assets/icons/settings.png";
 import Modal from "react-native-modal";
 import ColoredViewComponent from "../components/ColoredViewComponent";
+import PushNotification from "react-native-push-notification";
+
 function NotificationCenterView(props) {
   const [isModalOpen, setModalOpen] = useState(false);
   const { langage } = useTranslation();
@@ -27,6 +29,8 @@ function NotificationCenterView(props) {
       key: `${i}`,
       title: `Super notification #${i + 1}`,
       isNew: i < 3,
+      description:
+        "Super description de cette super notification, l'utilisateur aura aussi possibilité de cliquer pour être redirigé sur : Un écran d'event, un écran de sponsor (Food ou Normal) ou un écran de jeu",
       action:
         Math.random() > 0.7
           ? "CALENDAR"
@@ -38,6 +42,14 @@ function NotificationCenterView(props) {
     }));
   function openNotificationModal() {
     setModalOpen(true);
+  }
+  function handleNotification(notification) {
+    PushNotification.localNotification({
+      channelId: "test-channel",
+      title: notification.title,
+      message: notification.description,
+      // id: notification.key,
+    });
   }
   return (
     <View
@@ -90,6 +102,7 @@ function NotificationCenterView(props) {
             key={notification.key}
             navigation={props.navigation}
             index={index}
+            onPress={handleNotification}
           />
         ))}
         {/* <Notification isNew /> */}
@@ -98,7 +111,7 @@ function NotificationCenterView(props) {
   );
 }
 
-function Notification({ notification, navigation, index }) {
+function Notification({ notification, navigation, index, onPress }) {
   const [isNewVisible, setIsNewVisible] = useState(true);
   function callBack() {
     switch (notification.action) {
@@ -156,16 +169,15 @@ function Notification({ notification, navigation, index }) {
           padding: 10,
           paddingHorizontal: 20,
         }}
-        onPress={() => callBack()}
+        // onPress={() => callBack()}
+        onPress={() => onPress(notification)}
       >
         <Text style={{ fontFamily: "ChangaOne_400Regular", marginBottom: 5 }}>
           {notification.title}
         </Text>
         <Text style={{ fontFamily: "Neon" }}>
           Action associée à la notif : {notification.action} {"\n"}
-          Super description de cette super notification, l'utilisateur aura
-          aussi possibilité de cliquer pour être redirigé sur : Un écran
-          d'event, un écran de sponsor (Food ou Normal) ou un écran de jeu
+          {notification.description}
         </Text>
       </TouchableOpacity>
     </View>

@@ -402,6 +402,10 @@ PODS:
   - RNFBApp (14.7.0):
     - Firebase/CoreOnly (= 8.14.0)
     - React-Core
+  - RNFBMessaging (14.7.0):
+    - Firebase/Messaging (= 8.14.0)
+    - React-Core
+    - RNFBApp
   - RNGestureHandler (2.3.0):
     - React-Core
   - RNNotifee (5.0.3):
@@ -465,6 +469,7 @@ DEPENDENCIES:
   - "RNCClipboard (from `../node_modules/@react-native-clipboard/clipboard`)"
   - "RNCPushNotificationIOS (from `../node_modules/@react-native-community/push-notification-ios`)"
   - "RNFBApp (from `../node_modules/@react-native-firebase/app`)"
+  - "RNFBMessaging (from `../node_modules/@react-native-firebase/messaging`)"
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
   - "RNNotifee (from `../node_modules/@notifee/react-native`)"
   - RNScreens (from `../node_modules/react-native-screens`)
@@ -575,6 +580,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-community/push-notification-ios"
   RNFBApp:
     :path: "../node_modules/@react-native-firebase/app"
+  RNFBMessaging:
+    :path: "../node_modules/@react-native-firebase/messaging"
   RNGestureHandler:
     :path: "../node_modules/react-native-gesture-handler"
   RNNotifee:
@@ -643,6 +650,7 @@ SPEC CHECKSUMS:
   RNCClipboard: cc054ad1e8a33d2a74cd13e565588b4ca928d8fd
   RNCPushNotificationIOS: 87b8d16d3ede4532745e05b03c42cff33a36cc45
   RNFBApp: 097a31d372b3db15b41c7a1a5c429433b0609e12
+  RNFBMessaging: 06a7a73883f3f43da61507dbfcf4db2245c22869
   RNGestureHandler: 77d59828d40838c9fabb76a12d2d0a80c006906f
   RNNotifee: 83b475b2fdf7e9191a39ebd591f153713930eb7d
   RNScreens: d6da2b9e29cf523832c2542f47bf1287318b1868
