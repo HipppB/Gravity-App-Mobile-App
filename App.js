@@ -10,13 +10,11 @@ import {
   StatusBar,
 } from "react-native";
 
-import GravityHeadCrush from "./src/views/GravityHeadCrush";
-import GravityCrush from "./src/views/GravityCrush";
 import MainNavigator from "./src/routes/MainNavigator";
 import { AuthProvider } from "./src/Context/AuthContext";
 import { TranslationProvider } from "./src/Context/TranslationContext";
 import { SafeAreaView } from "react-native-safe-area-context";
-
+import { ThemeProvider } from "./src/Context/theme/ThemeContext";
 import messaging from "@react-native-firebase/messaging";
 import notifee from "@notifee/react-native";
 
@@ -54,7 +52,9 @@ function App() {
   return (
     <TranslationProvider>
       <AuthProvider>
-        <MainNavigator />
+        <ThemeProvider>
+          <MainNavigator />
+        </ThemeProvider>
       </AuthProvider>
     </TranslationProvider>
   );

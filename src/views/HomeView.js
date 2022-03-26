@@ -19,7 +19,7 @@ import SonView from "./Home/SonView";
 import { useAuthentification } from "../Context/AuthContext";
 import FirstConnexionPopUp from "./FirstConnexionPopUp";
 import useFetch from "../data/useFetch";
-
+import PoleView from "./Home/PoleView";
 const { width, height } = Dimensions.get("screen");
 function HomeView(props) {
   const [data, newRequest] = useFetch();
@@ -27,6 +27,11 @@ function HomeView(props) {
   const { isFirstLogin, setIsFirstLogin } = useAuthentification();
   const [activePage, setActivePage] = useState(0);
   const [isModalVisible, setModalVisible] = useState(false);
+
+  //Page active :
+  const [music, setMusic] = useState(true);
+  const [film, setFilm] = useState(true);
+  const [receipt, setReceipt] = useState(true);
 
   let scrollViewSelector = useRef();
   let scrollViewPages = useRef();
@@ -37,6 +42,10 @@ function HomeView(props) {
       x: pageNumber * width,
       animated: true,
     });
+    // scrollViewSelector.current.scrollTo({
+    //   x: 200 * pageNumber,
+    //   animated: false,
+    // });
   }
 
   useEffect(async () => {
@@ -127,28 +136,78 @@ function HomeView(props) {
               </Text>
             </LinearGradient>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => changeActivePage(3)}>
-            <LinearGradient
-              colors={
-                activePage == 3
-                  ? ["#0C1316", "#203C42", "#2293D0"]
-                  : ["#E8E8E8", "#E8E8E8", "#E8E8E8"]
-              }
-              end={{ x: 1, y: 0 }}
-              locations={[0.0, 0.25, 0.75]}
-              start={{ x: -0.3, y: 0 }}
-              style={styles.buttonSelectorView}
-            >
-              <Text
-                style={[
-                  styles.buttonSelectorViewText,
-                  activePage == 3 ? styles.buttonSelectorViewTextActive : {},
-                ]}
+          {music && (
+            <TouchableOpacity onPress={() => changeActivePage(3)}>
+              <LinearGradient
+                colors={
+                  activePage == 3
+                    ? ["#0C1316", "#203C42", "#2293D0"]
+                    : ["#E8E8E8", "#E8E8E8", "#E8E8E8"]
+                }
+                end={{ x: 1, y: 0 }}
+                locations={[0.0, 0.25, 0.75]}
+                start={{ x: -0.3, y: 0 }}
+                style={styles.buttonSelectorView}
               >
-                {langage.son}
-              </Text>
-            </LinearGradient>
-          </TouchableOpacity>
+                <Text
+                  style={[
+                    styles.buttonSelectorViewText,
+                    activePage == 3 ? styles.buttonSelectorViewTextActive : {},
+                  ]}
+                >
+                  {langage.son}
+                </Text>
+              </LinearGradient>
+            </TouchableOpacity>
+          )}
+          {film && (
+            <TouchableOpacity onPress={() => changeActivePage(4)}>
+              <LinearGradient
+                colors={
+                  activePage == 4
+                    ? ["#0C1316", "#203C42", "#2293D0"]
+                    : ["#E8E8E8", "#E8E8E8", "#E8E8E8"]
+                }
+                end={{ x: 1, y: 0 }}
+                locations={[0.0, 0.25, 0.75]}
+                start={{ x: -0.3, y: 0 }}
+                style={styles.buttonSelectorView}
+              >
+                <Text
+                  style={[
+                    styles.buttonSelectorViewText,
+                    activePage == 4 ? styles.buttonSelectorViewTextActive : {},
+                  ]}
+                >
+                  Film
+                </Text>
+              </LinearGradient>
+            </TouchableOpacity>
+          )}
+          {receipt && (
+            <TouchableOpacity onPress={() => changeActivePage(5)}>
+              <LinearGradient
+                colors={
+                  activePage == 5
+                    ? ["#0C1316", "#203C42", "#2293D0"]
+                    : ["#E8E8E8", "#E8E8E8", "#E8E8E8"]
+                }
+                end={{ x: 1, y: 0 }}
+                locations={[0.0, 0.25, 0.75]}
+                start={{ x: -0.3, y: 0 }}
+                style={styles.buttonSelectorView}
+              >
+                <Text
+                  style={[
+                    styles.buttonSelectorViewText,
+                    activePage == 5 ? styles.buttonSelectorViewTextActive : {},
+                  ]}
+                >
+                  Recettes pompettes
+                </Text>
+              </LinearGradient>
+            </TouchableOpacity>
+          )}
         </ScrollView>
       </View>
       <View style={{ flex: 1 }}>
@@ -167,7 +226,7 @@ function HomeView(props) {
           scrollEventThrottle={0.1}
           onScroll={(e) => {
             scrollViewSelector.current.scrollTo({
-              x: (e.nativeEvent.contentOffset.x / width) * 60,
+              x: (e.nativeEvent.contentOffset.x / width) * 90,
               animated: false,
             });
           }}
@@ -175,8 +234,10 @@ function HomeView(props) {
           <ScrollView style={styles.pageInPageContainer}>
             <GravityView />
           </ScrollView>
-          <ScrollView style={styles.pageInPageContainer}>
-            <Text>Liste des poles, personnes et description - A design</Text>
+          <ScrollView
+            style={[styles.pageInPageContainer, { paddingHorizontal: 0 }]}
+          >
+            <PoleView />
           </ScrollView>
           <View
             style={[
@@ -188,22 +249,54 @@ function HomeView(props) {
             ]}
           >
             <Text>
-              <ProjetPedaView />
+              <ProjetPedaView setFilm={setFilm} />
             </Text>
           </View>
-          <View
-            style={[
-              styles.pageInPageContainer,
-              {
-                justifyContent: "center",
-                alignItems: "center",
-              },
-            ]}
-          >
-            <Text>
-              <SonView />
-            </Text>
-          </View>
+          {music && (
+            <View
+              style={[
+                styles.pageInPageContainer,
+                {
+                  justifyContent: "center",
+                  alignItems: "center",
+                },
+              ]}
+            >
+              <Text>
+                <SonView />
+              </Text>
+            </View>
+          )}
+          {film && (
+            <View
+              style={[
+                styles.pageInPageContainer,
+                {
+                  justifyContent: "center",
+                  alignItems: "center",
+                },
+              ]}
+            >
+              <Text>
+                <SonView />
+              </Text>
+            </View>
+          )}
+          {receipt && (
+            <View
+              style={[
+                styles.pageInPageContainer,
+                {
+                  justifyContent: "center",
+                  alignItems: "center",
+                },
+              ]}
+            >
+              <Text>
+                <SonView />
+              </Text>
+            </View>
+          )}
         </ScrollView>
       </View>
     </View>

@@ -68,9 +68,6 @@
 	<key>NSUserActivityTypes</key>
 	<array>
 		<string>INSendMessageIntent</string>
-		<true/>
-		<string>INSendMessageIntent</string>
-		<true/>
 	</array>
 	<key>UIBackgroundModes</key>
 	<array>

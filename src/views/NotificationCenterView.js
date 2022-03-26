@@ -19,6 +19,7 @@ import settingIcon from "../assets/icons/settings.png";
 import Modal from "react-native-modal";
 import ColoredViewComponent from "../components/ColoredViewComponent";
 import PushNotification from "react-native-push-notification";
+import notifee from "@notifee/react-native";
 
 function NotificationCenterView(props) {
   const [isModalOpen, setModalOpen] = useState(false);
@@ -44,11 +45,12 @@ function NotificationCenterView(props) {
     setModalOpen(true);
   }
   function handleNotification(notification) {
-    PushNotification.localNotification({
-      channelId: "test-channel",
-      title: notification.title,
-      message: notification.description,
-      // id: notification.key,
+    notifee.displayNotification({
+      title: "Ceci est une superbe notication GRAVITY",
+      body: `Bon, il faudra quand même que je mette quelque chose d'utilise ici....`,
+      android: {
+        channelId: "default",
+      },
     });
   }
   return (
@@ -256,7 +258,7 @@ function ModalNotification({ isVisible, setVisible }) {
                   fontFamily: "ChangaOne_400Regular_Italic",
                 }}
               >
-                Type de notification 1
+                Notifications Activités
               </Text>
             </CheckBoxComponent>
           </View>
@@ -271,7 +273,7 @@ function ModalNotification({ isVisible, setVisible }) {
                   fontFamily: "ChangaOne_400Regular_Italic",
                 }}
               >
-                Type de notification longue 2
+                Notification Food
               </Text>
             </CheckBoxComponent>
           </View>
@@ -282,7 +284,7 @@ function ModalNotification({ isVisible, setVisible }) {
                   fontFamily: "ChangaOne_400Regular_Italic",
                 }}
               >
-                Type de notification 3
+                Notification Sponsor
               </Text>
             </CheckBoxComponent>
           </View>
@@ -293,7 +295,7 @@ function ModalNotification({ isVisible, setVisible }) {
                   fontFamily: "ChangaOne_400Regular_Italic",
                 }}
               >
-                Type de notification 4
+                Notification Défis
               </Text>
             </CheckBoxComponent>
           </View>

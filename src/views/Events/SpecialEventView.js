@@ -20,12 +20,14 @@ import cameraIcon from "../../assets/images/camera.png";
 import trashIcon from "../../assets/icons/trash.png";
 import { launchCamera, launchImageLibrary } from "react-native-image-picker";
 import BackButtonComponent from "../../components/BackButtonComponent";
+import TextInputComponent from "../../components/TextInputComponent";
 
 import CheckBoxComponent from "../../components/CheckBoxComponent";
 const { width, height } = Dimensions.get("screen");
 
 function SpecialEventView(props) {
   const [dataFuture, setFutureDate] = useState(Date.now() + 10000000);
+  const [answer, setAnswer] = useState("");
 
   const [timeRemaining, setTimeRemaining] = useState(
     (dataFuture - Date.now()) / 1000
@@ -70,44 +72,6 @@ function SpecialEventView(props) {
         addImageUri(result.assets[0].uri);
       }
     });
-
-    // if (Platform.OS === "ios") {
-    //   ActionSheetIOS.showActionSheetWithOptions(
-    //     {
-    //       options: ["Annuler", "Appareil photo", "Gallerie photo"],
-    //       //   destructiveButtonIndex: 3,
-    //       cancelButtonIndex: 0,
-    //       userInterfaceStyle: "white",
-    //     },
-    //     async (buttonIndex) => {
-    //       if (buttonIndex === 0) {
-    //         console.log(nothing);
-    //       } else if (buttonIndex === 1) {
-    //         const cameraPermission = await Camera.getCameraPermissionStatus();
-
-    //         if (cameraPermission === "not-determined") {
-    //           const cameraPermission = await Camera.requestCameraPermission();
-    //           const newMicrophonePermission =
-    //             await Camera.requestMicrophonePermission();
-    //         }
-    //         const newcameraPermission =
-    //           await Camera.getCameraPermissionStatus();
-
-    //         if (newcameraPermission !== "authorized") {
-    //           Alert.alert(
-    //             "Permission manquante",
-    //             "L'application n'a pas accès à la camera, tu peux modifier cela dans les reglages.",
-    //             "Fermer"
-    //           );
-    //           return;
-    //         }
-    //         const result = await launchCamera();
-    //       } else if (buttonIndex === 2) {
-    //       }
-    //     }
-    //   );
-    // } else {
-    // }
   }
   useEffect(() => {
     const interval = setInterval(() => {
@@ -247,6 +211,26 @@ function SpecialEventView(props) {
               style={{ height: 200, width: width * 0.8, resizeMode: "contain" }}
             />
           </View>
+          <Text
+            style={{
+              fontFamily: "ChangaOne_400Regular_Italic",
+              fontSize: 19,
+              marginBottom: 10,
+              marginTop: 20,
+
+              alignSelf: "baseline",
+            }}
+          >
+            Ma réponse :
+          </Text>
+          <ColoredViewComponent containerStyle={styles.labelContainer} isBlue>
+            <TextInputComponent
+              // autoFocus
+              placeholder={"Réponse"}
+              value={answer}
+              onChange={setAnswer}
+            />
+          </ColoredViewComponent>
           <Text
             style={{
               fontFamily: "ChangaOne_400Regular_Italic",
@@ -408,6 +392,11 @@ const styles = StyleSheet.create({
   },
   scrollStyleContent: {
     alignItems: "center",
+  },
+  labelContainer: {
+    minWidth: "70%",
+    maxWidth: "110%",
+    marginTop: 10,
   },
 });
 

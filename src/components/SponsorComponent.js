@@ -9,6 +9,7 @@ import {
   Pressable,
   Button,
   Dimensions,
+  Linking,
 } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import ColoredViewComponent from "./ColoredViewComponent";
@@ -140,7 +141,10 @@ function SponsorComponent(props) {
             NE ME LE DIS PAS MERCI{"\n"} (En vrai dit le moi car tout doit être
             parfait surtout quand ça concerne nos sous)
           </Text>
-          <TouchableOpacity style={[styles.buttonTouchableContainer]}>
+          <TouchableOpacity
+            style={[styles.buttonTouchableContainer]}
+            onPress={() => Linking.openURL("https://liste-gravity.fr")}
+          >
             <ColoredViewComponent
               coloredViewStyle={styles.buttonContainer}
               containerStyle={styles.buttonContainerContainer}

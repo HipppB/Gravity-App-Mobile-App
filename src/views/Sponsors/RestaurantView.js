@@ -153,6 +153,7 @@ const styles = StyleSheet.create({
   },
   titleContainer: {
     padding: 20,
+    marginTop: 20,
   },
   titleText: {
     fontSize: 20,

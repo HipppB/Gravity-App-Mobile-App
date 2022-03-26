@@ -20,13 +20,13 @@ import cameraIcon from "../../assets/images/camera.png";
 import trashIcon from "../../assets/icons/trash.png";
 import { launchCamera, launchImageLibrary } from "react-native-image-picker";
 import BackButtonComponent from "../../components/BackButtonComponent";
-
+import TextInputComponent from "../../components/TextInputComponent";
 import CheckBoxComponent from "../../components/CheckBoxComponent";
 const { width, height } = Dimensions.get("screen");
 
 function LongEventView(props) {
   const [acceptsToShare, setacceptsToShare] = useState(true);
-
+  const [answer, setAnswer] = useState("");
   const [addedImages, setaddedImages] = useState([
     {
       id: 1,
@@ -112,7 +112,7 @@ function LongEventView(props) {
                 fontFamily: "ChangaOne_400Regular_Italic",
                 fontSize: 19,
                 marginBottom: 10,
-                // marginTop: 20,
+                marginTop: 20,
               }}
             >
               Description du défis :
@@ -139,6 +139,26 @@ function LongEventView(props) {
               style={{ height: 200, width: width * 0.8, resizeMode: "contain" }}
             />
           </View>
+          <Text
+            style={{
+              fontFamily: "ChangaOne_400Regular_Italic",
+              fontSize: 19,
+              marginBottom: 10,
+              marginTop: 20,
+
+              alignSelf: "baseline",
+            }}
+          >
+            Ma réponse :
+          </Text>
+          <ColoredViewComponent containerStyle={styles.labelContainer} isBlue>
+            <TextInputComponent
+              // autoFocus
+              placeholder={"Réponse"}
+              value={answer}
+              onChange={setAnswer}
+            />
+          </ColoredViewComponent>
           <Text
             style={{
               fontFamily: "ChangaOne_400Regular_Italic",
@@ -293,6 +313,11 @@ const styles = StyleSheet.create({
   },
   scrollStyleContent: {
     alignItems: "center",
+  },
+  labelContainer: {
+    minWidth: "70%",
+    maxWidth: "110%",
+    marginTop: 10,
   },
 });
 

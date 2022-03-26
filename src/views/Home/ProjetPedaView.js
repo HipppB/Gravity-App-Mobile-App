@@ -13,6 +13,7 @@ function ProjetPedaView(props) {
     <View style={styles.bodyContainer}>
       <TouchableOpacity
         onPress={() => Linking.openURL("https://youtu.be/dQw4w9WgXcQ")}
+        // onPress={() => props.setFilm(true)}
       >
         <ColorViewComponent coloredViewStyle={[styles.titleContainer]}>
           <Text style={styles.titleText}>{langage.telecharger}</Text>
