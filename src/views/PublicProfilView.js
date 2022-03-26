@@ -20,6 +20,7 @@ import snapchat from "../assets/icons/snapchat.png";
 import tiktok from "../assets/icons/tiktok.png";
 import ColoredViewComponent from "../components/ColoredViewComponent";
 import { useTranslation } from "../Context/TranslationContext";
+import { useTheme } from "../Context/theme/ThemeContext";
 
 const heads = [
   require("../GravityHeadCrush/images/1.png"),
@@ -35,12 +36,18 @@ const heads = [
 const { width, height } = Dimensions.get("window");
 function PublicProfilView(props) {
   const { langage } = useTranslation();
+  const { themeStyle } = useTheme();
 
   const num = ((Math.random() * 60) % 6).toFixed(0);
 
   return (
     <View
-      style={{ padding: 20, paddingTop: 30, flex: 1, backgroundColor: "white" }}
+      style={{
+        padding: 20,
+        paddingTop: 30,
+        flex: 1,
+        backgroundColor: themeStyle.background,
+      }}
     >
       <View style={{ position: "absolute", top: 0 }}>
         <BackButtonComponent
@@ -59,7 +66,10 @@ function PublicProfilView(props) {
           alignSelf: "center",
         }}
       />
-      <Text numberOfLines={1} style={styles.pageTitle}>
+      <Text
+        numberOfLines={1}
+        style={[styles.pageTitle, { color: themeStyle.text }]}
+      >
         Personne Random n°{num}
       </Text>
       <ScrollView
@@ -71,13 +81,17 @@ function PublicProfilView(props) {
         contentContainerStyle={{ alignItems: "center" }}
         showsVerticalScrollIndicator={false}
       >
-        <Text style={styles.pageSubTitle}>{langage.publicDesription}</Text>
-        <Text style={styles.description}>
+        <Text style={[styles.pageSubTitle, { color: themeStyle.textless }]}>
+          {langage.publicDesription}
+        </Text>
+        <Text style={[styles.description, { color: themeStyle.textless }]}>
           Si vous avez des suggestion pour cette page n'hésitez pas, je trouve
           personnllement qu'elle manque un peu de couleur. Tout les retours sont
           bon à prendre !
         </Text>
-        <Text style={styles.pageSubTitle}>{langage.publicNetwork}</Text>
+        <Text style={[styles.pageSubTitle, { color: themeStyle.textless }]}>
+          {langage.publicNetwork}
+        </Text>
 
         <Item
           network={"instagram"}

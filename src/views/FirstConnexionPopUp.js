@@ -15,21 +15,13 @@ import ColoredViewComponent from "../components/ColoredViewComponent";
 import { useTranslation } from "../Context/TranslationContext";
 import Modal from "react-native-modal";
 import { useAuthentification } from "../Context/AuthContext";
+import { useTheme } from "../Context/theme/ThemeContext";
 
-const heads = [
-  require("../GravityHeadCrush/images/1.png"),
-  require("../GravityHeadCrush/images/2.png"),
-  require("../GravityHeadCrush/images/3.png"),
-  require("../GravityHeadCrush/images/4.png"),
-  require("../GravityHeadCrush/images/5.png"),
-  require("../GravityHeadCrush/images/6.png"),
-  require("../GravityHeadCrush/images/8.png"),
-  require("../GravityHeadCrush/images/9.png"),
-];
 const { width, height } = Dimensions.get("window");
 
 function FirstConnexionPopUp({ isModalVisible, setModalVisible, navigation }) {
   const { userInfos } = useAuthentification();
+  const { themeStyle } = useTheme();
 
   const { langage } = useTranslation();
   const num = ((Math.random() * 60) % 6).toFixed(0);
@@ -42,7 +34,11 @@ function FirstConnexionPopUp({ isModalVisible, setModalVisible, navigation }) {
       customBackdrop={
         <Pressable
           onPress={() => setModalVisible(false)}
-          style={{ flex: 1, width: "100%", backgroundColor: "white" }}
+          style={{
+            flex: 1,
+            width: "100%",
+            backgroundColor: themeStyle.background,
+          }}
         ></Pressable>
       }
     >
@@ -50,7 +46,7 @@ function FirstConnexionPopUp({ isModalVisible, setModalVisible, navigation }) {
         style={{
           width: "100%",
           minHeight: "20%",
-          backgroundColor: "white",
+          backgroundColor: themeStyle.backless,
           borderRadius: 20,
           alignSelf: "center",
           alignItems: "center",
@@ -84,7 +80,7 @@ function FirstConnexionPopUp({ isModalVisible, setModalVisible, navigation }) {
           contentContainerStyle={{ alignItems: "center", padding: 20 }}
           showsVerticalScrollIndicator={false}
         >
-          <Text style={styles.text}>
+          <Text style={[styles.text, { color: themeStyle.textless }]}>
             Hello {userInfos.first_name} ! {"\n"}Merci d’avoir téléchargé notre
             application !{"\n"}
             Aventure-toi dans notre galaxie avec l'application Gravity comme

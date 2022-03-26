@@ -23,10 +23,13 @@ import OutlinedText from "../components/OutlinedText";
 import MapView, { Marker } from "react-native-maps";
 import { useTranslation } from "../Context/TranslationContext";
 import ModalPersonList from "../components/ModalPersonList";
+import { useTheme } from "../Context/theme/ThemeContext";
 
 const { width, height } = Dimensions.get("screen");
 
 function DetailCalendarView(props) {
+  const { themeStyle } = useTheme();
+
   function openInApp() {
     let lat = 48.84554;
     let lon = 2.32779;
@@ -42,7 +45,9 @@ function DetailCalendarView(props) {
   }
   const event = props.route.params.event;
   return (
-    <View style={styles.container}>
+    <View
+      style={[styles.container, { backgroundColor: themeStyle.background }]}
+    >
       <ModalPersonList
         isVisible={isModalParticipantVisible}
         setVisible={setModalParticipantVisible}
@@ -132,12 +137,21 @@ function DetailCalendarView(props) {
                   style={{ marginRight: 7 }}
                 />
               </View>
-              <Text style={styles.labelText}>{event.name}</Text>
+              <Text style={[styles.labelText, { color: themeStyle.text }]}>
+                {event.name}
+              </Text>
             </View>
           </View>
 
           <View style={{ width: "80%", marginTop: 10 }}>
-            <Text style={{ fontFamily: "Neon", lineHeight: 20, fontSize: 18 }}>
+            <Text
+              style={{
+                fontFamily: "Neon",
+                lineHeight: 20,
+                fontSize: 18,
+                color: themeStyle.textless,
+              }}
+            >
               Ceci est une superbe description d'event, venez nous rejoindre
               pour toujours plus de suprises, le pôle com pourra évidemment
               modifier ce message car bon, ce n'est pas mon job
@@ -187,6 +201,7 @@ function DetailCalendarView(props) {
                   fontFamily: "ChangaOne_400Regular",
                   fontSize: 18,
                   marginRight: 10,
+                  color: themeStyle.text,
                 }}
               >
                 {langage.theyAreIn} :

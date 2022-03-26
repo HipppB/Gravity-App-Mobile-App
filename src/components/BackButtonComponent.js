@@ -1,7 +1,10 @@
 import React from "react";
 import { StyleSheet, View, TouchableOpacity, Image } from "react-native";
+import { useTheme } from "../Context/theme/ThemeContext";
 
 function BackButtonComponent(props) {
+  const { themeStyle } = useTheme();
+
   return (
     <TouchableOpacity
       style={{
@@ -17,7 +20,7 @@ function BackButtonComponent(props) {
         style={{
           width: 20,
           height: 20,
-          tintColor: props?.color,
+          tintColor: props?.color || themeStyle.textless,
         }}
       />
     </TouchableOpacity>

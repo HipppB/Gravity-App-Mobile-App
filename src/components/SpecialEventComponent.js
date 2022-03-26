@@ -87,7 +87,6 @@ function SpecialEventComponent(props) {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "white",
     width: "80%",
     alignSelf: "center",
     marginTop: 20,

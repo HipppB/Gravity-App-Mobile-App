@@ -14,12 +14,14 @@ import {
 import { ScrollView } from "react-native-gesture-handler";
 import ColoredViewComponent from "./ColoredViewComponent";
 import { useTranslation } from "../Context/TranslationContext";
+import { useTheme } from "../Context/theme/ThemeContext";
 
 function SponsorComponent(props) {
   const [isOpen, setisOpen] = useState(false);
   const containerHeight = useRef(new Animated.Value(0)).current;
   const opacityContent = useRef(new Animated.Value(0)).current;
   const { toggleLangage, langage } = useTranslation();
+  const { themeStyle } = useTheme();
 
   const [contentHeight, setContentHeight] = useState(0);
   function open() {
@@ -67,7 +69,7 @@ function SponsorComponent(props) {
           styles.container,
           {
             display: "flex",
-
+            backgroundColor: themeStyle.backless,
             flex: 1,
             flexGrow: 1,
             height: containerHeight.interpolate({
@@ -89,7 +91,7 @@ function SponsorComponent(props) {
               style={{
                 fontFamily: "ChangaOne_400Regular",
                 fontSize: 19,
-
+                color: themeStyle.text,
                 lineHeight: 20,
               }}
             >
@@ -99,7 +101,7 @@ function SponsorComponent(props) {
               style={{
                 fontFamily: "ChangaOne_400Regular_Italic",
                 fontSize: 17,
-
+                color: themeStyle.textless,
                 lineHeight: 20,
               }}
             >
@@ -117,6 +119,7 @@ function SponsorComponent(props) {
           style={[
             {
               position: "absolute",
+
               top: 75,
               flexShrink: 1,
               opacity: isOpen ? 1 : 0,
@@ -128,7 +131,7 @@ function SponsorComponent(props) {
           <Text
             style={{
               paddingHorizontal: 10,
-
+              color: themeStyle.textless,
               fontFamily: "ChangaOne_400Regular_Italic",
               fontSize: 15,
               opacity: 0.7,

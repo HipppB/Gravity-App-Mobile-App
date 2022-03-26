@@ -14,18 +14,28 @@ import getSponsors from "../../data/getSponsors";
 import SponsorComponent from "../../components/SponsorComponent";
 import ColoredViewComponent from "../../components/ColoredViewComponent";
 import { useTranslation } from "../../Context/TranslationContext";
+import { useTheme } from "../../Context/theme/ThemeContext";
+
 import leftArrow from "../../assets/images/left-arrow.png";
 const { width, height } = Dimensions.get("screen");
 
 function SponsorView(props) {
   const [sponsorList, setSponsorList] = useState(getSponsors());
   const { toggleLangage, langage } = useTranslation();
+  const { themeStyle } = useTheme();
 
   console.log(sponsorList?.length);
   return (
-    <View style={styles.container}>
+    <View
+      style={[styles.container, { backgroundColor: themeStyle.background }]}
+    >
       <HeaderComponenent navigation={props.navigation} />
-      <ScrollView style={styles.bodyContainer}>
+      <ScrollView
+        style={[
+          styles.bodyContainer,
+          { backgroundColor: themeStyle.background },
+        ]}
+      >
         <View style={{ paddingBottom: 20, paddingTop: 20 }}>
           <TouchableOpacity
             onPress={() => props.navigation.navigate("sponsorRestaurant")}
@@ -62,7 +72,7 @@ function SponsorView(props) {
               <SponsorComponent sponsor={sponsor} key={sponsor.id} />
             ))
           ) : (
-            <View style={styles.noSponsorContainer}>
+            <View style={[styles.noSponsorContainer]}>
               <Text style={styles.noSponsorText}>{langage.noSponsor}</Text>
               <TouchableOpacity
                 onPress={() => props.navigation.navigate("sponsorRestaurant")}

@@ -21,6 +21,7 @@ import trashIcon from "../../assets/icons/trash.png";
 import { launchCamera, launchImageLibrary } from "react-native-image-picker";
 import BackButtonComponent from "../../components/BackButtonComponent";
 import TextInputComponent from "../../components/TextInputComponent";
+import { useTheme } from "../../Context/theme/ThemeContext";
 
 import CheckBoxComponent from "../../components/CheckBoxComponent";
 const { width, height } = Dimensions.get("screen");
@@ -28,6 +29,7 @@ const { width, height } = Dimensions.get("screen");
 function SpecialEventView(props) {
   const [dataFuture, setFutureDate] = useState(Date.now() + 10000000);
   const [answer, setAnswer] = useState("");
+  const { themeStyle } = useTheme();
 
   const [timeRemaining, setTimeRemaining] = useState(
     (dataFuture - Date.now()) / 1000
@@ -84,7 +86,9 @@ function SpecialEventView(props) {
   });
 
   return (
-    <View style={styles.pageContainer}>
+    <View
+      style={[styles.pageContainer, { backgroundColor: themeStyle.background }]}
+    >
       <HeaderComponenent
         navigation={props.navigation}
         title={"Titre du défis"}
@@ -137,12 +141,18 @@ function SpecialEventView(props) {
           >
             <Image
               source={clockIcon}
-              style={{ width: 20, height: 20, marginRight: 5 }}
+              style={{
+                width: 20,
+                height: 20,
+                marginRight: 5,
+                tintColor: themeStyle.textless,
+              }}
             />
             <Text
               style={{
                 fontFamily: "ChangaOne_400Regular",
                 fontSize: currentFont,
+                color: themeStyle.textless,
               }}
               onTextLayout={(e) => {
                 if (e.nativeEvent.lines.length > 1) {
@@ -164,12 +174,18 @@ function SpecialEventView(props) {
                 fontSize: 19,
                 marginBottom: 10,
                 marginTop: 20,
+                color: themeStyle.text,
               }}
             >
               Description du défis :
             </Text>
             <Text
-              style={{ fontFamily: "Neon", fontSize: 19, textAlign: "justify" }}
+              style={{
+                fontFamily: "Neon",
+                fontSize: 19,
+                textAlign: "justify",
+                color: themeStyle.textless,
+              }}
             >
               Ceci est une superbe description de défis, ça peut être n'importe
               quoi tant qu'on ne perd pas trop d'isépiens, exemple de défis à
@@ -181,7 +197,7 @@ function SpecialEventView(props) {
               style={{
                 fontFamily: "ChangaOne_400Regular_Italic",
                 fontSize: 19,
-
+                color: themeStyle.text,
                 marginTop: 20,
               }}
             >
@@ -193,6 +209,7 @@ function SpecialEventView(props) {
                 fontFamily: "Neon",
                 fontSize: 19,
                 textAlign: "justify",
+                color: themeStyle.textless,
               }}
             >
               Ne pas mourir c'est bien, mais un tshirt gravity c'est encore
@@ -217,7 +234,7 @@ function SpecialEventView(props) {
               fontSize: 19,
               marginBottom: 10,
               marginTop: 20,
-
+              color: themeStyle.text,
               alignSelf: "baseline",
             }}
           >
@@ -233,6 +250,7 @@ function SpecialEventView(props) {
           </ColoredViewComponent>
           <Text
             style={{
+              color: themeStyle.text,
               fontFamily: "ChangaOne_400Regular_Italic",
               fontSize: 19,
               marginBottom: 10,
@@ -267,10 +285,14 @@ function SpecialEventView(props) {
                 marginHorizontal: 10,
                 justifyContent: "center",
                 alignItems: "center",
+                borderColor: themeStyle.text,
               }}
               onPress={() => addImage()}
             >
-              <Image source={cameraIcon} style={{ width: 50, height: 50 }} />
+              <Image
+                source={cameraIcon}
+                style={{ width: 50, height: 50, tintColor: themeStyle.text }}
+              />
             </TouchableOpacity>
 
             <View style={{ flexDirection: "row-reverse" }}>
@@ -329,6 +351,7 @@ function SpecialEventView(props) {
             <Text
               style={{
                 fontFamily: "ChangaOne_400Regular_Italic",
+                color: themeStyle.textless,
               }}
             >
               Je veux bien que gravity partage ces fichiers avec les Isepiens

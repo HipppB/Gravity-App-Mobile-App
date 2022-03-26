@@ -8,11 +8,13 @@ import {
   TouchableOpacity,
 } from "react-native";
 import Carousel from "react-native-snap-carousel";
+import { useTheme } from "../../Context/theme/ThemeContext";
 const { width, height } = Dimensions.get("window");
 function PoleView(props) {
+  const { themeStyle } = useTheme();
+
   return (
     <View>
-      <Text>Avouez, mes découpages de têtes ils sont géniaux</Text>
       <Pole name={"Bureau"} />
       <Pole name={"Pôle Com"} />
       <Pole name={"Pôle Créa"} />
@@ -25,6 +27,8 @@ function PoleView(props) {
 }
 
 function Pole(props) {
+  const { themeStyle } = useTheme();
+
   const data = props?.members || [
     {
       name: "Nom",
@@ -62,6 +66,7 @@ function Pole(props) {
           //   backgroundColor: "red",
           width: "80%",
           alignSelf: "center",
+          color: themeStyle.text,
         }}
       >
         {props.name}
@@ -81,14 +86,19 @@ function Pole(props) {
 }
 
 function Profile({ member }) {
+  const { themeStyle } = useTheme();
+
   console.log(member);
   return (
-    <TouchableOpacity style={styles.card}>
+    <TouchableOpacity
+      style={[styles.card, { backgroundColor: themeStyle.backless }]}
+    >
       <Text
         style={{
           marginBottom: 10,
           fontFamily: "ChangaOne_400Regular_Italic",
           fontSize: 18,
+          color: themeStyle.textless,
         }}
       >
         {member?.name}
@@ -108,6 +118,7 @@ function Profile({ member }) {
           marginTop: 10,
           fontFamily: "ChangaOne_400Regular_Italic",
           fontSize: 18,
+          color: themeStyle.textless,
         }}
       >
         {member?.poste}

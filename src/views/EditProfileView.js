@@ -11,7 +11,7 @@ import {
   Animated,
 } from "react-native";
 // import { SafeAreaView } from "react-native-safe-area-context";
-
+import { useTheme } from "../Context/theme/ThemeContext";
 import { useTranslation } from "../Context/TranslationContext";
 import { useAuthentification } from "../Context/AuthContext";
 
@@ -24,6 +24,7 @@ const { width, height } = Dimensions.get("screen");
 function EditProfileView(props) {
   const { langage } = useTranslation();
   const { userInfos } = useAuthentification();
+  const { themeStyle } = useTheme();
 
   const [name, setName] = useState(userInfos?.first_name);
   const [lastName, setLastName] = useState(userInfos?.last_name);
@@ -59,7 +60,9 @@ function EditProfileView(props) {
     );
   }
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView
+      style={[styles.container, { backgroundColor: themeStyle.background }]}
+    >
       <KeyboardAvoidingView
         style={{
           width: "100%",
@@ -183,6 +186,7 @@ function EditProfileView(props) {
                 alignSelf: "center",
                 opacity: loadingopacity,
                 fontFamily: "ChangaOne_400Regular_Italic",
+                color: themeStyle.textless,
               }}
             >
               {langage.isSaving}

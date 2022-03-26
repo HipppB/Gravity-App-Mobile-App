@@ -20,10 +20,13 @@ import Modal from "react-native-modal";
 import ColoredViewComponent from "../components/ColoredViewComponent";
 import PushNotification from "react-native-push-notification";
 import notifee from "@notifee/react-native";
+import { useTheme } from "../Context/theme/ThemeContext";
 
 function NotificationCenterView(props) {
   const [isModalOpen, setModalOpen] = useState(false);
   const { langage } = useTranslation();
+  const { themeStyle } = useTheme();
+
   let listViewData = Array(20)
     .fill("")
     .map((_, i) => ({
@@ -58,7 +61,7 @@ function NotificationCenterView(props) {
       style={{
         paddingTop: 20,
         alignItems: "center",
-        backgroundColor: "white",
+        backgroundColor: themeStyle.background,
         height: height - 60,
       }}
     >
@@ -75,6 +78,7 @@ function NotificationCenterView(props) {
             width: 30,
             height: 30,
             opacity: 0.8,
+            tintColor: themeStyle.textless,
           }}
         />
       </TouchableOpacity>
@@ -87,7 +91,9 @@ function NotificationCenterView(props) {
           resizeMode: "contain",
         }}
       />
-      <Text style={styles.pageTitle}>{langage.notification}</Text>
+      <Text style={[styles.pageTitle, { color: themeStyle.textless }]}>
+        {langage.notification}
+      </Text>
       <ScrollView
         style={{
           width: "100%",
@@ -114,6 +120,8 @@ function NotificationCenterView(props) {
 }
 
 function Notification({ notification, navigation, index, onPress }) {
+  const { themeStyle } = useTheme();
+
   const [isNewVisible, setIsNewVisible] = useState(true);
   function callBack() {
     switch (notification.action) {
@@ -163,7 +171,7 @@ function Notification({ notification, navigation, index, onPress }) {
       </TouchableOpacity>
       <TouchableOpacity
         style={{
-          backgroundColor: "#E8E8E8",
+          backgroundColor: themeStyle.backDifferent,
           width: "100%",
           minHeight: 70,
           marginBottom: 20,
@@ -171,13 +179,18 @@ function Notification({ notification, navigation, index, onPress }) {
           padding: 10,
           paddingHorizontal: 20,
         }}
-        // onPress={() => callBack()}
-        onPress={() => onPress(notification)}
+        onPress={() => callBack()}
       >
-        <Text style={{ fontFamily: "ChangaOne_400Regular", marginBottom: 5 }}>
+        <Text
+          style={{
+            fontFamily: "ChangaOne_400Regular",
+            marginBottom: 5,
+            color: themeStyle.textless,
+          }}
+        >
           {notification.title}
         </Text>
-        <Text style={{ fontFamily: "Neon" }}>
+        <Text style={{ fontFamily: "Neon", color: themeStyle.textless }}>
           Action associée à la notif : {notification.action} {"\n"}
           {notification.description}
         </Text>
@@ -191,6 +204,7 @@ function ModalNotification({ isVisible, setVisible }) {
   const [value1, setValue1] = useState(true);
   const [value2, setValue2] = useState(true);
   const [value3, setValue3] = useState(true);
+  const { themeStyle } = useTheme();
 
   return (
     <Modal
@@ -198,7 +212,11 @@ function ModalNotification({ isVisible, setVisible }) {
       customBackdrop={
         <Pressable
           onPress={() => setVisible(false)}
-          style={{ flex: 1, width: "100%", backgroundColor: "white" }}
+          style={{
+            flex: 1,
+            width: "100%",
+            backgroundColor: themeStyle.background,
+          }}
         ></Pressable>
       }
     >
@@ -206,7 +224,7 @@ function ModalNotification({ isVisible, setVisible }) {
         style={{
           width: "90%",
           minHeight: "20%",
-          backgroundColor: "white",
+          backgroundColor: themeStyle.backless,
           borderRadius: 20,
           alignSelf: "center",
           alignItems: "center",
@@ -228,6 +246,7 @@ function ModalNotification({ isVisible, setVisible }) {
             fontSize: 20,
             marginBottom: 20,
             textAlign: "center",
+            color: themeStyle.text,
           }}
         >
           Parametrez les notifications
@@ -238,6 +257,7 @@ function ModalNotification({ isVisible, setVisible }) {
             fontSize: 20,
             marginBottom: 20,
             textAlign: "center",
+            color: themeStyle.textless,
           }}
         >
           Choisissez les notifications push que vous souhaitez recevoir afin de
@@ -256,6 +276,7 @@ function ModalNotification({ isVisible, setVisible }) {
               <Text
                 style={{
                   fontFamily: "ChangaOne_400Regular_Italic",
+                  color: themeStyle.textless,
                 }}
               >
                 Notifications Activités
@@ -271,6 +292,7 @@ function ModalNotification({ isVisible, setVisible }) {
               <Text
                 style={{
                   fontFamily: "ChangaOne_400Regular_Italic",
+                  color: themeStyle.textless,
                 }}
               >
                 Notification Food
@@ -282,6 +304,7 @@ function ModalNotification({ isVisible, setVisible }) {
               <Text
                 style={{
                   fontFamily: "ChangaOne_400Regular_Italic",
+                  color: themeStyle.textless,
                 }}
               >
                 Notification Sponsor
@@ -293,6 +316,7 @@ function ModalNotification({ isVisible, setVisible }) {
               <Text
                 style={{
                   fontFamily: "ChangaOne_400Regular_Italic",
+                  color: themeStyle.textless,
                 }}
               >
                 Notification Défis

@@ -119,6 +119,7 @@ function LoginView(props) {
               zIndex: 2,
               position: "absolute",
               bottom: 10,
+              color: themeStyle.text,
             },
           ]}
         >

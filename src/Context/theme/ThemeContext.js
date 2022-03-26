@@ -10,13 +10,15 @@ const ThemeContext = createContext({
 
 // create context
 function ThemeProvider({ children }) {
-  const [activeTheme, setTheme] = useState("dark");
+  const colorScheme = useColorScheme();
+
+  const [activeTheme, setTheme] = useState(colorScheme);
   const [themeStyle, setThemeStyle] = useState(
     activeTheme === "dark" ? colorsDark : colorsLight
   );
-  const colorScheme = useColorScheme();
   useEffect(() => {
     setTheme(colorScheme);
+    setThemeStyle(colorScheme === "dark" ? colorsDark : colorsLight);
   }, [colorScheme]);
   const storeTheme = async (theme) => {
     try {

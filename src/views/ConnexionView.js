@@ -24,6 +24,8 @@ import ColoredViewComponent from "../components/ColoredViewComponent";
 import TextInputComponent from "../components/TextInputComponent";
 import { useAuthentification } from "../Context/AuthContext";
 import { useTranslation } from "../Context/TranslationContext";
+import { useTheme } from "../Context/theme/ThemeContext";
+
 import ToggleLangageComponent from "../components/ToggleLangageComponent";
 import Modal from "react-native-modal";
 import useFetch from "../data/useFetch";
@@ -34,6 +36,7 @@ function ConnexionView(props) {
   const { login, signup } = useAuthentification();
   const { langage, selectedLangage } = useTranslation();
   const [request, newRequest] = useFetch();
+  const { themeStyle } = useTheme();
 
   const [mailInput, setMailInput] = useState("");
   const [password, setPassword] = useState("");
@@ -224,11 +227,6 @@ function ConnexionView(props) {
     }
   }
 
-  // const inputEmailPercent = 0.7;
-
-  // const inputEmailPercent = useRef(0.7);
-
-  // const inputEmailPercent = useRef(new Animated.Value(0.7)).current;
   const inputEmailPercent = useRef(new Animated.Value(0.7 * width)).current;
   const inputPasswordPercent = useRef(new Animated.Value(0.7 * width)).current;
 
@@ -271,7 +269,11 @@ function ConnexionView(props) {
         customBackdrop={
           <Pressable
             onPress={() => setModalVisible(false)}
-            style={{ flex: 1, width: "100%", backgroundColor: "white" }}
+            style={{
+              flex: 1,
+              width: "100%",
+              backgroundColor: themeStyle.background,
+            }}
           ></Pressable>
         }
       >
@@ -279,7 +281,7 @@ function ConnexionView(props) {
           style={{
             width: "80%",
             minHeight: "20%",
-            backgroundColor: "white",
+            backgroundColor: themeStyle.background,
             borderRadius: 20,
             alignSelf: "center",
             alignItems: "center",
@@ -301,6 +303,7 @@ function ConnexionView(props) {
               fontSize: 20,
               marginBottom: 20,
               textAlign: "center",
+              color: themeStyle.textless,
             }}
           >
             {error.title}
@@ -311,6 +314,7 @@ function ConnexionView(props) {
               fontSize: 20,
               marginBottom: 20,
               textAlign: "center",
+              color: themeStyle.textless,
             }}
           >
             {error.description}
@@ -359,13 +363,16 @@ function ConnexionView(props) {
         selectedDestination={selectedDestination}
       />
       <StatusBar
-        backgroundColor="white"
+        backgroundColor={themeStyle.background}
         hideTransitionAnimation="true"
         animated={false}
       />
       <KeyboardAvoidingView
-        style={styles.container}
-        contentContainerStyle={styles.container}
+        style={[styles.container, { backgroundColor: themeStyle.background }]}
+        contentContainerStyle={[
+          styles.container,
+          { backgroundColor: themeStyle.background },
+        ]}
         behavior={Platform.OS === "ios" ? "position" : "height"}
       >
         <View style={styles.logoContainer}>
@@ -406,10 +413,11 @@ function ConnexionView(props) {
               textAlign: "center",
               opacity: 0.5,
               fontFamily: "ChangaOne_400Regular_Italic",
-              backgroundColor: "white",
+              backgroundColor: themeStyle.background,
               paddingHorizontal: 10,
               paddingVertical: 5,
               borderRadius: 50,
+              color: themeStyle.text,
             }}
           >
             {langage.mailFormat}
@@ -506,6 +514,7 @@ function ConnexionView(props) {
           </TouchableOpacity>
           <Text
             style={{
+              color: themeStyle.text,
               marginTop: 5,
               textAlign: "center",
               opacity: isLoading ? 1 : 0.5,
@@ -519,7 +528,7 @@ function ConnexionView(props) {
       </KeyboardAvoidingView>
       <View
         style={{
-          backgroundColor: "white",
+          backgroundColor: themeStyle.background,
           width: "100%",
           paddingBottom: Platform.OS === "ios" ? 30 : 10,
           alignItems: "center",
@@ -542,6 +551,8 @@ function ModalInscription({
   setPromo,
   callBack,
 }) {
+  const { themeStyle } = useTheme();
+
   const promos = [
     { id: "i1", disp: "I1" },
     { id: "p1", disp: "P1" },
@@ -569,7 +580,11 @@ function ModalInscription({
       customBackdrop={
         <Pressable
           onPress={() => setVisible(false)}
-          style={{ flex: 1, width: "100%", backgroundColor: "white" }}
+          style={{
+            flex: 1,
+            width: "100%",
+            backgroundColor: themeStyle.background,
+          }}
         ></Pressable>
       }
     >
@@ -577,7 +592,7 @@ function ModalInscription({
         style={{
           width: "90%",
           minHeight: "20%",
-          backgroundColor: "white",
+          backgroundColor: themeStyle.background,
           borderRadius: 20,
           alignSelf: "center",
           alignItems: "center",
@@ -599,6 +614,7 @@ function ModalInscription({
             fontSize: 20,
             marginBottom: 20,
             textAlign: "center",
+            color: themeStyle.textless,
           }}
         >
           {langage.signup}
@@ -609,6 +625,7 @@ function ModalInscription({
             fontSize: 20,
             marginBottom: 20,
             textAlign: "center",
+            color: themeStyle.textless,
           }}
         >
           {langage.noAccountLinked}
@@ -637,6 +654,7 @@ function ModalInscription({
             >
               <Text
                 style={{
+                  color: themeStyle.background,
                   fontSize: 15,
                   fontFamily: "ChangaOne_400Regular",
                   opacity: 0.7,
@@ -673,6 +691,7 @@ function ModalInscription({
               >
                 <Text
                   style={{
+                    color: themeStyle.background,
                     fontSize: 15,
                     fontFamily: "ChangaOne_400Regular",
                     opacity: 0.7,

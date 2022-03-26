@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import { StyleSheet, View, Text, Image } from "react-native";
+import { useTheme } from "../Context/theme/ThemeContext";
 
 function OutlinedText({ letterImage, ...props }) {
   const { width, height } = Image.resolveAssetSource(letterImage);
+  const { themeStyle } = useTheme();
 
   let fontImageWidth = props?.fontWidth;
   let fontImageHeight = props?.fontHeight;
@@ -21,6 +23,7 @@ function OutlinedText({ letterImage, ...props }) {
           height: fontImageHeight,
           resizeMode: "contain",
           top: props?.top,
+          tintColor: themeStyle.text,
         },
         props?.style,
       ]}

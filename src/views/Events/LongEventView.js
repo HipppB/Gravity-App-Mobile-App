@@ -6,20 +6,16 @@ import {
   Text,
   Image,
   Dimensions,
-  Pressable,
   TouchableOpacity,
-  ActionSheetIOS,
-  Platform,
-  Alert,
-  FlatList,
 } from "react-native";
 import ColoredViewComponent from "../../components/ColoredViewComponent";
 import HeaderComponenent from "../../components/HeaderComponenent";
-import clockIcon from "../../assets/icons/clock.png";
+import { useTheme } from "../../Context/theme/ThemeContext";
+
 import cameraIcon from "../../assets/images/camera.png";
 import trashIcon from "../../assets/icons/trash.png";
 import { launchCamera, launchImageLibrary } from "react-native-image-picker";
-import BackButtonComponent from "../../components/BackButtonComponent";
+
 import TextInputComponent from "../../components/TextInputComponent";
 import CheckBoxComponent from "../../components/CheckBoxComponent";
 const { width, height } = Dimensions.get("screen");
@@ -27,6 +23,8 @@ const { width, height } = Dimensions.get("screen");
 function LongEventView(props) {
   const [acceptsToShare, setacceptsToShare] = useState(true);
   const [answer, setAnswer] = useState("");
+  const { themeStyle } = useTheme();
+
   const [addedImages, setaddedImages] = useState([
     {
       id: 1,
@@ -66,7 +64,9 @@ function LongEventView(props) {
   }
 
   return (
-    <View style={styles.pageContainer}>
+    <View
+      style={[styles.pageContainer, { backgroundColor: themeStyle.background }]}
+    >
       <HeaderComponenent
         navigation={props.navigation}
         title={"Titre du défis"}
@@ -113,12 +113,18 @@ function LongEventView(props) {
                 fontSize: 19,
                 marginBottom: 10,
                 marginTop: 20,
+                color: themeStyle.text,
               }}
             >
               Description du défis :
             </Text>
             <Text
-              style={{ fontFamily: "Neon", fontSize: 19, textAlign: "justify" }}
+              style={{
+                fontFamily: "Neon",
+                fontSize: 19,
+                textAlign: "justify",
+                color: themeStyle.textless,
+              }}
             >
               Ceci est une superbe description de défis, ça peut être n'importe
               quoi tant qu'on ne perd pas trop d'isépiens, exemple de défis à
@@ -145,7 +151,7 @@ function LongEventView(props) {
               fontSize: 19,
               marginBottom: 10,
               marginTop: 20,
-
+              color: themeStyle.text,
               alignSelf: "baseline",
             }}
           >
@@ -165,7 +171,7 @@ function LongEventView(props) {
               fontSize: 19,
               marginBottom: 10,
               marginTop: 20,
-
+              color: themeStyle.text,
               alignSelf: "baseline",
             }}
           >
@@ -198,7 +204,10 @@ function LongEventView(props) {
               }}
               onPress={() => addImage()}
             >
-              <Image source={cameraIcon} style={{ width: 50, height: 50 }} />
+              <Image
+                source={cameraIcon}
+                style={{ width: 50, height: 50, tintColor: themeStyle.text }}
+              />
             </TouchableOpacity>
 
             <View style={{ flexDirection: "row-reverse" }}>
@@ -250,6 +259,7 @@ function LongEventView(props) {
             <Text
               style={{
                 fontFamily: "ChangaOne_400Regular_Italic",
+                color: themeStyle.textless,
               }}
             >
               Je veux bien que gravity partage ces fichiers avec les Isepiens

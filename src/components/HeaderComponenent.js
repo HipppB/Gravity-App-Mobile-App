@@ -11,10 +11,13 @@ import { LinearGradient } from "expo-linear-gradient";
 import { useTranslation } from "../Context/TranslationContext";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useAuthentification } from "../Context/AuthContext";
+import { useTheme } from "../Context/theme/ThemeContext";
 
 function HeaderComponenent(props) {
   const { langage } = useTranslation();
   const { userInfos } = useAuthentification();
+
+  const { themeStyle } = useTheme();
 
   return (
     <SafeAreaView style={styles.headerContainer}>
@@ -41,8 +44,10 @@ function HeaderComponenent(props) {
           </LinearGradient>
 
           <View style={styles.textContainer}>
-            <Text style={styles.welcomeText}>{langage.bienvenueText}</Text>
-            <Text style={styles.nameText}>
+            <Text style={[styles.welcomeText, { color: themeStyle.textless }]}>
+              {langage.bienvenueText}
+            </Text>
+            <Text style={[styles.nameText, { color: themeStyle.text }]}>
               {userInfos?.first_name || langage.stranger}
             </Text>
           </View>
@@ -58,7 +63,9 @@ function HeaderComponenent(props) {
         </TouchableOpacity>
       </View>
       <View style={styles.titleContainer}>
-        <Text style={styles.title}>{props?.title || "Feel the GRAVITY"}</Text>
+        <Text style={[styles.title, { color: themeStyle.text }]}>
+          {props?.title || "Feel the GRAVITY"}
+        </Text>
       </View>
     </SafeAreaView>
   );

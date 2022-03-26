@@ -9,7 +9,11 @@ import lettero from "../../assets/Letters/Italique/o.png";
 import letterr from "../../assets/Letters/Italique/r.png";
 import lettere from "../../assets/Letters/Italique/e.png";
 import letterd from "../../assets/Letters/Italique/d.png";
+import { useTheme } from "../../Context/theme/ThemeContext";
+
 function GravityView(props) {
+  const { themeStyle } = useTheme();
+
   return (
     <View>
       <View style={styles.labelContainer}>
@@ -66,10 +70,12 @@ function GravityView(props) {
             style={{ marginRight: 7 }}
           />
         </View>
-        <Text style={styles.labelText}>GRAVITY</Text>
+        <Text style={[styles.labelText, { color: themeStyle.text }]}>
+          GRAVITY
+        </Text>
       </View>
       <View style={styles.historyContainer}>
-        <Text style={styles.historyText}>
+        <Text style={[styles.historyText, { color: themeStyle.textless }]}>
           La gravitation, l'une des quatre interactions fondamentales qui
           régissent l'Univers, est l'interaction physique responsable de
           l'attraction des corps massifs. Elle se manifeste notamment par

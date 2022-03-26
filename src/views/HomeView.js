@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   Platform,
 } from "react-native";
+import { useTheme } from "../Context/theme/ThemeContext";
 
 import HeaderComponenent from "../components/HeaderComponenent";
 import GravityView from "./Home/GravityView";
@@ -22,11 +23,13 @@ import useFetch from "../data/useFetch";
 import PoleView from "./Home/PoleView";
 const { width, height } = Dimensions.get("screen");
 function HomeView(props) {
+  const { themeStyle } = useTheme();
+
   const [data, newRequest] = useFetch();
   const { toggleLangage, langage } = useTranslation();
   const { isFirstLogin, setIsFirstLogin } = useAuthentification();
   const [activePage, setActivePage] = useState(0);
-  const [isModalVisible, setModalVisible] = useState(false);
+  const [isModalVisible, setModalVisible] = useState(true);
 
   //Page active :
   const [music, setMusic] = useState(true);
@@ -56,7 +59,9 @@ function HomeView(props) {
   }, []);
 
   return (
-    <View style={styles.container}>
+    <View
+      style={[styles.container, { backgroundColor: themeStyle.background }]}
+    >
       <FirstConnexionPopUp
         isModalVisible={isModalVisible}
         setModalVisible={setModalVisible}
@@ -75,7 +80,11 @@ function HomeView(props) {
               colors={
                 activePage == 0
                   ? ["#0C1316", "#203C42", "#2293D0"]
-                  : ["#E8E8E8", "#E8E8E8", "#E8E8E8"]
+                  : [
+                      themeStyle.backDifferent,
+                      themeStyle.backDifferent,
+                      themeStyle.backDifferent,
+                    ]
               }
               end={{ x: 1, y: 0 }}
               locations={[0.0, 0.25, 0.75]}
@@ -97,7 +106,11 @@ function HomeView(props) {
               colors={
                 activePage == 1
                   ? ["#0C1316", "#203C42", "#2293D0"]
-                  : ["#E8E8E8", "#E8E8E8", "#E8E8E8"]
+                  : [
+                      themeStyle.backDifferent,
+                      themeStyle.backDifferent,
+                      themeStyle.backDifferent,
+                    ]
               }
               end={{ x: 1, y: 0 }}
               locations={[0.0, 0.25, 0.75]}
@@ -119,7 +132,11 @@ function HomeView(props) {
               colors={
                 activePage == 2
                   ? ["#0C1316", "#203C42", "#2293D0"]
-                  : ["#E8E8E8", "#E8E8E8", "#E8E8E8"]
+                  : [
+                      themeStyle.backDifferent,
+                      themeStyle.backDifferent,
+                      themeStyle.backDifferent,
+                    ]
               }
               end={{ x: 1, y: 0 }}
               locations={[0.0, 0.25, 0.75]}
@@ -142,7 +159,11 @@ function HomeView(props) {
                 colors={
                   activePage == 3
                     ? ["#0C1316", "#203C42", "#2293D0"]
-                    : ["#E8E8E8", "#E8E8E8", "#E8E8E8"]
+                    : [
+                        themeStyle.backDifferent,
+                        themeStyle.backDifferent,
+                        themeStyle.backDifferent,
+                      ]
                 }
                 end={{ x: 1, y: 0 }}
                 locations={[0.0, 0.25, 0.75]}
@@ -166,7 +187,11 @@ function HomeView(props) {
                 colors={
                   activePage == 4
                     ? ["#0C1316", "#203C42", "#2293D0"]
-                    : ["#E8E8E8", "#E8E8E8", "#E8E8E8"]
+                    : [
+                        themeStyle.backDifferent,
+                        themeStyle.backDifferent,
+                        themeStyle.backDifferent,
+                      ]
                 }
                 end={{ x: 1, y: 0 }}
                 locations={[0.0, 0.25, 0.75]}
@@ -190,7 +215,11 @@ function HomeView(props) {
                 colors={
                   activePage == 5
                     ? ["#0C1316", "#203C42", "#2293D0"]
-                    : ["#E8E8E8", "#E8E8E8", "#E8E8E8"]
+                    : [
+                        themeStyle.backDifferent,
+                        themeStyle.backDifferent,
+                        themeStyle.backDifferent,
+                      ]
                 }
                 end={{ x: 1, y: 0 }}
                 locations={[0.0, 0.25, 0.75]}

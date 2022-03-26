@@ -3,22 +3,33 @@ import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
 
 import { LinearGradient } from "expo-linear-gradient";
 import { useTranslation } from "../Context/TranslationContext";
+import { useTheme } from "../Context/theme/ThemeContext";
 
 function BottomBarComponent({ navigation, ...props }) {
   let active = props.state?.routeNames[props.state?.index];
   const { toggleLangage, langage } = useTranslation();
+  const { themeStyle } = useTheme();
+
   console.log(active);
   return (
-    <View style={styles.container}>
+    <View
+      style={[styles.container, { backgroundColor: themeStyle.background }]}
+    >
       <TouchableOpacity
         onPress={() => navigation.navigate("Home", { screen: "HomeHome" })}
       >
-        <View style={styles.homeButton}>
+        <View style={[styles.homeButton, { backgroundColor: themeStyle.text }]}>
           <Image
             source={require("../assets/images/home.png")}
-            style={[styles.icons, styles.homeIcon]}
+            style={[
+              styles.icons,
+              styles.homeIcon,
+              { tintColor: themeStyle.background },
+            ]}
           />
-          <Text style={styles.homeText}>{langage.homeButton}</Text>
+          <Text style={[styles.homeText, { color: themeStyle.background }]}>
+            {langage.homeButton}
+          </Text>
         </View>
       </TouchableOpacity>
       <TouchableOpacity
@@ -31,7 +42,11 @@ function BottomBarComponent({ navigation, ...props }) {
           colors={
             active === "Calendar"
               ? ["#E65F02", "#F4C182", "#FFF0C1"]
-              : ["white", "white", "white"]
+              : [
+                  themeStyle.background,
+                  themeStyle.background,
+                  themeStyle.background,
+                ]
           }
           locations={[0.3, 0.7, 0.98]}
           start={{ x: -0.3, y: 0 }}
@@ -42,7 +57,9 @@ function BottomBarComponent({ navigation, ...props }) {
             source={require("../assets/images/calendar.png")}
             style={[
               styles.icons,
-              active === "Calendar" ? styles.activeIcon : styles.inactiveIcon,
+              active === "Calendar"
+                ? { tintColor: "white" }
+                : { tintColor: themeStyle.textless },
               {
                 top: -1,
               },
@@ -54,13 +71,21 @@ function BottomBarComponent({ navigation, ...props }) {
         onPress={() => {
           navigation.navigate("Sponsor", { screen: "sponsorHome" });
         }}
-        style={active === "Sponsor" ? styles.active : {}}
+        style={
+          active === "Sponsor"
+            ? { tintColor: "white" }
+            : { tintColor: themeStyle.textless }
+        }
       >
         <LinearGradient
           colors={
             active === "Sponsor"
               ? ["#E65F02", "#F4C182", "#FFF0C1"]
-              : ["white", "white", "white"]
+              : [
+                  themeStyle.background,
+                  themeStyle.background,
+                  themeStyle.background,
+                ]
           }
           locations={[0.3, 0.7, 0.98]}
           start={{ x: -0.3, y: 0 }}
@@ -71,7 +96,9 @@ function BottomBarComponent({ navigation, ...props }) {
             source={require("../assets/images/hands.png")}
             style={[
               styles.icons,
-              active === "Sponsor" ? styles.activeIcon : styles.inactiveIcon,
+              active === "Sponsor"
+                ? { tintColor: "white" }
+                : { tintColor: themeStyle.textless },
             ]}
           />
         </LinearGradient>
@@ -84,7 +111,11 @@ function BottomBarComponent({ navigation, ...props }) {
           colors={
             active === "Event"
               ? ["#E65F02", "#F4C182", "#FFF0C1"]
-              : ["white", "white", "white"]
+              : [
+                  themeStyle.background,
+                  themeStyle.background,
+                  themeStyle.background,
+                ]
           }
           locations={[0.3, 0.7, 0.98]}
           start={{ x: -0.3, y: 0 }}
@@ -95,7 +126,9 @@ function BottomBarComponent({ navigation, ...props }) {
             source={require("../assets/images/games.png")}
             style={[
               styles.icons,
-              active === "Event" ? styles.activeIcon : styles.inactiveIcon,
+              active === "Event"
+                ? { tintColor: "white" }
+                : { tintColor: themeStyle.textless },
             ]}
           />
         </LinearGradient>

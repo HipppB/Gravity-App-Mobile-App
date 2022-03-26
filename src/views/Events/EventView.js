@@ -14,7 +14,11 @@ const { width, height } = Dimensions.get("screen");
 import EventComponent from "../../components/EventComponent";
 import SpecialEventComponent from "../../components/SpecialEventComponent";
 import { LinearGradient } from "expo-linear-gradient";
+import { useTheme } from "../../Context/theme/ThemeContext";
+
 function EventView(props) {
+  const { themeStyle } = useTheme();
+
   const { toggleLangage, langage } = useTranslation();
   let scrollViewSelector = useRef();
   let scrollViewPages = useRef();
@@ -29,7 +33,9 @@ function EventView(props) {
     });
   }
   return (
-    <View style={styles.container}>
+    <View
+      style={[styles.container, { backgroundColor: themeStyle.background }]}
+    >
       <HeaderComponenent navigation={props.navigation} />
       <View style={{ alignItems: "center" }}>
         <ScrollView
@@ -123,6 +129,7 @@ function EventView(props) {
                   textAlign: "center",
                   alignSelf: "center",
                   marginTop: 20,
+                  color: themeStyle.textless,
                 }}
               >
                 Défis refusés
@@ -143,6 +150,7 @@ function EventView(props) {
                   textAlign: "center",
                   alignSelf: "center",
                   marginTop: 20,
+                  color: themeStyle.textless,
                 }}
               >
                 En attente de validation
@@ -163,6 +171,7 @@ function EventView(props) {
                   textAlign: "center",
                   alignSelf: "center",
                   marginTop: 20,
+                  color: themeStyle.textless,
                 }}
               >
                 Défis validés
@@ -182,7 +191,7 @@ function EventView(props) {
 const styles = StyleSheet.create({
   container: {
     // paddingTop: height * 0.05,
-    backgroundColor: "white",
+
     justifyContent: "space-between",
     height: "100%",
 

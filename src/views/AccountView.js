@@ -14,15 +14,20 @@ import ColorViewComponent from "../components/ColoredViewComponent.js";
 import { useTranslation } from "../Context/TranslationContext";
 import ToggleLangageComponent from "../components/ToggleLangageComponent.js";
 import { useAuthentification } from "../Context/AuthContext";
+import { useTheme } from "../Context/theme/ThemeContext";
+
 const { width, height } = Dimensions.get("screen");
 function AccountView(props) {
   const { toggleLangage, langage } = useTranslation();
   const { logout } = useAuthentification();
+  const { themeStyle } = useTheme();
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView
+      style={[styles.container, { backgroundColor: themeStyle.background }]}
+    >
       <StatusBar
-        backgroundColor="white"
+        backgroundColor={themeStyle.background}
         hideTransitionAnimation="true"
         animated={false}
       />
