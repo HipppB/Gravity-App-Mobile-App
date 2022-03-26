@@ -2,6 +2,7 @@ import React from "react";
 import { StyleSheet, View, Text, Image } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import ColoredViewComponent from "./ColoredViewComponent";
+
 function RestaurantPreviewComponent({ restaurant, navigation, ...props }) {
   return (
     // <View style={styles.container}>
@@ -35,7 +36,7 @@ function RestaurantPreviewComponent({ restaurant, navigation, ...props }) {
             // backgroundColor: "red",
           }}
         >
-          <Text style={styles.title}>{restaurant.title}</Text>
+          <Text style={styles.title}>{restaurant.name}</Text>
           <Text style={styles.adress} selectable>
             {restaurant.adress}
           </Text>

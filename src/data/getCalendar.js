@@ -1,6 +1,9 @@
 import React from "react";
-
+import useFetch from "./useFetch";
 function getCalendar(props) {
+  const [request, newRequest] = useFetch();
+
+  // newRequest();
   const fakeEventList = [
     {
       id: 0,

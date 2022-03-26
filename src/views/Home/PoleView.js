@@ -87,8 +87,6 @@ function Pole(props) {
 
 function Profile({ member }) {
   const { themeStyle } = useTheme();
-
-  console.log(member);
   return (
     <TouchableOpacity
       style={[styles.card, { backgroundColor: themeStyle.backless }]}

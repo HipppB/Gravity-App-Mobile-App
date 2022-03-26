@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   StyleSheet,
   Text,
@@ -7,6 +7,7 @@ import {
   ScrollView,
   Image,
   TouchableOpacity,
+  RefreshControl,
 } from "react-native";
 import BottomBarComponent from "../../components/BottomBarComponent";
 import HeaderComponenent from "../../components/HeaderComponenent";
@@ -15,16 +16,44 @@ import SponsorComponent from "../../components/SponsorComponent";
 import ColoredViewComponent from "../../components/ColoredViewComponent";
 import { useTranslation } from "../../Context/TranslationContext";
 import { useTheme } from "../../Context/theme/ThemeContext";
+import { useAuthentification } from "../../Context/AuthContext";
+
+import useFetch from "../../data/useFetch";
 
 import leftArrow from "../../assets/images/left-arrow.png";
 const { width, height } = Dimensions.get("screen");
 
 function SponsorView(props) {
-  const [sponsorList, setSponsorList] = useState(getSponsors());
   const { toggleLangage, langage } = useTranslation();
   const { themeStyle } = useTheme();
 
-  console.log(sponsorList?.length);
+  const [markers, setMarkers] = useState([]);
+
+  //DARA
+  const [isRefreshing, setRefreshing] = useState(false);
+  const [request, newRequest] = useFetch();
+  const { apiToken } = useAuthentification();
+  const [sponsorList, setSponsorList] = useState([]);
+
+  function updateData() {
+    setRefreshing(true);
+    newRequest("sponsor/all", "GET", {}, apiToken);
+  }
+
+  function updateDataFood() {
+    newRequest("sponsor/food/all", "GET", {}, apiToken);
+  }
+
+  useEffect(() => {
+    updateData();
+  }, []);
+  useEffect(() => {
+    console.log("RESULT", request);
+    if (request?.status === "Done") {
+      setSponsorList(request.content);
+      setRefreshing(false);
+    }
+  }, [request]);
   return (
     <View
       style={[styles.container, { backgroundColor: themeStyle.background }]}
@@ -35,6 +64,9 @@ function SponsorView(props) {
           styles.bodyContainer,
           { backgroundColor: themeStyle.background },
         ]}
+        refreshControl={
+          <RefreshControl refreshing={isRefreshing} onRefresh={updateData} />
+        }
       >
         <View style={{ paddingBottom: 20, paddingTop: 20 }}>
           <TouchableOpacity
@@ -73,11 +105,17 @@ function SponsorView(props) {
             ))
           ) : (
             <View style={[styles.noSponsorContainer]}>
-              <Text style={styles.noSponsorText}>{langage.noSponsor}</Text>
+              <Text
+                style={[styles.noSponsorText, { color: themeStyle.textless }]}
+              >
+                {langage.noSponsor}
+              </Text>
               <TouchableOpacity
                 onPress={() => props.navigation.navigate("sponsorRestaurant")}
               >
-                <Text style={styles.noSponsorText}>
+                <Text
+                  style={[styles.noSponsorText, { color: themeStyle.textless }]}
+                >
                   {langage.foodForWaiting}
                 </Text>
               </TouchableOpacity>
@@ -103,9 +141,7 @@ const styles = StyleSheet.create({
     paddingBottom: 50,
   },
   noSponsorContainer: {
-    height: "50%",
-    alignItems: "center",
-    justifyContent: "center",
+    marginTop: 50,
   },
   noSponsorText: {
     fontSize: 20,

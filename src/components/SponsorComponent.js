@@ -16,7 +16,7 @@ import ColoredViewComponent from "./ColoredViewComponent";
 import { useTranslation } from "../Context/TranslationContext";
 import { useTheme } from "../Context/theme/ThemeContext";
 
-function SponsorComponent(props) {
+function SponsorComponent({ sponsor }) {
   const [isOpen, setisOpen] = useState(false);
   const containerHeight = useRef(new Animated.Value(0)).current;
   const opacityContent = useRef(new Animated.Value(0)).current;
@@ -95,7 +95,7 @@ function SponsorComponent(props) {
                 lineHeight: 20,
               }}
             >
-              Nom du sponsor
+              {sponsor.name}
             </Text>
             <Text
               style={{
@@ -146,7 +146,7 @@ function SponsorComponent(props) {
           </Text>
           <TouchableOpacity
             style={[styles.buttonTouchableContainer]}
-            onPress={() => Linking.openURL("https://liste-gravity.fr")}
+            onPress={() => Linking.openURL(sponsor.link)}
           >
             <ColoredViewComponent
               coloredViewStyle={styles.buttonContainer}

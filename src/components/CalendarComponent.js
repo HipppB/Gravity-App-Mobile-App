@@ -18,12 +18,12 @@ function CalendarComponent({ event, navigation, ...props }) {
     >
       <Image
         source={{
-          uri: event.imageUrl,
+          uri: event.image,
         }}
         style={styles.backgroundImage}
       />
-      <Text style={styles.textInfos}>{event.where}</Text>
-      <Text style={styles.textName}>{event.name}</Text>
+      <Text style={styles.textInfos}>{event.translation[0].short_desc}</Text>
+      <Text style={styles.textName}>{event.translation[0].title}</Text>
     </TouchableOpacity>
   );
 }

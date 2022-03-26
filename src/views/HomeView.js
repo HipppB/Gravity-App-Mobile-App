@@ -232,7 +232,7 @@ function HomeView(props) {
                     activePage == 5 ? styles.buttonSelectorViewTextActive : {},
                   ]}
                 >
-                  Recettes pompettes
+                  Recettes pétillantes
                 </Text>
               </LinearGradient>
             </TouchableOpacity>

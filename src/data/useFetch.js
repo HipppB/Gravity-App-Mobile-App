@@ -3,9 +3,10 @@ import { useAuthentification } from "../Context/AuthContext";
 
 const useFetch = () => {
   const [data, setData] = useState(null);
+  // const { apiToken } = useAuthentification();
 
   async function newRequest(endPoint, method, content, apiToken) {
-    console.log(content + " -> " + JSON.stringify(content));
+    console.log("HEY NEW REQUEST ", content + " -> " + JSON.stringify(content));
     const API = "https://api.liste-gravity.fr/";
     let options = {
       method: method,
@@ -24,6 +25,8 @@ const useFetch = () => {
     const response = await fetch(API + endPoint, options);
 
     const json = await response.json();
+    console.log("HEY NEW RESULT ", data);
+
     setData({ status: "Done", content: json });
     return { status: "Done", content: json };
   }

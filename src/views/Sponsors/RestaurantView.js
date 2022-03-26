@@ -1,84 +1,121 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import {
   StyleSheet,
   View,
   Text,
   ScrollView,
   Dimensions,
+  RefreshControl,
   TouchableOpacity,
 } from "react-native";
 
 import MapView, { Marker } from "react-native-maps";
 import { useTranslation } from "../../Context/TranslationContext";
-
+import useFetch from "../../data/useFetch";
+import { useAuthentification } from "../../Context/AuthContext";
 import RestaurantPreviewComponent from "../../components/RestaurantPreviewComponent";
 import ColoredViewComponent from "../../components/ColoredViewComponent";
+import { useTheme } from "../../Context/theme/ThemeContext";
+
 const { width, height } = Dimensions.get("screen");
 
 function RestaurantView(props) {
+  const { themeStyle } = useTheme();
+
   let scrollViewRestaurant = useRef();
   const { toggleLangage, langage } = useTranslation();
   const [scrolledPage, setScrolledPage] = useState(0);
 
-  const markers = [
-    {
-      index: 1,
-      latlng: { latitude: 48.84554, longitude: 2.32779 },
-      title: "ISEP NDC",
-      description: "Campus NDC de l'isep",
-      adress: "75000 Paris (Précis hein)",
-      longDescription:
-        "Super Description qui peut être plus ou moins longue et plus ou moins utile, en tout cas les gens ne manqueront aucune offre food ",
-    },
-    {
-      index: 2,
-      latlng: { latitude: 48.84406, longitude: 2.33093 },
-      title: "Subway",
-      description: "Subway à côté de NDC",
-      adress: "France",
-      longDescription:
-        "Super Description qui peut être plus ou moins longue et plus ou moins utile, en tout cas les gens ne manqueront aucune offre food ",
-    },
-  ];
-  let markerRefList = [];
+  // const markers = [
+  //   {
+  //     index: 1,
+  //     latlng: { latitude: 48.84554, longitude: 2.32779 },
+  //     title: "ISEP NDC",
+  //     description: "Campus NDC de l'isep",
+  //     adress: "75000 Paris (Précis hein)",
+  //     longDescription:
+  //       "Super Description qui peut être plus ou moins longue et plus ou moins utile, en tout cas les gens ne manqueront aucune offre food ",
+  //   },
+  //   {
+  //     index: 2,
+  //     latlng: { latitude: 48.84406, longitude: 2.33093 },
+  //     title: "Subway",
+  //     description: "Subway à côté de NDC",
+  //     adress: "France",
+  //     longDescription:
+  //       "Super Description qui peut être plus ou moins longue et plus ou moins utile, en tout cas les gens ne manqueront aucune offre food ",
+  //   },
+  // ];
+  //DARA
+  const [isRefreshing, setRefreshing] = useState(false);
+  const [request, newRequest] = useFetch();
+  const { apiToken } = useAuthentification();
+  const [markers, setMarkers] = useState([]);
+
+  function updateData() {
+    setRefreshing(true);
+    newRequest("sponsor/food/all", "GET", {}, apiToken);
+  }
+
+  useEffect(() => {
+    updateData();
+  }, []);
+  useEffect(() => {
+    console.log("RESULT", request);
+    if (request?.status === "Done") {
+      setMarkers(request.content);
+      setRefreshing(false);
+    }
+  }, [request]);
+
+  let markerRefList = useRef(new Array());
   return (
-    <View style={styles.container}>
+    <View
+      style={[styles.container, { backgroundColor: themeStyle.background }]}
+    >
       <View style={styles.titleContainer}>
-        <Text style={styles.titleText}>{langage.regaleToi}</Text>
+        <Text style={[styles.titleText, { color: themeStyle.textless }]}>
+          {langage.regaleToi}
+        </Text>
       </View>
-      <MapView
-        style={styles.mapContainer}
-        // provider={PROVIDER_GOOGLE}
-        showsUserLocation
-        initialRegion={{
-          latitude: 48.84554,
-          longitude: 2.32779,
-          latitudeDelta: 0.0922,
-          longitudeDelta: 0.0421,
-        }}
-      >
-        {markers.map((marker) => {
-          let markerRef = useRef();
-          let markerIndex = markerRefList.length;
-          console.log(markerRefList.length);
-          markerRefList.push(markerRef);
-          return (
-            <Marker
-              ref={markerRef}
-              onPress={() =>
-                scrollViewRestaurant.current.scrollTo({
-                  x: markerIndex * width,
-                  animated: true,
-                })
-              }
-              key={marker.index}
-              coordinate={marker.latlng}
-              title={marker.title}
-              description={marker.description}
-            />
-          );
-        })}
-      </MapView>
+      {!isRefreshing && (
+        <>
+          <MapView
+            style={styles.mapContainer}
+            // provider={PROVIDER_GOOGLE}
+            showsUserLocation
+            initialRegion={{
+              latitude: 48.84554,
+              longitude: 2.32779,
+              latitudeDelta: 0.09,
+              longitudeDelta: 0.05,
+            }}
+          >
+            {markers.map((marker, index) => {
+              // let markerRef = useRef();
+
+              return (
+                <Marker
+                  ref={(m) => markerRefList.current.push(m)}
+                  onPress={() =>
+                    scrollViewRestaurant.current.scrollTo({
+                      x: index * width,
+                      animated: true,
+                    })
+                  }
+                  key={marker.id}
+                  coordinate={{
+                    longitude: marker.location.coordinates[0],
+                    latitude: marker.location.coordinates[1],
+                  }}
+                  title={marker.name}
+                  description={marker.description}
+                />
+              );
+            })}
+          </MapView>
+        </>
+      )}
       <ScrollView
         ref={scrollViewRestaurant}
         style={styles.scrollContainer}
@@ -89,11 +126,11 @@ function RestaurantView(props) {
           let newpage = Math.round(e.nativeEvent.contentOffset.x / width);
           // setActivePage(newpage);
           setScrolledPage(newpage);
-          markerRefList[newpage].current.showCallout();
+          markerRefList.current[newpage].showCallout();
         }}
       >
         {markers.map((marker) => (
-          <View style={styles.restaurantPreviewContainer} key={marker.index}>
+          <View style={styles.restaurantPreviewContainer} key={marker.id}>
             <RestaurantPreviewComponent
               restaurant={marker}
               navigation={props.navigation}

@@ -15,8 +15,11 @@ const { width, height } = Dimensions.get("screen");
 import MapView, { Marker } from "react-native-maps";
 import { ScrollView } from "react-native-gesture-handler";
 import ColoredViewComponent from "../../components/ColoredViewComponent";
+import { useTheme } from "../../Context/theme/ThemeContext";
 
 function RestaurantDetailView({ restaurant, route, navigation }) {
+  const { themeStyle } = useTheme();
+
   function openInApp() {
     let lat = 48.84554;
     let lon = 2.32779;
@@ -27,7 +30,7 @@ function RestaurantDetailView({ restaurant, route, navigation }) {
   return (
     <View
       style={{
-        backgroundColor: "white",
+        backgroundColor: themeStyle.background,
         flex: 1,
       }}
     >
@@ -53,11 +56,19 @@ function RestaurantDetailView({ restaurant, route, navigation }) {
                 alignSelf: "flex-start",
                 marginTop: 20,
                 marginBottom: 10,
+                color: themeStyle.textless,
               }}
             >
               L'offre GRAVITY
             </Text>
-            <Text style={{ fontFamily: "Neon", lineHeight: 20, fontSize: 18 }}>
+            <Text
+              style={{
+                fontFamily: "Neon",
+                lineHeight: 20,
+                fontSize: 18,
+                color: themeStyle.textless,
+              }}
+            >
               COOKIES OFFERTS (J'espere sincerement que le respo food offre des
               cookies et qu'il m'en gardera, car c'est bon les cookies)
             </Text>
@@ -68,7 +79,7 @@ function RestaurantDetailView({ restaurant, route, navigation }) {
                 alignSelf: "flex-start",
                 marginTop: 20,
                 marginBottom: 10,
-
+                color: themeStyle.textless,
                 width: "100%",
               }}
             >
@@ -80,7 +91,7 @@ function RestaurantDetailView({ restaurant, route, navigation }) {
                 lineHeight: 20,
                 fontSize: 18,
                 marginBottom: 10,
-
+                color: themeStyle.textless,
                 width: "100%",
               }}
             >

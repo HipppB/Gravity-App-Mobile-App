@@ -29,12 +29,14 @@ const { width, height } = Dimensions.get("screen");
 
 function DetailCalendarView(props) {
   const { themeStyle } = useTheme();
+  const event = props.route.params.event;
 
   function openInApp() {
-    let lat = 48.84554;
-    let lon = 2.32779;
     Linking.openURL(
-      "https://www.google.com/maps/search/?api=1&query=" + lat + "%2C" + lon
+      "https://www.google.com/maps/search/?api=1&query=" +
+        event.location.coordinates[0] +
+        "%2C" +
+        event.location.coordinates[1]
     );
   }
   const { toggleLangage, langage } = useTranslation();
@@ -43,7 +45,7 @@ function DetailCalendarView(props) {
   function openModal() {
     setModalParticipantVisible(!isModalParticipantVisible);
   }
-  const event = props.route.params.event;
+
   return (
     <View
       style={[styles.container, { backgroundColor: themeStyle.background }]}
@@ -73,7 +75,7 @@ function DetailCalendarView(props) {
                     fontSize: 18,
                   }}
                 >
-                  {event.name}
+                  {event.translation[0].title}
                 </Text>
               </View>
             </ColoredViewComponent>
@@ -81,7 +83,7 @@ function DetailCalendarView(props) {
           <View>
             <Image
               source={{
-                uri: event.imageUrl,
+                uri: event.image,
               }}
               style={styles.backgroundImage}
             />
@@ -138,7 +140,7 @@ function DetailCalendarView(props) {
                 />
               </View>
               <Text style={[styles.labelText, { color: themeStyle.text }]}>
-                {event.name}
+                {event.translation[0].title}
               </Text>
             </View>
           </View>
@@ -152,16 +154,14 @@ function DetailCalendarView(props) {
                 color: themeStyle.textless,
               }}
             >
-              Ceci est une superbe description d'event, venez nous rejoindre
-              pour toujours plus de suprises, le pôle com pourra évidemment
-              modifier ce message car bon, ce n'est pas mon job
+              {event.translation[0].long_desc}
             </Text>
             <MapView
               style={styles.mapContainer}
               showsUserLocation
               initialRegion={{
-                latitude: 48.84554,
-                longitude: 2.32779,
+                latitude: event.location.coordinates[0],
+                longitude: event.location.coordinates[1],
                 latitudeDelta: 0.0922,
                 longitudeDelta: 0.0421,
               }}
@@ -187,50 +187,55 @@ function DetailCalendarView(props) {
                 <Text style={styles.buttonText}>Ouvrir dans maps</Text>
               </ColoredViewComponent>
             </TouchableOpacity>
-            <View
-              style={{
-                flexDirection: "row",
-                alignItems: "center",
-                marginTop: 10,
-                height: 50,
-                position: "relative",
-              }}
-            >
-              <Text
-                style={{
-                  fontFamily: "ChangaOne_400Regular",
-                  fontSize: 18,
-                  marginRight: 10,
-                  color: themeStyle.text,
-                }}
-              >
-                {langage.theyAreIn} :
-              </Text>
+            {event?.open && (
+              <>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    alignItems: "center",
+                    marginTop: 10,
+                    height: 50,
+                    position: "relative",
+                  }}
+                >
+                  <Text
+                    style={{
+                      fontFamily: "ChangaOne_400Regular",
+                      fontSize: 18,
+                      marginRight: 10,
+                      color: themeStyle.text,
+                    }}
+                  >
+                    {langage.theyAreIn} :
+                  </Text>
 
-              <PersonsHeads
-                listOfHeads={[
-                  require("../GravityHeadCrush/images/1.png"),
-                  require("../GravityHeadCrush/images/2.png"),
-                  require("../GravityHeadCrush/images/3.png"),
-                  require("../GravityHeadCrush/images/4.png"),
-                  require("../GravityHeadCrush/images/5.png"),
-                ]}
-                number={50}
-                navigation={props.navigation}
-                setVisible={openModal}
-              />
-            </View>
-            <TouchableOpacity
-              style={styles.buttonTouchableContainer}
-              onPress={() => console.log("IL PARTICIPE")}
-            >
-              <ColoredViewComponent
-                coloredViewStyle={styles.buttonContainer}
-                containerStyle={styles.buttonContainerContainer}
-              >
-                <Text style={styles.buttonText}>{langage.imInButton}</Text>
-              </ColoredViewComponent>
-            </TouchableOpacity>
+                  <PersonsHeads
+                    listOfHeads={[
+                      require("../GravityHeadCrush/images/1.png"),
+                      require("../GravityHeadCrush/images/2.png"),
+                      require("../GravityHeadCrush/images/3.png"),
+                      require("../GravityHeadCrush/images/4.png"),
+                      require("../GravityHeadCrush/images/5.png"),
+                    ]}
+                    number={50}
+                    navigation={props.navigation}
+                    setVisible={openModal}
+                  />
+                </View>
+
+                <TouchableOpacity
+                  style={styles.buttonTouchableContainer}
+                  onPress={() => console.log("IL PARTICIPE")}
+                >
+                  <ColoredViewComponent
+                    coloredViewStyle={styles.buttonContainer}
+                    containerStyle={styles.buttonContainerContainer}
+                  >
+                    <Text style={styles.buttonText}>{langage.imInButton}</Text>
+                  </ColoredViewComponent>
+                </TouchableOpacity>
+              </>
+            )}
           </View>
         </View>
       </ScrollView>
