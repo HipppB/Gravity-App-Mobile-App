@@ -65,6 +65,13 @@
 	<string>Qu'est ce qu'une vidéo sans son ? Permet à l'app d'enregistrer le son !</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Utilisation de la librairie de photo pour pouvoir envoyer des photos à la graviteam.</string>
+	<key>NSUserActivityTypes</key>
+	<array>
+		<string>INSendMessageIntent</string>
+		<true/>
+		<string>INSendMessageIntent</string>
+		<true/>
+	</array>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>fetch</string>

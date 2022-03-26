@@ -136,7 +136,7 @@ android {
         applicationId 'com.gravitylesvraisdevrais.app'
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 8
+        versionCode 9
         versionName "1.1.4"
     }
     splits {
