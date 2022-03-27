@@ -16,10 +16,10 @@ import MapView, { Marker } from "react-native-maps";
 import { ScrollView } from "react-native-gesture-handler";
 import ColoredViewComponent from "../../components/ColoredViewComponent";
 import { useTheme } from "../../Context/theme/ThemeContext";
-
+import { useTranslation } from "../../Context/TranslationContext";
 function RestaurantDetailView({ restaurant, route, navigation }) {
   const { themeStyle } = useTheme();
-
+  const { langage } = useTranslation();
   function openInApp() {
     let lat = 48.84554;
     let lon = 2.32779;
@@ -27,6 +27,7 @@ function RestaurantDetailView({ restaurant, route, navigation }) {
       "https://www.google.com/maps/search/?api=1&query=" + lat + "%2C" + lon
     );
   }
+
   return (
     <View
       style={{
@@ -59,7 +60,7 @@ function RestaurantDetailView({ restaurant, route, navigation }) {
                 color: themeStyle.textless,
               }}
             >
-              L'offre GRAVITY
+              {langage.gravityOffer}
             </Text>
             <Text
               style={{
@@ -83,7 +84,7 @@ function RestaurantDetailView({ restaurant, route, navigation }) {
                 width: "100%",
               }}
             >
-              Accès au restaurant
+              {langage.restaurantAccess}
             </Text>
             <Text
               style={{
@@ -117,7 +118,7 @@ function RestaurantDetailView({ restaurant, route, navigation }) {
               <ColoredViewComponent
                 coloredViewStyle={styles.realtitleContainer}
               >
-                <Text style={styles.titleText}>Y aller</Text>
+                <Text style={styles.titleText}>{langage.go}</Text>
               </ColoredViewComponent>
             </TouchableOpacity>
           </View>

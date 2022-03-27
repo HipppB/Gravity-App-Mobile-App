@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import {
   StyleSheet,
   View,
@@ -10,49 +10,51 @@ import {
 } from "react-native";
 import Modal from "react-native-modal";
 import ColoredViewComponent from "./ColoredViewComponent";
-const DATA = [];
+import getImage from "../components/data/getImage";
+import { useAuthentification } from "../Context/AuthContext";
 import { useTranslation } from "../Context/TranslationContext";
 
-const getItem = (data, index) => ({
-  id: Math.random().toString(12).substring(0),
-  title: index === 499 ? "Tu es le meilleur testeur !" : `Amaury ${index + 1}`,
-});
+const Item = ({ participant, title, navigation, setVisible }) => {
+  const { apiToken } = useAuthentification();
 
-const getItemCount = (data) => 500;
+  const [image, setImage] = useState();
 
-const Item = ({ title, navigation, setVisible }) => {
-  if (title === "Tu es le meilleur testeur !") {
-    return (
-      <Text style={styles.itemTitle}>
-        {title} En vrai t'as eu du courage de descendre jusque là, en esperant
-        que ça soit encore plus long pour descendre la liste des participants
-        Gravity
-      </Text>
-    );
-  }
+  useEffect(() => {
+    if (participant?.profile_picture) {
+      getImage(participant.profile_picture, apiToken, setImage);
+    } else if (participant?.first_name || participant?.last_name) {
+      setImage(
+        "https://ui-avatars.com/api/?name=" +
+          participant?.first_name +
+          "+" +
+          participant?.last_name
+      );
+    }
+  }, [participant]);
   return (
     <TouchableOpacity
       style={styles.item}
       onPress={() => {
         setVisible(false);
-        navigation.navigate("PublicProfil");
+        navigation.navigate("PublicProfil", { id: participant.id });
       }}
     >
-      <Image
-        source={require("../GravityHeadCrush/images/1.png")}
-        style={styles.itemImage}
-      />
+      <Image source={{ uri: image }} style={styles.itemImage} />
 
       <Text numberOfLines={1} style={styles.itemTitle}>
-        {title}
+        {participant.first_name}
       </Text>
     </TouchableOpacity>
   );
 };
 
-function ModalPersonList({ isVisible, setVisible, navigation }) {
+function ModalPersonList({ isVisible, setVisible, navigation, participants }) {
   const { langage, selectedLangage } = useTranslation();
-
+  const getItem = (data, index) => ({
+    id: Math.random().toString(12).substring(0),
+    title:
+      index === 499 ? "Tu es le meilleur testeur !" : `Amaury ${index + 1}`,
+  });
   return (
     <Modal
       isVisible={isVisible}
@@ -67,49 +69,51 @@ function ModalPersonList({ isVisible, setVisible, navigation }) {
         />
       }
     >
-      <View style={styles.modalContent}>
-        <Text
-          style={{
-            fontFamily: "ChangaOne_400Regular",
-            fontSize: 25,
-            marginBottom: 20,
-            textAlign: "center",
-          }}
-        >
-          {langage.presentPersons}
-        </Text>
-        <VirtualizedList
-          style={{
-            maxHeight: "75%",
-            marginBottom: 10,
-            width: "80%",
-          }}
-          data={DATA}
-          initialNumToRender={4}
-          renderItem={({ item }) => (
-            <Item
-              key={item.id}
-              title={item.title}
-              navigation={navigation}
-              setVisible={setVisible}
-            />
-          )}
-          keyExtractor={(item) => item.id}
-          getItemCount={getItemCount}
-          getItem={getItem}
-        />
-        <TouchableOpacity
-          style={[styles.buttonTouchableContainer]}
-          onPress={() => setVisible(false)}
-        >
-          <ColoredViewComponent
-            coloredViewStyle={styles.buttonContainer}
-            containerStyle={styles.buttonContainerContainer}
+      {participants.length > 0 && (
+        <View style={styles.modalContent}>
+          <Text
+            style={{
+              fontFamily: "ChangaOne_400Regular",
+              fontSize: 25,
+              marginBottom: 20,
+              textAlign: "center",
+            }}
           >
-            <Text style={styles.buttonText}>{langage.close}</Text>
-          </ColoredViewComponent>
-        </TouchableOpacity>
-      </View>
+            {langage.presentPersons}
+          </Text>
+          <VirtualizedList
+            style={{
+              maxHeight: "75%",
+              marginBottom: 10,
+              width: "80%",
+            }}
+            data={participants}
+            initialNumToRender={4}
+            renderItem={(participant) => (
+              <Item
+                participant={participant.item}
+                key={participant.id}
+                navigation={navigation}
+                setVisible={setVisible}
+              />
+            )}
+            keyExtractor={(participant) => participant.id}
+            getItemCount={() => participants.length}
+            getItem={(participant, index) => participant[index]}
+          />
+          <TouchableOpacity
+            style={[styles.buttonTouchableContainer]}
+            onPress={() => setVisible(false)}
+          >
+            <ColoredViewComponent
+              coloredViewStyle={styles.buttonContainer}
+              containerStyle={styles.buttonContainerContainer}
+            >
+              <Text style={styles.buttonText}>{langage.close}</Text>
+            </ColoredViewComponent>
+          </TouchableOpacity>
+        </View>
+      )}
     </Modal>
   );
 }

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   StyleSheet,
   View,
@@ -24,19 +24,51 @@ import MapView, { Marker } from "react-native-maps";
 import { useTranslation } from "../Context/TranslationContext";
 import ModalPersonList from "../components/ModalPersonList";
 import { useTheme } from "../Context/theme/ThemeContext";
+import getImage from "../components/data/getImage";
+import { useAuthentification } from "../Context/AuthContext";
+import useFetch from "../data/useFetch";
 
 const { width, height } = Dimensions.get("screen");
 
 function DetailCalendarView(props) {
+  const { apiToken } = useAuthentification();
   const { themeStyle } = useTheme();
   const event = props.route.params.event;
+  const [request, newRequest] = useFetch();
+  const [requestInscription, newRequestInscription] = useFetch();
+  const [statusInscription, setStatusInscription] = useState();
+  const [participants, setParticipants] = useState([]);
 
+  const [image, setImage] = useState();
+  function getHeads() {
+    newRequest("event/" + event.id, "GET", {}, apiToken);
+  }
+  useEffect(() => {
+    getImage(event.image, apiToken, setImage);
+    if (event.open) {
+      getHeads();
+    }
+  }, [event]);
+  useEffect(() => {
+    if (request?.status === "Done") {
+      setParticipants(request.content.registered_user);
+      console.log("PARTICIPANT UPDATED");
+    }
+  }, [request]);
+
+  useEffect(() => {
+    console.log("HERE YOU");
+    if (requestInscription?.status === "Done") {
+      console.log("HERE YOU YOU");
+      getHeads();
+    }
+  }, [requestInscription]);
   function openInApp() {
     Linking.openURL(
       "https://www.google.com/maps/search/?api=1&query=" +
-        event.location.coordinates[0] +
+        event.location.coordinates[1] +
         "%2C" +
-        event.location.coordinates[1]
+        event.location.coordinates[0]
     );
   }
   const { toggleLangage, langage } = useTranslation();
@@ -54,6 +86,7 @@ function DetailCalendarView(props) {
         isVisible={isModalParticipantVisible}
         setVisible={setModalParticipantVisible}
         navigation={props.navigation}
+        participants={participants}
       />
       <HeaderComponenent navigation={props.navigation} />
       <ScrollView style={styles.bodyScrollContainer}>
@@ -83,7 +116,7 @@ function DetailCalendarView(props) {
           <View>
             <Image
               source={{
-                uri: event.image,
+                uri: image,
               }}
               style={styles.backgroundImage}
             />
@@ -160,16 +193,19 @@ function DetailCalendarView(props) {
               style={styles.mapContainer}
               showsUserLocation
               initialRegion={{
-                latitude: event.location.coordinates[0],
-                longitude: event.location.coordinates[1],
+                latitude: event.location.coordinates[1],
+                longitude: event.location.coordinates[0],
                 latitudeDelta: 0.0922,
                 longitudeDelta: 0.0421,
               }}
             >
               <Marker
-                coordinate={{ latitude: 48.84554, longitude: 2.32779 }}
-                title={"ISEP NDC"}
-                description={"Des crêpes à tomber"}
+                coordinate={{
+                  latitude: event.location.coordinates[1],
+                  longitude: event.location.coordinates[0],
+                }}
+                title={event.location_title}
+                description={event.location_subtitle}
               />
             </MapView>
             <TouchableOpacity
@@ -210,14 +246,7 @@ function DetailCalendarView(props) {
                   </Text>
 
                   <PersonsHeads
-                    listOfHeads={[
-                      require("../GravityHeadCrush/images/1.png"),
-                      require("../GravityHeadCrush/images/2.png"),
-                      require("../GravityHeadCrush/images/3.png"),
-                      require("../GravityHeadCrush/images/4.png"),
-                      require("../GravityHeadCrush/images/5.png"),
-                    ]}
-                    number={50}
+                    participants={participants}
                     navigation={props.navigation}
                     setVisible={openModal}
                   />
@@ -225,13 +254,25 @@ function DetailCalendarView(props) {
 
                 <TouchableOpacity
                   style={styles.buttonTouchableContainer}
-                  onPress={() => console.log("IL PARTICIPE")}
+                  onPress={() => {
+                    newRequestInscription(
+                      "event/inscription/" + event.id,
+                      "GET",
+                      {},
+                      apiToken
+                    );
+                  }}
+                  disabled={requestInscription?.status === "Loading"}
                 >
                   <ColoredViewComponent
                     coloredViewStyle={styles.buttonContainer}
                     containerStyle={styles.buttonContainerContainer}
                   >
-                    <Text style={styles.buttonText}>{langage.imInButton}</Text>
+                    <Text style={styles.buttonText}>
+                      {requestInscription?.status === "Loading"
+                        ? langage.isSaving
+                        : langage.imInButton}
+                    </Text>
                   </ColoredViewComponent>
                 </TouchableOpacity>
               </>
@@ -242,25 +283,39 @@ function DetailCalendarView(props) {
     </View>
   );
 }
-function PersonsHeads({ listOfHeads, number, navigation, setVisible }) {
+function PersonsHeads({ listOfHeads, navigation, setVisible, participants }) {
+  let [numberOfHead, setNumberOfHead] = useState([]);
+
+  let [arrayHeads, setheads] = useState([]);
+  useEffect(() => {
+    let newNumberOfHead = participants.length > 5 ? 5 : participants.length;
+    setNumberOfHead(newNumberOfHead);
+    setheads(participants.slice(0, newNumberOfHead));
+  }, [participants]);
   return (
     <View
       style={{
         flexDirection: "row",
       }}
     >
-      {listOfHeads.map((head, index) => (
-        <PersonHead
-          image={head}
-          position={index}
-          key={index}
-          onPress={() => navigation.navigate("PublicProfil")}
-        />
-      ))}
+      {arrayHeads.length > 0 &&
+        arrayHeads.map((person, index) => {
+          console.log(person);
+          return (
+            <PersonHead
+              person={person}
+              position={index}
+              key={index}
+              onPress={() =>
+                navigation.navigate("PublicProfil", { id: person.id })
+              }
+            />
+          );
+        })}
       <TouchableOpacity
         style={{
           position: "absolute",
-          left: listOfHeads.length * 20,
+          left: arrayHeads.length * 20,
           alignSelf: "center",
           width: 40,
           height: 40,
@@ -282,13 +337,29 @@ function PersonsHeads({ listOfHeads, number, navigation, setVisible }) {
             textAlign: "center",
           }}
         >
-          +{number}
+          +{participants.length - numberOfHead}
         </Text>
       </TouchableOpacity>
     </View>
   );
 }
-function PersonHead({ image, position, onPress }) {
+function PersonHead({ person, position, onPress }) {
+  const { apiToken } = useAuthentification();
+
+  const [image, setImage] = useState();
+  console.log("PERSON", person);
+  useEffect(() => {
+    if (person?.profile_picture) {
+      getImage(person.profile_picture, apiToken, setImage);
+    } else if (person?.first_name || person?.last_name) {
+      setImage(
+        "https://ui-avatars.com/api/?name=" +
+          person?.first_name +
+          "+" +
+          person?.last_name
+      );
+    }
+  }, [person]);
   return (
     <TouchableOpacity
       style={{
@@ -299,12 +370,14 @@ function PersonHead({ image, position, onPress }) {
       onPress={onPress}
     >
       <Image
-        source={image}
+        source={{ uri: image }}
         style={{
           width: 40,
           height: 40,
           resizeMode: "cover",
           backgroundColor: "black",
+          alignSelf: "center",
+
           borderRadius: 50,
         }}
       />

@@ -69,7 +69,10 @@
     "accountCreatedDesc": "Vous avez reçu un lien par email permettant de verifier votre adresse e-mail.",
     "accountNotCreated": "Votre compte n'a  pas pu être créé !",
     "accountNotCreatedDesc": "Les informations rentrés semblent invalides. Si le problème persiste contactez Gravity.",
-    "toggleNotif": "Gerer les notifications"
+    "toggleNotif": "Gerer les notifications",
+    "restaurantAccess": "Accès au restaurant",
+    "go": "Y aller",
+    "gravityOffer": "L'offre GRAVITY"
   },
   "en": {
     "connexionButton": "Login",
@@ -141,6 +144,9 @@
     "accountCreatedDesc": "You received a link on your email to confirm your email.",
     "accountNotCreated": "Your account has not been created !",
     "accountNotCreatedDesc": "The entered data seems incorrect. If you suspect a problem contact a member of Gravity !",
-    "toggleNotif": "Manage notifications"
+    "toggleNotif": "Manage notifications",
+    "restaurantAccess": "Restaurant access",
+    "go": "Go",
+    "gravityOffer": "GRAVITY's offer"
   }
 }

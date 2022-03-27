@@ -6,6 +6,7 @@ const useFetch = () => {
   // const { apiToken } = useAuthentification();
 
   async function newRequest(endPoint, method, content, apiToken) {
+    setData({ status: "Loading", content: null });
     console.log("HEY NEW REQUEST ", content + " -> " + JSON.stringify(content));
     const API = "https://api.liste-gravity.fr/";
     let options = {
@@ -20,7 +21,6 @@ const useFetch = () => {
       options.body = JSON.stringify(content);
     }
 
-    setData({ status: "Loading", content: null });
     console.info(API + endPoint, options);
     const response = await fetch(API + endPoint, options);
 

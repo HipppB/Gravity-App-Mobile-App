@@ -31,7 +31,6 @@ function CalendarView(props) {
     updateData();
   }, []);
   useEffect(() => {
-    console.log("RESULT", request);
     if (request?.status === "Done") {
       setEventList(request.content);
       setRefreshing(false);

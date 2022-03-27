@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   StyleSheet,
   Text,
@@ -8,20 +8,22 @@ import {
   TouchableOpacity,
 } from "react-native";
 
+import { useAuthentification } from "../Context/AuthContext";
+import getImage from "./data/getImage";
 const { width, height } = Dimensions.get("screen");
 
 function CalendarComponent({ event, navigation, ...props }) {
+  const { apiToken } = useAuthentification();
+  const [image, setImage] = useState();
+
+  useEffect(() => getImage(event.image, apiToken, setImage), []);
   return (
     <TouchableOpacity
       style={styles.container}
       onPress={() => navigation.navigate("calendarDetails", { event })}
     >
-      <Image
-        source={{
-          uri: event.image,
-        }}
-        style={styles.backgroundImage}
-      />
+      <Image source={{ uri: image }} style={styles.backgroundImage} />
+
       <Text style={styles.textInfos}>{event.translation[0].short_desc}</Text>
       <Text style={styles.textName}>{event.translation[0].title}</Text>
     </TouchableOpacity>
