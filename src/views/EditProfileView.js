@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import {
   StyleSheet,
   View,
@@ -14,51 +14,212 @@ import {
 import { useTheme } from "../Context/theme/ThemeContext";
 import { useTranslation } from "../Context/TranslationContext";
 import { useAuthentification } from "../Context/AuthContext";
-
+import useFetchPhoto from "../data/useFetchPhoto";
 import ColoredViewComponent from "../components/ColoredViewComponent.js";
 import TextInputComponent from "../components/TextInputComponent.js";
 import { ScrollView } from "react-native-gesture-handler";
 import { launchCamera, launchImageLibrary } from "react-native-image-picker";
 import BackButtonComponent from "../components/BackButtonComponent.js";
+import getImage from "../components/data/getImage";
+import useFetch from "../data/useFetch";
 const { width, height } = Dimensions.get("screen");
 function EditProfileView(props) {
   const { langage } = useTranslation();
-  const { userInfos } = useAuthentification();
+  const {
+    apiToken,
+    userInfos,
+    updateUserInfos,
+    userLocalPicture,
+    updateLocalPicture,
+  } = useAuthentification();
   const { themeStyle } = useTheme();
+  const [updateRequest, newUpdateRequest] = useFetch();
+  const [photoRequest, newPhotoRequest] = useFetchPhoto();
 
   const [name, setName] = useState(userInfos?.first_name);
   const [lastName, setLastName] = useState(userInfos?.last_name);
   const [phone, setPhone] = useState(userInfos?.phone_number);
-  const [approximativeLocation, setApproximativeLocation] = useState("");
-  const [insta, setInsta] = useState("");
-  const [snap, setSnap] = useState("");
-  const [facebook, setFacebook] = useState("");
-  const [tikTok, setTikTok] = useState("");
-  const [profileUrl, setProfileUrl] = useState(userInfos.profile_picture);
-  const loadingopacity = useRef(new Animated.Value(0)).current;
+  const [approximativeLocation, setApproximativeLocation] = useState(
+    userInfos?.address
+  );
+  const [description, setDescription] = useState(userInfos?.description);
+  const [insta, setInsta] = useState(userInfos?.socials?.at(0));
+  const [facebook, setFacebook] = useState(userInfos?.socials?.at(1));
+  const [snap, setSnap] = useState(userInfos?.socials?.at(2));
+  const [tikTok, setTikTok] = useState(userInfos?.socials?.at(3));
+  const [twitter, setTwitter] = useState(userInfos?.socials?.at(4));
 
+  const [profileUrl, setProfileUrl] = useState();
+
+  const loadingopacity = useRef(new Animated.Value(0)).current;
+  const [newFileType, setNewFileType] = useState(null);
   async function changePhoto() {
     const result = await launchImageLibrary({ mediaType: "photo" });
-
+    setNewFileType(result.assets[0].type);
     setProfileUrl(result.assets[0].uri);
   }
 
+  useEffect(() => {
+    if (!profileUrl) {
+      if (userInfos?.profile_picture) {
+        console.log();
+        getImage(userInfos?.profile_picture, apiToken, updateLocalPicture);
+      } else {
+        setProfileUrl(
+          "https://ui-avatars.com/api/?name=" + name + "+" + lastName
+        );
+      }
+    }
+  }, []);
+
+  useEffect(() => {
+    setProfileUrl(userLocalPicture);
+  }, [userLocalPicture]);
+
+  useEffect(() => {
+    for (let index = 0; index < userInfos.socials.length; index++) {
+      const element = userInfos.socials[index];
+      switch (element.name) {
+        case "Instagram":
+          setInsta(element.url);
+          break;
+        case "Facebook":
+          setFacebook(element.url);
+          break;
+        case "Snap":
+          setSnap(element.url);
+          break;
+        case "TikTok":
+          setTikTok(element.url);
+          break;
+        case "Twitter":
+          setTwitter(element.url);
+          break;
+        default:
+          break;
+      }
+    }
+  }, [userInfos]);
   async function saveInfos() {
     Animated.timing(loadingopacity, {
       toValue: 1,
       duration: 200,
       useNativeDriver: false,
     }).start();
-    setTimeout(
-      () =>
+    let changedInfos = {};
+    if (name != userInfos?.first_name) {
+      changedInfos["first_name"] = name;
+    }
+    if (lastName != userInfos?.last_name) {
+      changedInfos["last_name"] = lastName;
+    }
+    if (phone != userInfos?.phone_number) {
+      changedInfos["phone_number"] = phone;
+    }
+    if (approximativeLocation != userInfos?.address) {
+      changedInfos["address"] = approximativeLocation;
+    }
+    if (approximativeLocation != userInfos?.address) {
+      changedInfos["address"] = approximativeLocation;
+    }
+    if (description != userInfos?.description) {
+      changedInfos["description"] = description;
+    }
+    let ids = {};
+    userInfos.socials.forEach((social) => {
+      ids[social.name] = social.id;
+    });
+    changedInfos["socials"] = [
+      {
+        id: ids?.Instagram,
+        name: "Instagram",
+        url: insta,
+        public: true,
+      },
+      {
+        id: ids?.Facebook,
+        name: "Facebook",
+        url: facebook,
+        public: true,
+      },
+      {
+        id: ids?.Twitter,
+        name: "Twitter",
+        url: twitter,
+        public: true,
+      },
+      {
+        id: ids?.TikTok,
+        name: "TikTok",
+        url: tikTok,
+        public: true,
+      },
+      {
+        id: ids?.Snap,
+        name: "Snap",
+        url: snap,
+        public: true,
+      },
+    ];
+
+    if (newFileType) {
+      newPhotoRequest(profileUrl, apiToken);
+    }
+
+    console.log(Object.keys(changedInfos));
+    if (Object.keys(changedInfos).length > 0) {
+      newUpdateRequest("user", "PUT", changedInfos, apiToken);
+    } else {
+      if (!newFileType) {
+        console.log("NOTHING TO EDIT");
+        setTimeout(() => {
+          Animated.timing(loadingopacity, {
+            toValue: 0,
+            duration: 200,
+            useNativeDriver: false,
+          }).start();
+        }, 500);
+      }
+    }
+  }
+
+  useEffect(() => {
+    if (updateRequest?.status === "Unauthorized") {
+      logout();
+    }
+    if (updateRequest?.status === "Done") {
+      if (!newFileType) {
+        updateUserInfos();
         Animated.timing(loadingopacity, {
           toValue: 0,
           duration: 200,
           useNativeDriver: false,
-        }).start(),
-      1000
-    );
-  }
+        }).start();
+      }
+    }
+  }, [updateRequest]);
+  useEffect(() => {
+    if (photoRequest?.status === "Unauthorized") {
+      logout();
+    }
+    if (photoRequest?.status === "Done") {
+      updateUserInfos();
+      newUpdateRequest(
+        "user",
+        "PUT",
+        { profile_picture: photoRequest.content.filename },
+        apiToken
+      );
+      setNewFileType(null);
+
+      Animated.timing(loadingopacity, {
+        toValue: 0,
+        duration: 200,
+        useNativeDriver: false,
+      }).start();
+    }
+  }, [photoRequest]);
+  useEffect(() => console.log("PHOTO", profileUrl), [profileUrl]);
   return (
     <SafeAreaView
       style={[styles.container, { backgroundColor: themeStyle.background }]}
@@ -105,6 +266,7 @@ function EditProfileView(props) {
                 borderRadius: width,
                 resizeMode: "cover",
               }}
+              key={(Math.random() * 100).toFixed(0)}
             />
             <Image
               source={require("../assets/images/camera.png")}
@@ -135,6 +297,14 @@ function EditProfileView(props) {
           <ColoredViewComponent containerStyle={styles.labelContainer} isBlue>
             <TextInputComponent
               // autoFocus
+              placeholder={langage.publicDesription}
+              value={description}
+              onChange={setDescription}
+            />
+          </ColoredViewComponent>
+          <ColoredViewComponent containerStyle={styles.labelContainer} isBlue>
+            <TextInputComponent
+              // autoFocus
               placeholder={langage.phonePlaceHolder}
               value={phone}
               onChange={setPhone}
@@ -148,6 +318,7 @@ function EditProfileView(props) {
               onChange={setApproximativeLocation}
             />
           </ColoredViewComponent>
+
           <ColoredViewComponent containerStyle={styles.labelContainer} isBlue>
             <TextInputComponent
               // autoFocus
@@ -162,6 +333,14 @@ function EditProfileView(props) {
               placeholder={langage.facebookPlaceHolder}
               value={facebook}
               onChange={setFacebook}
+            />
+          </ColoredViewComponent>
+          <ColoredViewComponent containerStyle={styles.labelContainer} isBlue>
+            <TextInputComponent
+              // autoFocus
+              placeholder={"Twitter"}
+              value={twitter}
+              onChange={setTwitter}
             />
           </ColoredViewComponent>
           <ColoredViewComponent containerStyle={styles.labelContainer} isBlue>

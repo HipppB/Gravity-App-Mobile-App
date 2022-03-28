@@ -22,7 +22,9 @@
     "regaleToi": "Régale-toi avec GRAVITY",
     "participant": "Liste des participants",
     "telecharger": "Télécharger",
-    "openOnYoutube": "Écouter sur Youtube",
+    "openOnYoutube": "Ouvrir sur Youtube",
+    "openInMaps": "Ouvrir dans maps",
+
     "editProfile": "Modifier mon profil",
     "namePlaceHolder": "Prénom",
     "lastnamePlaceHolder": "Nom",
@@ -72,7 +74,20 @@
     "toggleNotif": "Gerer les notifications",
     "restaurantAccess": "Accès au restaurant",
     "go": "Y aller",
-    "gravityOffer": "L'offre GRAVITY"
+    "gravityOffer": "L'offre GRAVITY",
+    "defis": "DEFIS",
+    "sent": "ENVOYÉ",
+    "refuse": "Défis refusés",
+    "waitingVal": "En attente de validation",
+    "validate": "Défis validés",
+    "addElements": "Rajouter des éléments",
+    "descriptionChallenge": "Description du défis",
+    "trophee": "Récompenses",
+    "myanswer": "Ma réponse",
+    "answer": "Réponse",
+    "photosVideos": "Mes photos",
+    "sendChallenge": "Envoyer le défis",
+    "openInNav": "Ouvrir dans le navigateur"
   },
   "en": {
     "connexionButton": "Login",
@@ -98,6 +113,8 @@
     "participant": "Participant list",
     "telecharger": "Download",
     "openOnYoutube": "Open on Youtube",
+    "openInMaps": "Open in maps",
+
     "editProfile": "Edit my profile",
     "namePlaceHolder": "Name",
     "lastnamePlaceHolder": "Last Name",
@@ -147,6 +164,19 @@
     "toggleNotif": "Manage notifications",
     "restaurantAccess": "Restaurant access",
     "go": "Go",
-    "gravityOffer": "GRAVITY's offer"
+    "gravityOffer": "GRAVITY's offer",
+    "defis": "CHALLENGES",
+    "sent": "SENT",
+    "refuse": "Rejected challenges",
+    "waitingVal": "Waiting for validation",
+    "validate": "Accepted challenges",
+    "addElements": "Add elements",
+    "descriptionChallenge": "Description of the challenge",
+    "trophee": "Awards",
+    "myanswer": "My answer",
+    "answer": "Answer",
+    "photosVideos": "My photos",
+    "sendChallenge": "Send the challenge",
+    "openInNav": "Open in browser"
   }
 }

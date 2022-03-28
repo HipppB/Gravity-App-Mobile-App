@@ -10,7 +10,6 @@ function BottomBarComponent({ navigation, ...props }) {
   const { toggleLangage, langage } = useTranslation();
   const { themeStyle } = useTheme();
 
-  console.log(active);
   return (
     <View
       style={[styles.container, { backgroundColor: themeStyle.background }]}

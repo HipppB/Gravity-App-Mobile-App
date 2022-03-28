@@ -112,7 +112,6 @@ function SponsorComponent({ sponsor }) {
         <View
           onLayout={(event) => {
             var { x, y, width, height } = event.nativeEvent.layout;
-            console.log(height);
 
             setContentHeight(height);
           }}

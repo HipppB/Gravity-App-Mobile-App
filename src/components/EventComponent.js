@@ -20,7 +20,7 @@ function EventComponent(props) {
   const opacityContent = useRef(new Animated.Value(0)).current;
 
   const [contentHeight, setContentHeight] = useState(0);
-  useEffect(() => console.log(opacityContent), [opacityContent]);
+
   function open() {
     Animated.parallel([
       Animated.timing(containerHeight, {
@@ -51,7 +51,7 @@ function EventComponent(props) {
   const colorgrad = props?.wrong
     ? ["#710000", "#710000", "#bc2222"]
     : ["#0C1316", "#203C42", "#2293D0"];
-  console.log(colorgrad);
+
   if (props?.validate) {
     return (
       <Pressable onPress={() => props.navigation.navigate("LongEvent")}>
@@ -191,7 +191,6 @@ function EventComponent(props) {
           <View
             onLayout={(event) => {
               var { x, y, width, height } = event.nativeEvent.layout;
-              console.log(height);
 
               setContentHeight(height);
             }}

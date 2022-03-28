@@ -17,6 +17,7 @@ async function getImage(path, apiToken, callback) {
   const imageObjectURL = URL.createObjectURL(imageBlob);
 
   callback(imageObjectURL);
+  return imageBlob;
 }
 
 export default getImage;

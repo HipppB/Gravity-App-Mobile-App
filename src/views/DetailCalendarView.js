@@ -52,14 +52,14 @@ function DetailCalendarView(props) {
   useEffect(() => {
     if (request?.status === "Done") {
       setParticipants(request.content.registered_user);
-      console.log("PARTICIPANT UPDATED");
     }
   }, [request]);
 
   useEffect(() => {
-    console.log("HERE YOU");
+    if (requestInscription?.status === "Unauthorized") {
+      logout();
+    }
     if (requestInscription?.status === "Done") {
-      console.log("HERE YOU YOU");
       getHeads();
     }
   }, [requestInscription]);
@@ -119,6 +119,7 @@ function DetailCalendarView(props) {
                 uri: image,
               }}
               style={styles.backgroundImage}
+              key={(Math.random() * 100).toFixed(0)}
             />
           </View>
           <View>
@@ -220,7 +221,7 @@ function DetailCalendarView(props) {
                 containerStyle={styles.buttonContainerContainer}
                 isBlue
               >
-                <Text style={styles.buttonText}>Ouvrir dans maps</Text>
+                <Text style={styles.buttonText}>{langage.openInMaps}</Text>
               </ColoredViewComponent>
             </TouchableOpacity>
             {event?.open && (
@@ -375,7 +376,7 @@ function PersonHead({ person, position, onPress }) {
           width: 40,
           height: 40,
           resizeMode: "cover",
-          backgroundColor: "black",
+          backgroundColor: "#ED8A33",
           alignSelf: "center",
 
           borderRadius: 50,

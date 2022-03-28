@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   StyleSheet,
   View,
@@ -16,14 +16,50 @@ import { useTranslation } from "../Context/TranslationContext";
 import Modal from "react-native-modal";
 import { useAuthentification } from "../Context/AuthContext";
 import { useTheme } from "../Context/theme/ThemeContext";
+import useFetch from "../data/useFetch";
 
 const { width, height } = Dimensions.get("window");
 
 function FirstConnexionPopUp({ isModalVisible, setModalVisible, navigation }) {
-  const { userInfos } = useAuthentification();
-  const { themeStyle } = useTheme();
+  const [data, newRequest] = useFetch();
 
-  const { langage } = useTranslation();
+  const { userInfos, apiToken } = useAuthentification();
+  const [requestText, newRequestText] = useFetch();
+  const [text, setText] = useState("");
+
+  console.log(userInfos);
+  const { langage, selectedLangage } = useTranslation();
+  const { themeStyle } = useTheme();
+  useEffect(() => {
+    if (selectedLangage === "fr") {
+      newRequestText("presentation/1", "GET", {}, apiToken);
+    } else {
+      newRequestText("presentation/2", "GET", {}, apiToken);
+    }
+
+    if (userInfos.language != selectedLangage) {
+      newRequest("user", "PUT", { language: selectedLangage }, apiToken);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (requestText?.status === "Done") {
+      setText(
+        requestText.content.content
+          .replaceAll("\\n", "\n")
+          .replaceAll("{name}", userInfos?.first_name || "")
+      );
+    }
+  }, [requestText]);
+  useEffect(() => {
+    if (requestText?.status === "Done") {
+      setText(
+        requestText.content.content
+          .replaceAll("\\n", "\n")
+          .replaceAll("{name}", userInfos?.first_name || "")
+      );
+    }
+  }, [userInfos]);
   const num = ((Math.random() * 60) % 6).toFixed(0);
 
   return (
@@ -81,11 +117,7 @@ function FirstConnexionPopUp({ isModalVisible, setModalVisible, navigation }) {
           showsVerticalScrollIndicator={false}
         >
           <Text style={[styles.text, { color: themeStyle.textless }]}>
-            Hello {userInfos.first_name} ! {"\n"}Merci d’avoir téléchargé notre
-            application !{"\n"}
-            Aventure-toi dans notre galaxie avec l'application Gravity comme
-            seul guide et Feel the Gravity toute la semaine ✨ {"\n"}
-            {"\n"} La Graviteam 💙 🧡
+            {text}
           </Text>
         </ScrollView>
         <View

@@ -25,16 +25,21 @@ const { width, height } = Dimensions.get("screen");
 function HomeView(props) {
   const { themeStyle } = useTheme();
 
-  const [data, newRequest] = useFetch();
-  const { toggleLangage, langage } = useTranslation();
-  const { isFirstLogin, setIsFirstLogin } = useAuthentification();
+  const [statusProject, requestProject] = useFetch();
+  const [statusMusic, requestMusic] = useFetch();
+  const [statusFilm, requestFilm] = useFetch();
+  const [statusReceipt, requestReceipt] = useFetch();
+
+  const { toggleLangage, langage, selectedLangage } = useTranslation();
+  const { isFirstLogin, setIsFirstLogin, apiToken } = useAuthentification();
   const [activePage, setActivePage] = useState(0);
   const [isModalVisible, setModalVisible] = useState(true);
 
   //Page active :
-  const [music, setMusic] = useState(true);
-  const [film, setFilm] = useState(true);
-  const [receipt, setReceipt] = useState(true);
+  const [project, setProject] = useState(false);
+  const [music, setMusic] = useState(false);
+  const [film, setFilm] = useState(false);
+  const [receipt, setReceipt] = useState(false);
 
   let scrollViewSelector = useRef();
   let scrollViewPages = useRef();
@@ -45,10 +50,6 @@ function HomeView(props) {
       x: pageNumber * width,
       animated: true,
     });
-    // scrollViewSelector.current.scrollTo({
-    //   x: 200 * pageNumber,
-    //   animated: false,
-    // });
   }
 
   useEffect(async () => {
@@ -56,7 +57,31 @@ function HomeView(props) {
       setIsFirstLogin(false);
       setTimeout(() => setModalVisible(true), 100);
     }
+    requestProject("presentation/status/5", "GET", {}, apiToken);
+    requestMusic("presentation/status/7", "GET", {}, apiToken);
+    requestFilm("presentation/status/8", "GET", {}, apiToken);
+    requestReceipt("presentation/status/9", "GET", {}, apiToken);
   }, []);
+  useEffect(() => {
+    if (statusProject?.status === "Done") {
+      setProject(statusProject.content);
+    }
+  }, [statusProject]);
+  useEffect(() => {
+    if (statusMusic?.status === "Done") {
+      setMusic(statusMusic.content);
+    }
+  }, [statusMusic]);
+  useEffect(() => {
+    if (statusFilm?.status === "Done") {
+      setFilm(statusFilm.content);
+    }
+  }, [statusFilm]);
+  useEffect(() => {
+    if (statusReceipt?.status === "Done") {
+      setReceipt(statusReceipt.content);
+    }
+  }, [statusReceipt]);
 
   return (
     <View
@@ -127,32 +152,34 @@ function HomeView(props) {
               </Text>
             </LinearGradient>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => changeActivePage(2)}>
-            <LinearGradient
-              colors={
-                activePage == 2
-                  ? ["#0C1316", "#203C42", "#2293D0"]
-                  : [
-                      themeStyle.backDifferent,
-                      themeStyle.backDifferent,
-                      themeStyle.backDifferent,
-                    ]
-              }
-              end={{ x: 1, y: 0 }}
-              locations={[0.0, 0.25, 0.75]}
-              start={{ x: -0.3, y: 0 }}
-              style={styles.buttonSelectorView}
-            >
-              <Text
-                style={[
-                  styles.buttonSelectorViewText,
-                  activePage == 2 ? styles.buttonSelectorViewTextActive : {},
-                ]}
+          {project && (
+            <TouchableOpacity onPress={() => changeActivePage(2)}>
+              <LinearGradient
+                colors={
+                  activePage == 2
+                    ? ["#0C1316", "#203C42", "#2293D0"]
+                    : [
+                        themeStyle.backDifferent,
+                        themeStyle.backDifferent,
+                        themeStyle.backDifferent,
+                      ]
+                }
+                end={{ x: 1, y: 0 }}
+                locations={[0.0, 0.25, 0.75]}
+                start={{ x: -0.3, y: 0 }}
+                style={styles.buttonSelectorView}
               >
-                {langage.projetPeda}
-              </Text>
-            </LinearGradient>
-          </TouchableOpacity>
+                <Text
+                  style={[
+                    styles.buttonSelectorViewText,
+                    activePage == 2 ? styles.buttonSelectorViewTextActive : {},
+                  ]}
+                >
+                  {langage.projetPeda}
+                </Text>
+              </LinearGradient>
+            </TouchableOpacity>
+          )}
           {music && (
             <TouchableOpacity onPress={() => changeActivePage(3)}>
               <LinearGradient
@@ -268,19 +295,21 @@ function HomeView(props) {
           >
             <PoleView />
           </ScrollView>
-          <View
-            style={[
-              styles.pageInPageContainer,
-              {
-                justifyContent: "center",
-                alignItems: "center",
-              },
-            ]}
-          >
-            <Text>
-              <ProjetPedaView setFilm={setFilm} />
-            </Text>
-          </View>
+          {project && (
+            <View
+              style={[
+                styles.pageInPageContainer,
+                {
+                  justifyContent: "center",
+                  alignItems: "center",
+                },
+              ]}
+            >
+              <Text>
+                <ProjetPedaView />
+              </Text>
+            </View>
+          )}
           {music && (
             <View
               style={[

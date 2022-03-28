@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
 import LoginView from "./src/views/LoginView";
 import {
@@ -27,7 +27,7 @@ async function requestUserPermission() {
     console.log("User declined permissions");
   }
 }
-async function onAppBootstrap() {
+async function onAppBootstrap(callback) {
   // Register the device with FCM
   await messaging().registerDeviceForRemoteMessages();
 
@@ -35,10 +35,12 @@ async function onAppBootstrap() {
   const token = await messaging().getToken();
 
   // Save the token
+  callback(token);
   console.warn("TOKEN : ", token);
 }
 
 function App() {
+  const [fcmToken, setFcmToken] = useState("");
   useEffect(async () => {
     await notifee.createChannel({
       id: "default",
@@ -47,13 +49,14 @@ function App() {
       vibration: true,
     });
     requestUserPermission();
-    onAppBootstrap();
+    onAppBootstrap(setFcmToken);
   }, []);
+
   return (
     <TranslationProvider>
       <AuthProvider>
         <ThemeProvider>
-          <MainNavigator />
+          <MainNavigator fcmToken={fcmToken} />
         </ThemeProvider>
       </AuthProvider>
     </TranslationProvider>

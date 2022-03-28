@@ -63,7 +63,7 @@ function EventView(props) {
                   activePage == 0 ? styles.buttonSelectorViewTextActive : {},
                 ]}
               >
-                DEFIS
+                {langage.defis}
               </Text>
             </LinearGradient>
           </TouchableOpacity>
@@ -85,7 +85,7 @@ function EventView(props) {
                   activePage == 1 ? styles.buttonSelectorViewTextActive : {},
                 ]}
               >
-                ENVOYÉ
+                {langage.sent}
               </Text>
             </LinearGradient>
           </TouchableOpacity>
@@ -132,7 +132,7 @@ function EventView(props) {
                   color: themeStyle.textless,
                 }}
               >
-                Défis refusés
+                {langage.refuse}
               </Text>
 
               <View style={{ opacity: 0.7 }}>
@@ -153,7 +153,7 @@ function EventView(props) {
                   color: themeStyle.textless,
                 }}
               >
-                En attente de validation
+                {langage.waitingVal}
               </Text>
 
               <View style={{ opacity: 0.7 }}>
@@ -174,7 +174,7 @@ function EventView(props) {
                   color: themeStyle.textless,
                 }}
               >
-                Défis validés
+                {langage.validate}
               </Text>
               <View style={{ opacity: 0.7 }}>
                 <EventComponent navigation={props.navigation} validate />

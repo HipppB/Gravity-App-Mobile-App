@@ -40,10 +40,12 @@ function MainNavigator(props) {
     Neon: require("../assets/fonts/Neon.ttf"),
   });
 
-  const { autoLogin } = useAuthentification();
+  const { autoLogin, setdeviceFcmToken } = useAuthentification();
   useEffect(() => {
     createChannels();
     autoLogin(setAutoLoging(false));
+    console.warn("DEVICE TOKEN ????", props?.fcmToken);
+    setdeviceFcmToken(props?.fcmToken);
   }, []);
 
   if (!fontsLoaded || isAutoLoging) {

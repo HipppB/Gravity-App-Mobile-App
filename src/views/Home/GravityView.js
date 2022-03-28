@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { StyleSheet, View, Text } from "react-native";
 import OutlinedText from "../../components/OutlinedText";
 import letterH from "../../assets/Letters/Italique/H.png";
@@ -10,9 +10,33 @@ import letterr from "../../assets/Letters/Italique/r.png";
 import lettere from "../../assets/Letters/Italique/e.png";
 import letterd from "../../assets/Letters/Italique/d.png";
 import { useTheme } from "../../Context/theme/ThemeContext";
-
+import useFetch from "../../data/useFetch";
+import { useAuthentification } from "../../Context/AuthContext";
+import { useTranslation } from "../../Context/TranslationContext";
 function GravityView(props) {
   const { themeStyle } = useTheme();
+  const { selectedLangage } = useTranslation();
+  const { userInfos, apiToken } = useAuthentification();
+
+  const [text, setText] = useState("");
+  const [request, newRequest] = useFetch();
+  useEffect(() => {
+    if (selectedLangage === "fr") {
+      newRequest("presentation/3", "GET", {}, apiToken);
+    } else {
+      newRequest("presentation/4", "GET", {}, apiToken);
+    }
+  }, [selectedLangage]);
+  useEffect(() => {
+    if (request?.status === "Done") {
+      console.info(newRequest);
+      setText(
+        request.content.content
+          .replaceAll("\\n", "\n")
+          .replaceAll("{name}", userInfos?.first_name || "")
+      );
+    }
+  }, [request]);
 
   return (
     <View>
@@ -76,23 +100,7 @@ function GravityView(props) {
       </View>
       <View style={styles.historyContainer}>
         <Text style={[styles.historyText, { color: themeStyle.textless }]}>
-          La gravitation, l'une des quatre interactions fondamentales qui
-          régissent l'Univers, est l'interaction physique responsable de
-          l'attraction des corps massifs. Elle se manifeste notamment par
-          l'attraction terrestre qui nous retient au sol, la gravité, qui est
-          responsable de plusieurs manifestations naturelles ; les marées,
-          l'orbite des planètes autour du Soleil, la sphéricité de la plupart
-          des corps célestes en sont quelques exemples. D'une manière plus
-          générale, la structure à grande échelle de l'Univers est déterminée
-          par la gravitation. Plusieurs théories ont tenté de rendre compte de
-          la gravitation. Actuellement encore, la théorie de la relativité
-          générale d'Albert Einstein (1915) reste la plus satisfaisante. Elle
-          considère la gravitation comme une manifestation de la courbure de
-          l'espace-temps sous l'effet de l'énergie de la matière qui s'y trouve.
-          La loi de la gravitation de Newton, élaborée à la fin du xviie siècle,
-          demeure cependant une excellente approximation dans les cas non
-          relativistes (vitesses faibles par rapport à celle de la lumière et
-          masses de l'ordre de la masse solaire ou inférieures).
+          {text}
         </Text>
       </View>
     </View>

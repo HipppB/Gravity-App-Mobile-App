@@ -31,6 +31,9 @@ function CalendarView(props) {
     updateData();
   }, []);
   useEffect(() => {
+    if (request?.status === "Unauthorized") {
+      logout();
+    }
     if (request?.status === "Done") {
       setEventList(request.content);
       setRefreshing(false);
@@ -52,7 +55,7 @@ function CalendarView(props) {
           {eventList.map((event) => (
             <CalendarComponent
               event={event}
-              key={event.id}
+              key={(Math.random() * 100000).toFixed(0)}
               navigation={props.navigation}
             />
           ))}

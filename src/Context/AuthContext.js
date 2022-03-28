@@ -2,6 +2,8 @@ import React, { createContext, useContext, useState, useEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import useFetch from "../data/useFetch";
+import getImage from "../components/data/getImage";
+import messaging from "@react-native-firebase/messaging";
 
 const AuthContext = createContext({
   isAuthentificated: false,
@@ -13,6 +15,10 @@ const AuthContext = createContext({
   setIsFirstLogin: (status) => {},
   autoLogin: (callback) => {},
   userInfos: {},
+  updateUserInfos: () => {},
+  userLocalPicture: {},
+  updateLocalPicture: () => {},
+  setdeviceFcmToken: () => {},
 });
 
 // create context
@@ -24,18 +30,37 @@ function AuthProvider({ children }) {
   const [apiToken, setApiToken] = useState(null);
 
   const [userInfos, setUserInfos] = useState({});
+  const [userLocalPicture, setUserLocalPicture] = useState();
+  const [deviceFcmToken, setdeviceFcmToken] = useState();
+  const [fcmRequest, newFcmRequest] = useFetch();
+  async function updateUserInfos() {
+    const result = await newRequest("user/profile", "GET", {}, apiToken);
+    if (result?.status === "Unauthorized") {
+      logout();
+    }
+    if (result?.content?.email) {
+      setUserInfos(result.content);
+      if (result?.content?.profile_picture) {
+        getImage(
+          result?.content?.profile_picture,
+          apiToken,
+          setUserLocalPicture
+        );
+      }
+    } else {
+      deleteTokenFromStorage();
+      setApiToken(null);
+      setisAuthentificated(false);
+    }
+  }
   useEffect(async () => {
     if (apiToken) {
-      const result = await newRequest("user/profile", "GET", null, apiToken);
-      if (result?.content?.email) {
-        setUserInfos(result.content);
-      } else {
-        deleteTokenFromStorage();
-        setApiToken(null);
-        setisAuthentificated(false);
-      }
+      updateUserInfos();
     }
   }, [apiToken]);
+  function updateLocalPicture(uri) {
+    setUserLocalPicture(uri);
+  }
 
   async function login(email, password) {
     try {
@@ -48,7 +73,20 @@ function AuthProvider({ children }) {
       if (result?.content?.access_token) {
         setApiToken(result?.content?.access_token);
         storeToken(result?.content?.access_token);
+        messaging()
+          .getToken()
+          .then((fcmToken) =>
+            newFcmRequest(
+              "user/deviceToken",
+              "POST",
+              {
+                deviceToken: fcmToken,
+              },
+              result?.content?.access_token
+            )
+          );
         setisAuthentificated(true);
+
         return "LOGGED IN";
       }
 
@@ -65,8 +103,8 @@ function AuthProvider({ children }) {
           return "PASSWORD";
         case "User not found":
           break;
-        default:
-          console.log("Wait what ?", result); //IT IS NOT SUPPOSED TO ACCESS HERE
+        default: //IT IS NOT SUPPOSED TO ACCESS HERE
+          console.log("Wait what ?", result);
           return "NETWORK";
       }
     } catch (e) {
@@ -80,12 +118,6 @@ function AuthProvider({ children }) {
     if (selectedPromo === "i2" && userInfos?.destination) {
       selectedPromo = selectedPromo + "-" + userInfos?.destination;
     }
-    console.warn(
-      "HEY YOU HERE",
-      userInfos?.promo,
-      userInfos?.destination,
-      selectedPromo
-    );
 
     try {
       const result = await newRequest("auth/signup", "POST", {
@@ -125,11 +157,27 @@ function AuthProvider({ children }) {
     return apiToken;
   };
 
+  useEffect(
+    () => console.warn(deviceFcmToken, "is ", fcmRequest),
+    [fcmRequest]
+  );
   async function autoLogin(callback) {
     try {
       const token = await retrieveToken();
       if (token != false) {
         setApiToken(token);
+        messaging()
+          .getToken()
+          .then((fcmToken) =>
+            newFcmRequest(
+              "user/deviceToken",
+              "POST",
+              {
+                deviceToken: fcmToken,
+              },
+              token
+            )
+          );
         setisAuthentificated(true);
       }
       callback();
@@ -187,6 +235,10 @@ function AuthProvider({ children }) {
         signup,
         autoLogin,
         userInfos,
+        updateUserInfos,
+        userLocalPicture,
+        updateLocalPicture,
+        setdeviceFcmToken,
       }}
     >
       {children}

@@ -112,7 +112,7 @@ function ConnexionView(props) {
       name = words[0];
       lastname = words[1].split("@")[0];
     }
-    console.warn(name, lastname, selectedPromo);
+    console.log(name, lastname, selectedPromo);
     const result = await signup({
       email: mailInput,
       password: password,
@@ -122,7 +122,7 @@ function ConnexionView(props) {
       name: name,
       lastname: lastname,
     });
-    console.warn("SIGNUP RESULT", result);
+    console.log("SIGNUP RESULT", result);
     switch (result) {
       case "NETWORK":
         setIsLoading(false);
@@ -137,7 +137,6 @@ function ConnexionView(props) {
           title: langage.accountCreated,
           description: langage.accountCreatedDesc,
         });
-        console.warn("HEY");
 
         setTimeout(() => {
           setModalVisible(true), setIsLoading(false);
@@ -179,7 +178,7 @@ function ConnexionView(props) {
       setIsLoading(false);
     } else {
       const request = await login(mailInput, password);
-      console.warn("FINAL RESULT", request);
+      console.log("FINAL RESULT", request);
       switch (request) {
         case "LOGGED IN":
           setIsLoading(false);
@@ -259,7 +258,6 @@ function ConnexionView(props) {
     }).start();
   }
 
-  useEffect(() => console.warn(isModalVisible), [isModalVisible]);
   return (
     <View style={{ flex: 1, width: "100%" }}>
       <Modal
