@@ -21,6 +21,8 @@ import { useAuthentification } from "../Context/AuthContext";
 import FirstConnexionPopUp from "./FirstConnexionPopUp";
 import useFetch from "../data/useFetch";
 import PoleView from "./Home/PoleView";
+import FilmView from "./Home/FilmView";
+import FoodView from "./Home/FoodView";
 const { width, height } = Dimensions.get("screen");
 function HomeView(props) {
   const { themeStyle } = useTheme();
@@ -336,7 +338,7 @@ function HomeView(props) {
               ]}
             >
               <Text>
-                <SonView />
+                <FilmView />
               </Text>
             </View>
           )}
@@ -351,7 +353,7 @@ function HomeView(props) {
               ]}
             >
               <Text>
-                <SonView />
+                <FoodView />
               </Text>
             </View>
           )}

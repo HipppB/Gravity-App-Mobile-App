@@ -7,13 +7,13 @@ import { useTranslation } from "../../Context/TranslationContext";
 import { useAuthentification } from "../../Context/AuthContext.js";
 import useFetch from "../../data/useFetch.js";
 const { width, height } = Dimensions.get("screen");
-function SonView(props) {
+function FoodView(props) {
   const { langage } = useTranslation();
   const { apiToken } = useAuthentification();
   const [link, setLink] = useState();
   const [request, newRequest] = useFetch();
   useEffect(() => {
-    newRequest("presentation/7", "GET", {}, apiToken);
+    newRequest("presentation/9", "GET", {}, apiToken);
   }, []);
   useEffect(() => {
     if (request?.status === "Done") {
@@ -66,4 +66,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default SonView;
+export default FoodView;
