@@ -10,6 +10,7 @@ import {
   Button,
   Dimensions,
   Linking,
+  Platform,
 } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import ColoredViewComponent from "./ColoredViewComponent";
@@ -22,15 +23,19 @@ function SponsorComponent({ sponsor }) {
   const opacityContent = useRef(new Animated.Value(0)).current;
   const { toggleLangage, langage } = useTranslation();
   const { themeStyle } = useTheme();
-
+  if (Platform.OS === "android") {
+    if (UIManager.setLayoutAnimationEnabledExperimental) {
+      UIManager.setLayoutAnimationEnabledExperimental(true);
+    }
+  }
   const [contentHeight, setContentHeight] = useState(0);
   function open() {
     Animated.parallel([
-      Animated.timing(containerHeight, {
-        toValue: 1, // return to start
-        useNativeDriver: false,
-        duration: 300,
-      }),
+      // Animated.timing(containerHeight, {
+      //   toValue: 1, // return to start
+      //   useNativeDriver: false,
+      //   duration: 300,
+      // }),
       Animated.timing(containerHeight, {
         toValue: 1, // return to start
         useNativeDriver: false,
@@ -40,11 +45,11 @@ function SponsorComponent({ sponsor }) {
   }
   function close() {
     Animated.parallel([
-      Animated.timing(containerHeight, {
-        toValue: 0, // return to start
-        useNativeDriver: false,
-        duration: 300,
-      }),
+      // Animated.timing(containerHeight, {
+      //   toValue: 0, // return to start
+      //   useNativeDriver: false,
+      //   duration: 300,
+      // }),
       Animated.timing(containerHeight, {
         toValue: 0, // return to start
         useNativeDriver: false,
@@ -137,11 +142,7 @@ function SponsorComponent({ sponsor }) {
               lineHeight: 20,
             }}
           >
-            CE SUPER SPONSOR TE FERA GAGNER PLEIN D'ARGENT ET A NOUS AUSSI,
-            POURQUOI J'ECRIS EN MAJUSCULE ? CAR JE DOIS TESTER L'ANIMATION QUE
-            JE VIENS DE PRENDRE 4 PUTAINS D'HEURES A FAIRE. SI ELLE MARCHE PAS
-            NE ME LE DIS PAS MERCI{"\n"} (En vrai dit le moi car tout doit être
-            parfait surtout quand ça concerne nos sous)
+            {sponsor.translation[0].description}
           </Text>
           <TouchableOpacity
             style={[styles.buttonTouchableContainer]}
