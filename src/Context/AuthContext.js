@@ -24,7 +24,7 @@ const AuthContext = createContext({
 // create context
 function AuthProvider({ children }) {
   const [isAuthentificated, setisAuthentificated] = useState(false);
-  const [isFirstLogin, setIsFirstLogin] = useState(true);
+  const [isFirstLogin, setIsFirstLogin] = useState(false);
   const [request, newRequest] = useFetch();
 
   const [apiToken, setApiToken] = useState(null);
@@ -85,6 +85,9 @@ function AuthProvider({ children }) {
               result?.content?.access_token
             )
           );
+
+        setIsFirstLogin(result?.content?.first_connection);
+
         setisAuthentificated(true);
 
         return "LOGGED IN";
@@ -157,10 +160,6 @@ function AuthProvider({ children }) {
     return apiToken;
   };
 
-  useEffect(
-    () => console.warn(deviceFcmToken, "is ", fcmRequest),
-    [fcmRequest]
-  );
   async function autoLogin(callback) {
     try {
       const token = await retrieveToken();

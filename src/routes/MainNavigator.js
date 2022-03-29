@@ -44,7 +44,6 @@ function MainNavigator(props) {
   useEffect(() => {
     createChannels();
     autoLogin(setAutoLoging(false));
-    console.warn("DEVICE TOKEN ????", props?.fcmToken);
     setdeviceFcmToken(props?.fcmToken);
   }, []);
 

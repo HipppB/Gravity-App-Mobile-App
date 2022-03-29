@@ -26,27 +26,6 @@ function RestaurantView(props) {
   const { toggleLangage, langage } = useTranslation();
   const [scrolledPage, setScrolledPage] = useState(0);
 
-  // const markers = [
-  //   {
-  //     index: 1,
-  //     latlng: { latitude: 48.84554, longitude: 2.32779 },
-  //     title: "ISEP NDC",
-  //     description: "Campus NDC de l'isep",
-  //     adress: "75000 Paris (Précis hein)",
-  //     longDescription:
-  //       "Super Description qui peut être plus ou moins longue et plus ou moins utile, en tout cas les gens ne manqueront aucune offre food ",
-  //   },
-  //   {
-  //     index: 2,
-  //     latlng: { latitude: 48.84406, longitude: 2.33093 },
-  //     title: "Subway",
-  //     description: "Subway à côté de NDC",
-  //     adress: "France",
-  //     longDescription:
-  //       "Super Description qui peut être plus ou moins longue et plus ou moins utile, en tout cas les gens ne manqueront aucune offre food ",
-  //   },
-  // ];
-  //DARA
   const [isRefreshing, setRefreshing] = useState(false);
   const [request, newRequest] = useFetch();
   const { apiToken } = useAuthentification();
@@ -69,6 +48,7 @@ function RestaurantView(props) {
   }, [request]);
 
   let markerRefList = useRef(new Array());
+
   return (
     <View
       style={[styles.container, { backgroundColor: themeStyle.background }]}
@@ -109,7 +89,9 @@ function RestaurantView(props) {
                     latitude: marker.location.coordinates[1],
                   }}
                   title={marker.name}
-                  description={marker.description}
+                  description={
+                    marker.translation[0].adress || "ICI ADRESSE DEV"
+                  }
                 />
               );
             })}
@@ -124,7 +106,7 @@ function RestaurantView(props) {
         pagingEnabled
         onMomentumScrollEnd={(e) => {
           let newpage = Math.round(e.nativeEvent.contentOffset.x / width);
-          // setActivePage(newpage);
+
           setScrolledPage(newpage);
           markerRefList.current[newpage].showCallout();
         }}

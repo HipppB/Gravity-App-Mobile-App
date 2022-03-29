@@ -74,7 +74,6 @@ function EventComponent(props) {
                 : {},
             shadowOpacity: 0.25,
             shadowRadius: Platform.OS === "ios" ? 3.84 : 0,
-
             elevation: Platform.OS === "ios" ? 5 : 0,
           }}
         >

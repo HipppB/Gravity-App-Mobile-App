@@ -29,7 +29,6 @@ function GravityView(props) {
   }, [selectedLangage]);
   useEffect(() => {
     if (request?.status === "Done") {
-      console.info(newRequest);
       setText(
         request.content.content
           .replaceAll("\\n", "\n")

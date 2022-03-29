@@ -1,5 +1,5 @@
 async function getImage(path, apiToken, callback) {
-  console.log("CALLED", path);
+  console.info("IMAGE HAS BEEN CALLED", path);
   const API = "https://api.liste-gravity.fr/";
 
   let options = {

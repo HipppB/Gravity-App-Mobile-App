@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   StyleSheet,
   View,
@@ -21,29 +21,27 @@ import ColoredViewComponent from "../components/ColoredViewComponent";
 import PushNotification from "react-native-push-notification";
 import notifee from "@notifee/react-native";
 import { useTheme } from "../Context/theme/ThemeContext";
-
+import { useAuthentification } from "../Context/AuthContext";
+import useFetch from "../data/useFetch";
 function NotificationCenterView(props) {
   const [isModalOpen, setModalOpen] = useState(false);
   const { langage } = useTranslation();
   const { themeStyle } = useTheme();
+  const { apiToken } = useAuthentification();
+  const [notifs, setNotifs] = useState([]);
+  const [notifRequest, newNotifRequest] = useFetch();
+  const [putRequest, newPutRequest] = useFetch();
+  const [user, setUser] = useState();
+  useEffect(() => {
+    newNotifRequest("user/profile", "GET", {}, apiToken);
+  }, []);
+  useEffect(() => {
+    if (notifRequest?.status === "Done") {
+      setNotifs(notifRequest.content.notifications);
+      setUser(notifRequest.content);
+    }
+  }, [notifRequest]);
 
-  let listViewData = Array(20)
-    .fill("")
-    .map((_, i) => ({
-      key: `${i}`,
-      title: `Super notification #${i + 1}`,
-      isNew: i < 3,
-      description:
-        "Super description de cette super notification, l'utilisateur aura aussi possibilité de cliquer pour être redirigé sur : Un écran d'event, un écran de sponsor (Food ou Normal) ou un écran de jeu",
-      action:
-        Math.random() > 0.7
-          ? "CALENDAR"
-          : Math.random() > 0.7
-          ? "URL"
-          : Math.random() > 0.5
-          ? "EVENT"
-          : "SPONSOR",
-    }));
   function openNotificationModal() {
     setModalOpen(true);
   }
@@ -56,6 +54,20 @@ function NotificationCenterView(props) {
       },
     });
   }
+  function saveNotificationParameter(activity, food, sponsor, challenge) {
+    setModalOpen(false);
+    newPutRequest(
+      "user/profile",
+      "PUT",
+      {
+        activityNotification: activity,
+        foodNotification: food,
+        sponsorNotification: sponsor,
+        challengesNotification: challenge,
+      },
+      apiToken
+    );
+  }
   return (
     <View
       style={{
@@ -66,7 +78,12 @@ function NotificationCenterView(props) {
       }}
     >
       <SafeAreaView></SafeAreaView>
-      <ModalNotification isVisible={isModalOpen} setVisible={setModalOpen} />
+      <ModalNotification
+        isVisible={isModalOpen}
+        setVisible={setModalOpen}
+        saveNotificationParameter={saveNotificationParameter}
+        userProfile={user}
+      />
       <BackButtonComponent navigation={props.navigation} />
       <TouchableOpacity
         style={{ position: "absolute", right: 20, top: 20 }}
@@ -104,10 +121,10 @@ function NotificationCenterView(props) {
           paddingBottom: 50,
         }}
       >
-        {listViewData.map((notification, index) => (
+        {notifs.map((notification, index) => (
           <Notification
             notification={notification}
-            key={notification.key}
+            key={notification.id}
             navigation={props.navigation}
             index={index}
             onPress={handleNotification}
@@ -120,25 +137,21 @@ function NotificationCenterView(props) {
 }
 
 function Notification({ notification, navigation, index, onPress }) {
+  console.log(notification);
   const { themeStyle } = useTheme();
 
   const [isNewVisible, setIsNewVisible] = useState(true);
   function callBack() {
     switch (notification.action) {
-      case "CALENDAR":
-        navigation.navigate("Calendar");
-        break;
-      case "EVENT":
-        navigation.navigate("Event");
-        break;
-      case "SPONSOR":
-        navigation.navigate("Sponsor");
-        break;
       case "URL":
-        Linking.openURL("https://google.com");
+        Linking.openURL(notification.url);
         break;
-
       default:
+        try {
+          navigation.navigate(notification.action, notification.url);
+        } catch (e) {
+          console.log(e);
+        }
         break;
     }
   }
@@ -191,21 +204,32 @@ function Notification({ notification, navigation, index, onPress }) {
           {notification.title}
         </Text>
         <Text style={{ fontFamily: "Neon", color: themeStyle.textless }}>
-          Action associée à la notif : {notification.action} {"\n"}
-          {notification.description}
+          {notification.content}
         </Text>
       </TouchableOpacity>
     </View>
   );
 }
 
-function ModalNotification({ isVisible, setVisible }) {
+function ModalNotification({
+  isVisible,
+  saveNotificationParameter,
+  userProfile,
+  setVisible,
+}) {
   const [value, setValue] = useState(true);
   const [value1, setValue1] = useState(true);
   const [value2, setValue2] = useState(true);
   const [value3, setValue3] = useState(true);
-  const { themeStyle } = useTheme();
+  const [notiTogglefRequest, newNotifToggleRequest] = useFetch();
 
+  const { themeStyle } = useTheme();
+  useEffect(() => {
+    setValue(userProfile?.activityNotification);
+    setValue1(userProfile?.foodNotification);
+    setValue2(userProfile?.sponsorNotification);
+    setValue3(userProfile?.challengesNotification);
+  }, [userProfile]);
   return (
     <Modal
       isVisible={isVisible}
@@ -326,7 +350,9 @@ function ModalNotification({ isVisible, setVisible }) {
         </View>
         <TouchableOpacity
           style={[styles.buttonTouchableContainer]}
-          onPress={() => setVisible(false)}
+          onPress={() =>
+            saveNotificationParameter(value, value1, value2, value3)
+          }
         >
           <ColoredViewComponent
             coloredViewStyle={styles.buttonContainer}

@@ -26,13 +26,13 @@ const { width, height } = Dimensions.get("screen");
 function SponsorView(props) {
   const { toggleLangage, langage } = useTranslation();
   const { themeStyle } = useTheme();
+  const { apiToken } = useAuthentification();
 
   const [markers, setMarkers] = useState([]);
 
   //DARA
   const [isRefreshing, setRefreshing] = useState(false);
   const [request, newRequest] = useFetch();
-  const { apiToken } = useAuthentification();
   const [sponsorList, setSponsorList] = useState([]);
 
   function updateData() {

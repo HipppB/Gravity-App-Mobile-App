@@ -1,9 +1,14 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { StyleSheet, View, Text, Image } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import ColoredViewComponent from "./ColoredViewComponent";
-
+import getImage from "./data/getImage";
+import { useAuthentification } from "../Context/AuthContext";
 function RestaurantPreviewComponent({ restaurant, navigation, ...props }) {
+  console.log(restaurant);
+  const { apiToken } = useAuthentification();
+  const [image, setImage] = useState();
+  useEffect(() => getImage(restaurant.picture, apiToken, setImage), []);
   return (
     // <View style={styles.container}>
     <TouchableOpacity
@@ -18,7 +23,7 @@ function RestaurantPreviewComponent({ restaurant, navigation, ...props }) {
       >
         <Image
           source={{
-            uri: "https://upload.wikimedia.org/wikipedia/commons/0/0b/RedDot_Burger.jpg",
+            uri: image,
           }}
           style={{
             width: 50,
@@ -26,6 +31,7 @@ function RestaurantPreviewComponent({ restaurant, navigation, ...props }) {
             borderRadius: 20,
             alignSelf: "center",
           }}
+          key={(Math.random * 1000).toFixed}
         />
         <View
           style={{
@@ -36,12 +42,18 @@ function RestaurantPreviewComponent({ restaurant, navigation, ...props }) {
             // backgroundColor: "red",
           }}
         >
-          <Text style={styles.title}>{restaurant.name}</Text>
-          <Text style={styles.adress} selectable>
-            {restaurant.adress}
-          </Text>
-          <Text style={styles.description} numberOfLines={3}>
-            {restaurant.longDescription}
+          <Text style={{ flexDirection: "column" }} numberOfLines={4}>
+            <Text style={styles.title}>
+              {restaurant.name}
+              {"\n"}
+            </Text>
+            <Text style={styles.adress} selectable>
+              {restaurant.adress || "ICI ADRESSE A PAS OUBLIER DEV"}
+              {"\n"}
+            </Text>
+            <Text style={styles.description}>
+              {restaurant.translation[0].description}
+            </Text>
           </Text>
         </View>
       </ColoredViewComponent>

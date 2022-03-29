@@ -19,7 +19,7 @@ import { useTheme } from "../Context/theme/ThemeContext";
 const { width, height } = Dimensions.get("screen");
 function AccountView(props) {
   const { toggleLangage, langage } = useTranslation();
-  const { logout } = useAuthentification();
+  const { logout, userInfos } = useAuthentification();
   const { themeStyle } = useTheme();
 
   return (
@@ -46,7 +46,9 @@ function AccountView(props) {
         />
 
         <TouchableOpacity
-          onPress={() => props.navigation.navigate("PublicProfil")}
+          onPress={() =>
+            props.navigation.navigate("PublicProfil", { id: userInfos.id })
+          }
         >
           <ColorViewComponent coloredViewStyle={styles.realtitleContainer}>
             <Text style={styles.titleText}>{langage.myAccount}</Text>

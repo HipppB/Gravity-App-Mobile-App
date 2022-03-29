@@ -43,11 +43,13 @@ function EditProfileView(props) {
     userInfos?.address
   );
   const [description, setDescription] = useState(userInfos?.description);
-  const [insta, setInsta] = useState(userInfos?.socials?.at(0));
-  const [facebook, setFacebook] = useState(userInfos?.socials?.at(1));
-  const [snap, setSnap] = useState(userInfos?.socials?.at(2));
-  const [tikTok, setTikTok] = useState(userInfos?.socials?.at(3));
-  const [twitter, setTwitter] = useState(userInfos?.socials?.at(4));
+  const [insta, setInsta] = useState(userInfos?.socials?.at(0)?.url || "");
+  const [facebook, setFacebook] = useState(
+    userInfos?.socials?.at(1)?.url || ""
+  );
+  const [snap, setSnap] = useState(userInfos?.socials?.at(2)?.url || "");
+  const [tikTok, setTikTok] = useState(userInfos?.socials?.at(3)?.url || "");
+  const [twitter, setTwitter] = useState(userInfos?.socials?.at(4)?.url || "");
 
   const [profileUrl, setProfileUrl] = useState();
 
@@ -55,14 +57,15 @@ function EditProfileView(props) {
   const [newFileType, setNewFileType] = useState(null);
   async function changePhoto() {
     const result = await launchImageLibrary({ mediaType: "photo" });
-    setNewFileType(result.assets[0].type);
-    setProfileUrl(result.assets[0].uri);
+    if (result?.assets?.at(0)) {
+      setNewFileType(result.assets[0].type);
+      setProfileUrl(result.assets[0].uri);
+    }
   }
 
   useEffect(() => {
     if (!profileUrl) {
       if (userInfos?.profile_picture) {
-        console.log();
         getImage(userInfos?.profile_picture, apiToken, updateLocalPicture);
       } else {
         setProfileUrl(
@@ -73,30 +76,34 @@ function EditProfileView(props) {
   }, []);
 
   useEffect(() => {
-    setProfileUrl(userLocalPicture);
+    if (userLocalPicture) {
+      setProfileUrl(userLocalPicture);
+    }
   }, [userLocalPicture]);
 
   useEffect(() => {
-    for (let index = 0; index < userInfos.socials.length; index++) {
-      const element = userInfos.socials[index];
-      switch (element.name) {
-        case "Instagram":
-          setInsta(element.url);
-          break;
-        case "Facebook":
-          setFacebook(element.url);
-          break;
-        case "Snap":
-          setSnap(element.url);
-          break;
-        case "TikTok":
-          setTikTok(element.url);
-          break;
-        case "Twitter":
-          setTwitter(element.url);
-          break;
-        default:
-          break;
+    if (userInfos?.socials?.length > 0) {
+      for (let index = 0; index < userInfos.socials.length; index++) {
+        const element = userInfos.socials[index];
+        switch (element?.name) {
+          case "Instagram":
+            setInsta(element?.url);
+            break;
+          case "Facebook":
+            setFacebook(element?.url);
+            break;
+          case "Snap":
+            setSnap(element?.url);
+            break;
+          case "TikTok":
+            setTikTok(element?.url);
+            break;
+          case "Twitter":
+            setTwitter(element?.url);
+            break;
+          default:
+            break;
+        }
       }
     }
   }, [userInfos]);
@@ -204,12 +211,14 @@ function EditProfileView(props) {
     }
     if (photoRequest?.status === "Done") {
       updateUserInfos();
-      newUpdateRequest(
-        "user",
-        "PUT",
-        { profile_picture: photoRequest.content.filename },
-        apiToken
-      );
+      if (photoRequest?.content?.filename) {
+        newUpdateRequest(
+          "user",
+          "PUT",
+          { profile_picture: photoRequest.content.filename },
+          apiToken
+        );
+      }
       setNewFileType(null);
 
       Animated.timing(loadingopacity, {
@@ -219,7 +228,6 @@ function EditProfileView(props) {
       }).start();
     }
   }, [photoRequest]);
-  useEffect(() => console.log("PHOTO", profileUrl), [profileUrl]);
   return (
     <SafeAreaView
       style={[styles.container, { backgroundColor: themeStyle.background }]}

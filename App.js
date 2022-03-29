@@ -36,7 +36,6 @@ async function onAppBootstrap(callback) {
 
   // Save the token
   callback(token);
-  console.warn("TOKEN : ", token);
 }
 
 function App() {

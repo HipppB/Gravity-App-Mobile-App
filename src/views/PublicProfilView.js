@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   StyleSheet,
   View,
@@ -16,12 +16,15 @@ import email from "../assets/icons/email.png";
 import facebook from "../assets/icons/facebook.png";
 import instagram from "../assets/icons/instagram.png";
 import phone from "../assets/icons/phone.png";
+import twitter from "../assets/icons/twitter.png";
 import snapchat from "../assets/icons/snapchat.png";
 import tiktok from "../assets/icons/tiktok.png";
 import ColoredViewComponent from "../components/ColoredViewComponent";
 import { useTranslation } from "../Context/TranslationContext";
 import { useTheme } from "../Context/theme/ThemeContext";
-
+import { useAuthentification } from "../Context/AuthContext";
+import useFetch from "../data/useFetch";
+import getImage from "../components/data/getImage";
 const heads = [
   require("../GravityHeadCrush/images/1.png"),
   require("../GravityHeadCrush/images/2.png"),
@@ -34,9 +37,31 @@ const heads = [
 ];
 
 const { width, height } = Dimensions.get("window");
-function PublicProfilView(props) {
+function PublicProfilView({ route, navigation }) {
+  const id = route.params.id;
   const { langage } = useTranslation();
   const { themeStyle } = useTheme();
+  const { apiToken } = useAuthentification();
+  const [request, newRequest] = useFetch();
+  const [profile, setProfile] = useState();
+  const [profilePicture, setProfilePicture] = useState();
+  useEffect(() => {
+    if (id) {
+      newRequest("user/profile/public/" + id, "GET", {}, apiToken);
+    }
+  }, []);
+  useEffect(() => {
+    if (request?.status === "Done") {
+      setProfile(request.content);
+      if (request?.content?.profile_picture) {
+        getImage(
+          request?.content?.profile_picture,
+          apiToken,
+          setProfilePicture
+        );
+      }
+    }
+  }, [request]);
 
   const num = ((Math.random() * 60) % 6).toFixed(0);
 
@@ -49,97 +74,151 @@ function PublicProfilView(props) {
         backgroundColor: themeStyle.background,
       }}
     >
-      <View style={{ position: "absolute", top: 0 }}>
-        <BackButtonComponent
-          navigation={props.navigation}
-          top={Platform.OS == "ios" ? 30 : 0}
-        />
-      </View>
-      <Image
-        source={heads[num]}
-        style={{
-          width: 0.4 * width,
-          height: 0.4 * width,
-          backgroundColor: "black",
-          borderRadius: width,
-          resizeMode: "cover",
-          alignSelf: "center",
-        }}
-      />
-      <Text
-        numberOfLines={1}
-        style={[styles.pageTitle, { color: themeStyle.text }]}
-      >
-        Personne Random n°{num}
-      </Text>
-      <ScrollView
-        style={{
-          width: "100%",
-          height: "auto",
-          paddingBottom: 0,
-        }}
-        contentContainerStyle={{ alignItems: "center" }}
-        showsVerticalScrollIndicator={false}
-      >
-        <Text style={[styles.pageSubTitle, { color: themeStyle.textless }]}>
-          {langage.publicDesription}
-        </Text>
-        <Text style={[styles.description, { color: themeStyle.textless }]}>
-          Si vous avez des suggestion pour cette page n'hésitez pas, je trouve
-          personnllement qu'elle manque un peu de couleur. Tout les retours sont
-          bon à prendre !
-        </Text>
-        <Text style={[styles.pageSubTitle, { color: themeStyle.textless }]}>
-          {langage.publicNetwork}
-        </Text>
+      {id ? (
+        <>
+          {profile ? (
+            <>
+              <View style={{ position: "absolute", top: 0 }}>
+                <BackButtonComponent
+                  navigation={navigation}
+                  top={Platform.OS == "ios" ? 30 : 0}
+                />
+              </View>
+              <Image
+                source={
+                  profilePicture
+                    ? {
+                        uri: profilePicture,
+                      }
+                    : require("../assets/images/logos/Couleur/LogoNoNomNoFond.png")
+                }
+                style={{
+                  width: 0.45 * width,
+                  height: 0.45 * width,
+                  borderRadius: profilePicture && width,
+                  resizeMode: profilePicture ? "cover" : "contain",
+                  alignSelf: "center",
+                }}
+              />
+              <Text
+                numberOfLines={1}
+                style={[styles.pageTitle, { color: themeStyle.text }]}
+              >
+                {profile.first_name} {profile.last_name}
+              </Text>
+              <ScrollView
+                style={{
+                  width: "100%",
+                  height: "auto",
+                  paddingBottom: 0,
+                }}
+                contentContainerStyle={{ alignItems: "center" }}
+                showsVerticalScrollIndicator={false}
+              >
+                <Text
+                  style={[styles.pageSubTitle, { color: themeStyle.textless }]}
+                >
+                  {langage.publicDesription}
+                </Text>
+                <Text
+                  style={[styles.description, { color: themeStyle.textless }]}
+                >
+                  {profile.description}
+                </Text>
+                <Text
+                  style={[styles.pageSubTitle, { color: themeStyle.textless }]}
+                >
+                  {langage.publicNetwork}
+                </Text>
+                {profile?.socials?.map((social) => (
+                  <Item
+                    social={social}
+                    network={social.name}
+                    contact={social.url}
+                    key={social.id}
+                  />
+                ))}
+                {profile?.phone_number && (
+                  <Item network={"phone"} contact={profile?.phone_number} />
+                )}
 
-        <Item
-          network={"instagram"}
-          icon={instagram}
-          contact={"Xx__InstaDekevinDu75__xX"}
-        />
-        <Item
-          network={"tiktok"}
-          icon={tiktok}
-          contact={"Xx__TikTokDekevinDu75__xX"}
-        />
-        <Item
-          network={"snapchat"}
-          icon={snapchat}
-          contact={"Xx__SnapDekevinDu75__xX"}
-        />
-
-        <Item
-          network={"facebook"}
-          icon={facebook}
-          contact={"Xx__FacebookDekevinDu75__xX"}
-        />
-        <Item network={"phone"} icon={phone} contact={"+ 33 6 07 48 34 54"} />
-        <Item
-          network={"email"}
-          icon={email}
-          contact={"Jean.kevin@eleve.isep.fr"}
-        />
-      </ScrollView>
+                <Item network={"email"} contact={profile?.email} />
+              </ScrollView>
+            </>
+          ) : (
+            <Text
+              style={{
+                color: themeStyle.textless,
+                fontFamily: "Neon",
+                alignSelf: "center",
+                textAlign: "center",
+              }}
+            >
+              Chargement...
+            </Text>
+          )}
+        </>
+      ) : (
+        <Text
+          style={{
+            color: themeStyle.textless,
+            fontFamily: "Neon",
+            alignSelf: "center",
+            textAlign: "center",
+          }}
+        >
+          Aucun profil spécifié{"\n"} No specified profile {"\n"} How did you
+          get here ?
+        </Text>
+      )}
     </View>
   );
 }
 
-function Item({ icon, contact, network }) {
+function Item({ contact, network, ...props }) {
+  console.log(props?.social, network);
+  const [icon, setIcon] = useState();
+  useEffect(() => {
+    switch (network) {
+      case "Instagram":
+        setIcon(instagram);
+        break;
+      case "TikTok":
+        setIcon(tiktok);
+        break;
+      case "Snap":
+        setIcon(snapchat);
+        break;
+      case "Facebook":
+        setIcon(facebook);
+        break;
+      case "phone":
+        setIcon(phone);
+        break;
+      case "email":
+        setIcon(email);
+      case "Twitter":
+        setIcon(twitter);
+      default:
+        break;
+    }
+  }, []);
   if (Math.random() > 1.5) return <View></View>;
   function openSocialLink() {
     switch (network) {
-      case "instagram":
+      case "Instagram":
         Linking.openURL("https://www.instagram.com/" + contact);
         break;
-      case "tiktok":
+      case "Tiktok":
         Linking.openURL("https://www.tiktok.com/@" + contact);
         break;
-
-      case "snapchat":
+      case "Twitter":
+        Linking.openURL("https://twitter.com/@" + contact);
+        break;
+      case "Snapchat":
         Linking.openURL("https://www.snapchat.com/add/" + contact);
         break;
-      case "facebook":
+      case "Facebook":
         Linking.openURL("https://www.instagram.com/" + contact);
         break;
       default:
@@ -148,46 +227,49 @@ function Item({ icon, contact, network }) {
         break;
     }
   }
-  return (
-    <TouchableOpacity
-      style={{
-        flexDirection: "row",
-        alignItems: "center",
-        width: "100%",
-      }}
-      onPress={() => openSocialLink()}
-    >
-      <ColoredViewComponent
-        containerStyle={{
-          borderRadius: 105,
-
-          margin: 10,
-          shadowOffset: { width: 0, height: 0 },
-          shadowRadius: 0,
-          elevation: 0,
+  if (contact) {
+    return (
+      <TouchableOpacity
+        style={{
+          flexDirection: "row",
           alignItems: "center",
+          width: "100%",
         }}
-        coloredViewStyle={{
-          width: 40,
-          height: 40,
-          padding: 0,
-          alignItems: "center",
-          justifyContent: "center",
-          borderRadius: 20,
-        }}
+        onPress={() => openSocialLink()}
       >
-        <Image
-          source={icon}
-          style={{
-            width: 25,
-            height: 25,
-            tintColor: "white",
+        <ColoredViewComponent
+          containerStyle={{
+            borderRadius: 105,
+
+            margin: 10,
+            shadowOffset: { width: 0, height: 0 },
+            shadowRadius: 0,
+            elevation: 0,
+            alignItems: "center",
           }}
-        />
-      </ColoredViewComponent>
-      <Text style={styles.pseudo}>{contact}</Text>
-    </TouchableOpacity>
-  );
+          coloredViewStyle={{
+            width: 40,
+            height: 40,
+            padding: 0,
+            alignItems: "center",
+            justifyContent: "center",
+            borderRadius: 20,
+          }}
+        >
+          <Image
+            source={icon || "https://ui-avatars.com/api/?name=" + contact}
+            style={{
+              width: 25,
+              height: 25,
+              tintColor: "white",
+            }}
+          />
+        </ColoredViewComponent>
+        <Text style={styles.pseudo}>{contact}</Text>
+      </TouchableOpacity>
+    );
+  }
+  return <></>;
 }
 
 const styles = StyleSheet.create({

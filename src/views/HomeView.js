@@ -35,7 +35,7 @@ function HomeView(props) {
   const { toggleLangage, langage, selectedLangage } = useTranslation();
   const { isFirstLogin, setIsFirstLogin, apiToken } = useAuthentification();
   const [activePage, setActivePage] = useState(0);
-  const [isModalVisible, setModalVisible] = useState(true);
+  const [isModalVisible, setModalVisible] = useState(false);
 
   //Page active :
   const [project, setProject] = useState(false);

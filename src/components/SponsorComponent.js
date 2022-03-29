@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import {
   StyleSheet,
   View,
@@ -11,16 +11,20 @@ import {
   Dimensions,
   Linking,
   Platform,
+  LayoutAnimation,
+  UIManager,
 } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import ColoredViewComponent from "./ColoredViewComponent";
 import { useTranslation } from "../Context/TranslationContext";
 import { useTheme } from "../Context/theme/ThemeContext";
-
+import getImage from "./data/getImage";
+import { useAuthentification } from "../Context/AuthContext";
 function SponsorComponent({ sponsor }) {
   const [isOpen, setisOpen] = useState(false);
+  const [image, setImage] = useState();
   const containerHeight = useRef(new Animated.Value(0)).current;
-  const opacityContent = useRef(new Animated.Value(0)).current;
+  const { apiToken } = useAuthentification();
   const { toggleLangage, langage } = useTranslation();
   const { themeStyle } = useTheme();
   if (Platform.OS === "android") {
@@ -29,13 +33,11 @@ function SponsorComponent({ sponsor }) {
     }
   }
   const [contentHeight, setContentHeight] = useState(0);
+  useEffect(() => {
+    getImage(sponsor.picture, apiToken, setImage);
+  }, [sponsor]);
   function open() {
     Animated.parallel([
-      // Animated.timing(containerHeight, {
-      //   toValue: 1, // return to start
-      //   useNativeDriver: false,
-      //   duration: 300,
-      // }),
       Animated.timing(containerHeight, {
         toValue: 1, // return to start
         useNativeDriver: false,
@@ -45,11 +47,6 @@ function SponsorComponent({ sponsor }) {
   }
   function close() {
     Animated.parallel([
-      // Animated.timing(containerHeight, {
-      //   toValue: 0, // return to start
-      //   useNativeDriver: false,
-      //   duration: 300,
-      // }),
       Animated.timing(containerHeight, {
         toValue: 0, // return to start
         useNativeDriver: false,
@@ -67,8 +64,21 @@ function SponsorComponent({ sponsor }) {
     }
   }
 
+  const [layoutOpen, setLayoutOpen] = useState(false);
+
   return (
-    <Pressable onPress={() => toggleOpen()}>
+    <Pressable
+      onPress={() => {
+        toggleOpen();
+        LayoutAnimation.configureNext({
+          duration: 100,
+          create: { type: "linear", property: "opacity" },
+          update: { type: "spring", springDamping: 0.1 },
+          delete: { type: "linear", property: "opacity" },
+        });
+        setLayoutOpen(!layoutOpen);
+      }}
+    >
       <Animated.View
         style={[
           styles.container,
@@ -87,10 +97,7 @@ function SponsorComponent({ sponsor }) {
         ]}
       >
         <View style={[styles.containerHeader]}>
-          <Image
-            source={require("../GravityHeadCrush/images/2.png")}
-            style={styles.image}
-          />
+          <Image source={{ uri: image }} style={styles.image} />
           <View style={styles.textContainer}>
             <Text
               style={{
@@ -106,57 +113,60 @@ function SponsorComponent({ sponsor }) {
               style={{
                 fontFamily: "ChangaOne_400Regular_Italic",
                 fontSize: 17,
+                maxWidth: "90%",
                 color: themeStyle.textless,
                 lineHeight: 20,
               }}
+              numberOfLines={1}
             >
-              Sous titre du sponsor
+              {sponsor.translation[0].context_text}dqdz
             </Text>
           </View>
         </View>
-        <View
-          onLayout={(event) => {
-            var { x, y, width, height } = event.nativeEvent.layout;
+        {layoutOpen && (
+          <View
+            onLayout={(event) => {
+              var { x, y, width, height } = event.nativeEvent.layout;
 
-            setContentHeight(height);
-          }}
-          style={[
-            {
-              position: "absolute",
-
-              top: 75,
-              flexShrink: 1,
-              opacity: isOpen ? 1 : 0,
-              left: 0,
-              right: 0,
-            },
-          ]}
-        >
-          <Text
-            style={{
-              paddingHorizontal: 10,
-              color: themeStyle.textless,
-              fontFamily: "ChangaOne_400Regular_Italic",
-              fontSize: 15,
-              opacity: 0.7,
-              lineHeight: 20,
+              setContentHeight(height);
             }}
+            style={[
+              {
+                position: "absolute",
+
+                top: 75,
+                flexShrink: 1,
+                left: 0,
+                right: 0,
+              },
+            ]}
           >
-            {sponsor.translation[0].description}
-          </Text>
-          <TouchableOpacity
-            style={[styles.buttonTouchableContainer]}
-            onPress={() => Linking.openURL(sponsor.link)}
-          >
-            <ColoredViewComponent
-              coloredViewStyle={styles.buttonContainer}
-              containerStyle={styles.buttonContainerContainer}
-              isBlue
+            <Text
+              style={{
+                paddingHorizontal: 10,
+                color: themeStyle.textless,
+                fontFamily: "ChangaOne_400Regular_Italic",
+                fontSize: 15,
+                opacity: 0.7,
+                lineHeight: 20,
+              }}
             >
-              <Text style={styles.buttonText}>{langage.moreDetails}</Text>
-            </ColoredViewComponent>
-          </TouchableOpacity>
-        </View>
+              {sponsor.translation[0].description}
+            </Text>
+            <TouchableOpacity
+              style={[styles.buttonTouchableContainer]}
+              onPress={() => Linking.openURL(sponsor.link)}
+            >
+              <ColoredViewComponent
+                coloredViewStyle={styles.buttonContainer}
+                containerStyle={styles.buttonContainerContainer}
+                isBlue
+              >
+                <Text style={styles.buttonText}>{langage.moreDetails}</Text>
+              </ColoredViewComponent>
+            </TouchableOpacity>
+          </View>
+        )}
       </Animated.View>
     </Pressable>
   );

@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import {
   StyleSheet,
   Text,
@@ -6,6 +6,7 @@ import {
   Dimensions,
   ScrollView,
   TouchableOpacity,
+  RefreshControl,
 } from "react-native";
 import HeaderComponenent from "../../components/HeaderComponenent";
 import { useTranslation } from "../../Context/TranslationContext";
@@ -15,15 +16,15 @@ import EventComponent from "../../components/EventComponent";
 import SpecialEventComponent from "../../components/SpecialEventComponent";
 import { LinearGradient } from "expo-linear-gradient";
 import { useTheme } from "../../Context/theme/ThemeContext";
-
+import NewEventList from "./NewEventList";
+import SentEventList from "./SentEventList";
 function EventView(props) {
   const { themeStyle } = useTheme();
-
-  const { toggleLangage, langage } = useTranslation();
+  const { langage } = useTranslation();
   let scrollViewSelector = useRef();
   let scrollViewPages = useRef();
-
   const [activePage, setActivePage] = useState(0);
+
   function changeActivePage(pageNumber) {
     setActivePage(pageNumber);
 
@@ -39,7 +40,7 @@ function EventView(props) {
       <HeaderComponenent navigation={props.navigation} />
       <View style={{ alignItems: "center" }}>
         <ScrollView
-          horizontal
+          horizontal={true}
           showsHorizontalScrollIndicator={false}
           style={styles.buttonSelectorContainer}
           ref={scrollViewSelector}
@@ -113,74 +114,10 @@ function EventView(props) {
           }}
         >
           <View style={styles.bodyContainer}>
-            <ScrollView>
-              <SpecialEventComponent navigation={props.navigation} />
-              <SpecialEventComponent navigation={props.navigation} />
-
-              <EventComponent navigation={props.navigation} />
-            </ScrollView>
+            <NewEventList navigation={props.navigation} />
           </View>
           <View style={[styles.bodyContainer]}>
-            <ScrollView>
-              <Text
-                style={{
-                  fontFamily: "ChangaOne_400Regular_Italic",
-                  fontSize: 19,
-                  textAlign: "center",
-                  alignSelf: "center",
-                  marginTop: 20,
-                  color: themeStyle.textless,
-                }}
-              >
-                {langage.refuse}
-              </Text>
-
-              <View style={{ opacity: 0.7 }}>
-                <EventComponent
-                  navigation={props.navigation}
-                  wrong={
-                    "DEFIS REFUSÉ : La graviteam à jugé que le pont n'était pas assez haut pour valider le défis. Nous esperont tout de même que votre jambe vas mieux, n'hésitez pas à retenter le défis !"
-                  }
-                />
-              </View>
-              <Text
-                style={{
-                  fontFamily: "ChangaOne_400Regular_Italic",
-                  fontSize: 19,
-                  textAlign: "center",
-                  alignSelf: "center",
-                  marginTop: 20,
-                  color: themeStyle.textless,
-                }}
-              >
-                {langage.waitingVal}
-              </Text>
-
-              <View style={{ opacity: 0.7 }}>
-                <EventComponent navigation={props.navigation} validating />
-                <SpecialEventComponent
-                  navigation={props.navigation}
-                  validating
-                />
-                <EventComponent navigation={props.navigation} validating />
-              </View>
-              <Text
-                style={{
-                  fontFamily: "ChangaOne_400Regular_Italic",
-                  fontSize: 19,
-                  textAlign: "center",
-                  alignSelf: "center",
-                  marginTop: 20,
-                  color: themeStyle.textless,
-                }}
-              >
-                {langage.validate}
-              </Text>
-              <View style={{ opacity: 0.7 }}>
-                <EventComponent navigation={props.navigation} validate />
-                <EventComponent navigation={props.navigation} validate />
-              </View>
-            </ScrollView>
+            <SentEventList navigation={props.navigation} />
           </View>
         </ScrollView>
       </View>

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   StyleSheet,
   View,
@@ -17,17 +17,23 @@ import { ScrollView } from "react-native-gesture-handler";
 import ColoredViewComponent from "../../components/ColoredViewComponent";
 import { useTheme } from "../../Context/theme/ThemeContext";
 import { useTranslation } from "../../Context/TranslationContext";
-function RestaurantDetailView({ restaurant, route, navigation }) {
+import getImage from "../../components/data/getImage";
+import { useAuthentification } from "../../Context/AuthContext";
+
+function RestaurantDetailView({ route, navigation }) {
   const { themeStyle } = useTheme();
   const { langage } = useTranslation();
+  const restaurant = route.params;
+
+  const { apiToken } = useAuthentification();
+
   function openInApp() {
     let lat = 48.84554;
     let lon = 2.32779;
-    Linking.openURL(
-      "https://www.google.com/maps/search/?api=1&query=" + lat + "%2C" + lon
-    );
+    Linking.openURL(restaurant.link);
   }
-
+  const [image, setImage] = useState();
+  useEffect(() => getImage(restaurant.picture, apiToken, setImage), []);
   return (
     <View
       style={{
@@ -35,12 +41,12 @@ function RestaurantDetailView({ restaurant, route, navigation }) {
         flex: 1,
       }}
     >
-      <HeaderComponenent navigation={navigation} title={"Nom Restaurant"} />
+      <HeaderComponenent navigation={navigation} title={restaurant.name} />
       <ScrollView>
         <View style={{ alignItems: "center" }}>
           <Image
             source={{
-              uri: 'https://via.placeholder.com/1000x500?text="Super image placeholder du resto"',
+              uri: image,
             }}
             style={styles.backgroundImage}
           />
@@ -70,8 +76,7 @@ function RestaurantDetailView({ restaurant, route, navigation }) {
                 color: themeStyle.textless,
               }}
             >
-              COOKIES OFFERTS (J'espere sincerement que le respo food offre des
-              cookies et qu'il m'en gardera, car c'est bon les cookies)
+              {restaurant.translation[0].description}
             </Text>
             <Text
               style={{
@@ -96,22 +101,25 @@ function RestaurantDetailView({ restaurant, route, navigation }) {
                 width: "100%",
               }}
             >
-              Bon ben là c'est un petit texte pour emmener les gens à bon port
+              {restaurant.translation[0].context_text}
             </Text>
             <MapView
               style={styles.mapContainer}
               showsUserLocation
               initialRegion={{
-                latitude: 48.84554,
-                longitude: 2.32779,
+                latitude: restaurant.location.coordinates[1],
+                longitude: restaurant.location.coordinates[0],
                 latitudeDelta: 0.0922,
                 longitudeDelta: 0.0421,
               }}
             >
               <Marker
-                coordinate={{ latitude: 48.84554, longitude: 2.32779 }}
-                title={"ISEP NDC"}
-                description={"Des crêpes à tomber"}
+                coordinate={{
+                  latitude: restaurant.location.coordinates[1],
+                  longitude: restaurant.location.coordinates[0],
+                }}
+                title={restaurant.name}
+                description={"DEV DESCRIPTION"}
               />
             </MapView>
             <TouchableOpacity onPress={() => openInApp()}>

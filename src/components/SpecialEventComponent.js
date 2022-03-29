@@ -13,7 +13,6 @@ import { useFocusEffect } from "@react-navigation/native";
 import ColoredViewComponent from "./ColoredViewComponent";
 
 function SpecialEventComponent(props) {
-  // console.warn((1000 * Math.random()).toFixed(0));
   const [dataFuture, setFutureDate] = useState(
     (Date.now() + 10000000 * Math.random()).toFixed(0)
   );

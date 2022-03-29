@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { useAuthentification } from "../Context/AuthContext";
 
 const useFetch = () => {
   const [data, setData] = useState(null);
