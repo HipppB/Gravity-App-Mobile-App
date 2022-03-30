@@ -7,7 +7,7 @@ import EventComponent from "../../components/EventComponent";
 function NewEventList(props) {
   const [challengesNormal, setChallangesNormal] = useState([]);
   const [challengesSpecial, setChallangesSpecial] = useState([]);
-  const [isRefreshing, setRefreshing] = useState(false);
+
   const { apiToken } = useAuthentification();
 
   const [normalRequest, newNormalRequest] = useFetch();

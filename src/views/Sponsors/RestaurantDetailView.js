@@ -119,7 +119,7 @@ function RestaurantDetailView({ route, navigation }) {
                   longitude: restaurant.location.coordinates[0],
                 }}
                 title={restaurant.name}
-                description={"DEV DESCRIPTION"}
+                description={restaurant.translation[0].subtitle}
               />
             </MapView>
             <TouchableOpacity onPress={() => openInApp()}>

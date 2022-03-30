@@ -13,11 +13,20 @@ import {
 
 import ColoredViewComponent from "../components/ColoredViewComponent";
 import { LinearGradient } from "expo-linear-gradient";
+import getImage from "./data/getImage";
+import { useAuthentification } from "../Context/AuthContext";
 
-function EventComponent(props) {
+function EventComponent({ event, ...props }) {
   const [isOpen, setisOpen] = useState(false);
   const containerHeight = useRef(new Animated.Value(0)).current;
-  const opacityContent = useRef(new Animated.Value(0)).current;
+
+  const [eventImage, setEventImage] = useState();
+  const { apiToken } = useAuthentification();
+  useEffect(() => {
+    if (event.imageUri) {
+      getImage(event.imageUri, apiToken, setEventImage);
+    }
+  }, []);
 
   const [contentHeight, setContentHeight] = useState(0);
 
@@ -54,7 +63,7 @@ function EventComponent(props) {
 
   if (props?.validate) {
     return (
-      <Pressable onPress={() => props.navigation.navigate("LongEvent")}>
+      <Pressable onPress={() => props.navigation.navigate("LongEvent", event)}>
         <View
           style={{
             width: "80%",
@@ -85,9 +94,13 @@ function EventComponent(props) {
             style={{ width: "100%", height: "100%", borderRadius: 15 }}
           >
             <View style={[styles.containerHeader]}>
-              <Image
-                source={require("../GravityHeadCrush/images/6.png")}
-                style={styles.image}
+              <Animated.Image
+                source={
+                  eventImage
+                    ? { uri: eventImage }
+                    : require("../assets/images/logos/Couleur/LogoNoNomNoFond.png")
+                }
+                style={[styles.image, !eventImage && { resizeMode: "center" }]}
               />
               <View style={styles.textContainer}>
                 <Text
@@ -98,7 +111,7 @@ function EventComponent(props) {
                     lineHeight: 20,
                   }}
                 >
-                  Nom du défis
+                  {event?.translation[0]?.title}
                 </Text>
                 <Text
                   style={{
@@ -159,8 +172,12 @@ function EventComponent(props) {
         >
           <View style={[styles.containerHeader]}>
             <Image
-              source={require("../GravityHeadCrush/images/6.png")}
-              style={styles.image}
+              source={
+                eventImage
+                  ? { uri: eventImage }
+                  : require("../assets/images/logos/Couleur/LogoNoNomNoFond.png")
+              }
+              style={[styles.image, !eventImage && { resizeMode: "center" }]}
             />
             <View style={styles.textContainer}>
               <Text
@@ -171,7 +188,7 @@ function EventComponent(props) {
                   lineHeight: 20,
                 }}
               >
-                Nom du défis
+                {event?.translation[0]?.title}
               </Text>
               <Text
                 style={{
@@ -183,7 +200,9 @@ function EventComponent(props) {
                   lineHeight: 20,
                 }}
               >
-                {props?.wrong ? "Défis refusé" : 'Phrase "Agguicheuse"'}
+                {props?.wrong
+                  ? "Défis refusé"
+                  : event?.translation[0]?.subtitle}
               </Text>
             </View>
           </View>
@@ -216,13 +235,11 @@ function EventComponent(props) {
                 color: "white",
               }}
             >
-              {props?.wrong
-                ? props.wrong
-                : " Bizzarement sur cette page ça m'a pris 10 minutes (mais c'est pas fini j'attend les instructions, en attendant vous pouvez jouer avec les têtes du bureau avec ce gros bouton bleu juste en dessus"}
+              {props?.wrong ? props.wrong : event?.translation[0]?.description}
             </Text>
             <TouchableOpacity
               style={[styles.buttonTouchableContainer]}
-              onPress={() => props.navigation.navigate("LongEvent")}
+              onPress={() => props.navigation.navigate("LongEvent", event)}
             >
               <ColoredViewComponent
                 coloredViewStyle={styles.buttonContainer}
@@ -275,7 +292,6 @@ const styles = StyleSheet.create({
     height: 50,
     marginRight: 8,
     borderRadius: 10,
-    backgroundColor: "black",
   },
   textContainer: {},
   buttonTouchableContainer: {

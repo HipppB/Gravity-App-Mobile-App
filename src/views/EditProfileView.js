@@ -47,7 +47,7 @@ function EditProfileView(props) {
   async function changePhoto() {
     try {
       const result = await launchImageLibrary({ mediaType: "photo" });
-      if (result?.assets?.at(0)) {
+      if (result?.assets?.length > 0) {
         setNewFileType(result?.assets[0]?.type);
         setProfileUrl(result?.assets[0]?.uri);
       }

@@ -10,26 +10,18 @@ import {
 } from "react-native";
 import { useFocusEffect } from "@react-navigation/native";
 import { useAuthentification } from "../Context/AuthContext";
-import useFetch from "../data/useFetch";
+
 import getImage from "./data/getImage";
 import ColoredViewComponent from "./ColoredViewComponent";
 
 function SpecialEventComponent({ event, navigation }) {
-  // console.log(event);
   const [eventImage, setEventImage] = useState();
-  const [eventContent, setEventContent] = useState();
-  const [requestEventContent, newRequestEventContent] = useFetch();
-
+  const { apiToken } = useAuthentification();
   useEffect(() => {
-    getImage(event.imageUri);
-    newRequestEventContent();
-  }, []);
-
-  useEffect(() => {
-    if (requestEventContent === "Done") {
-      setEventContent(requestEventContent?.content);
+    if (event.imageUri) {
+      getImage(event.imageUri, apiToken, setEventImage);
     }
-  }, [requestEventContent]);
+  }, []);
 
   const [dataFuture, setFutureDate] = useState(new Date(event.expiredAt));
   const [timeRemaining, setTimeRemaining] = useState(
@@ -47,7 +39,7 @@ function SpecialEventComponent({ event, navigation }) {
     }, [timeRemaining])
   );
   function toggleOpen() {
-    navigation.navigate("SpecialEvent");
+    navigation.navigate("SpecialEvent", event);
   }
   return (
     <Pressable onPress={() => toggleOpen()}>
@@ -56,7 +48,6 @@ function SpecialEventComponent({ event, navigation }) {
           styles.container,
           {
             display: "flex",
-
             flex: 1,
             height: 70,
             marginBottom: 10,
@@ -65,8 +56,12 @@ function SpecialEventComponent({ event, navigation }) {
       >
         <View style={[styles.containerHeader]}>
           <Image
-            source={require("../GravityHeadCrush/images/6.png")}
-            style={styles.image}
+            source={
+              eventImage
+                ? { uri: eventImage }
+                : require("../assets/images/logos/Couleur/LogoNoNomNoFond.png")
+            }
+            style={[styles.image, !eventImage && { resizeMode: "center" }]}
           />
           <View style={styles.textContainer}>
             <Text
@@ -77,7 +72,7 @@ function SpecialEventComponent({ event, navigation }) {
                 lineHeight: 20,
               }}
             >
-              Nom du défis
+              {event?.translation[0]?.title}
             </Text>
             <Text
               style={{
@@ -121,14 +116,14 @@ const styles = StyleSheet.create({
     alignItems: "center",
     width: "100%",
     alignSelf: "center",
-    padding: 10,
+    padding: 8,
   },
   image: {
-    width: 50,
-    height: 50,
     marginRight: 8,
     borderRadius: 10,
-    backgroundColor: "black",
+    resizeMode: "cover",
+    width: 50,
+    height: 50,
   },
   textContainer: {},
   buttonTouchableContainer: {

@@ -12,6 +12,7 @@ import {
   Platform,
   Alert,
   FlatList,
+  ActivityIndicator,
 } from "react-native";
 import ColoredViewComponent from "../../components/ColoredViewComponent";
 import HeaderComponenent from "../../components/HeaderComponenent";
@@ -22,62 +23,138 @@ import { launchCamera, launchImageLibrary } from "react-native-image-picker";
 import BackButtonComponent from "../../components/BackButtonComponent";
 import TextInputComponent from "../../components/TextInputComponent";
 import { useTheme } from "../../Context/theme/ThemeContext";
-
+import { useTranslation } from "../../Context/TranslationContext";
 import CheckBoxComponent from "../../components/CheckBoxComponent";
+import { useAuthentification } from "../../Context/AuthContext";
+import getImage from "../../components/data/getImage";
+import useFetch from "../../data/useFetch";
 const { width, height } = Dimensions.get("screen");
 
 function SpecialEventView(props) {
-  const [dataFuture, setFutureDate] = useState(Date.now() + 10000000);
-  const [answer, setAnswer] = useState("");
+  const event = props.route.params;
   const { themeStyle } = useTheme();
-
-  const [timeRemaining, setTimeRemaining] = useState(
-    (dataFuture - Date.now()) / 1000
-  );
+  const { langage } = useTranslation();
+  const { apiToken } = useAuthentification();
+  const [dataFuture, setFutureDate] = useState(new Date(event.expiredAt));
+  const [requestEventContent, newRequestEventContent] = useFetch();
+  const [eventContent, setEventContent] = useState();
+  const [answer, setAnswer] = useState("");
+  const [imageUri, setImageUri] = useState();
+  const [imageHeight, setImageHeight] = useState(width * 0.8);
+  const [imageWidth, setImageWidth] = useState(width * 0.8);
+  const [deletionRequest, newDeletionRequest] = useFetch();
+  const [submitedImages, setSubmitedImages] = useState({});
+  const [submitedText, setSubmitedText] = useState();
   const [currentFont, setCurrentFont] = useState(20);
   const [acceptsToShare, setacceptsToShare] = useState(true);
-  let scrollViewRestaurant = useRef();
-  const [scrolledImagePresentation, setScrolledImagePresentation] = useState(0);
-  const [addedImages, setaddedImages] = useState([
-    {
-      id: 1,
-      uri: "https://i.dailymail.co.uk/1s/2022/02/07/17/53887271-0-image-a-2_1644256002098.jpg",
-    },
-    {
-      id: 2,
-      uri: "https://curiokids.net/wp-content/uploads/2021/07/une_gravite-sur-Mars_astronaute_curiokids_eurospace_center-678x381.jpg",
-    },
-    {
-      id: 3,
-      uri: "https://i.ytimg.com/vi/4P--9cRAefE/maxresdefault.jpg",
-    },
-  ]);
-  function removeImage(imageId) {
-    let array = addedImages.filter((image) => imageId !== image.id);
+  const [addedImages, setaddedImages] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  useEffect(() => {
+    getImage(event.imageUri, apiToken, setImageUri);
+    newRequestEventContent("challenge/" + event.id, "GET", {}, apiToken);
+  }, []);
+  useEffect(() => {
+    if (requestEventContent?.status === "Done") {
+      console.log(event.id);
+      try {
+        console.log(requestEventContent?.content[0]?.challenge_submission);
+
+        setEventContent(
+          requestEventContent?.content[0] &&
+            requestEventContent?.content[0]?.challenge_submission
+        );
+        requestEventContent?.content[0]?.challenge_submission?.forEach(
+          (sub) => {
+            if (sub.isFile) {
+              getImage(sub.content, apiToken, (imageUrl) => {
+                let subIm = submitedImages;
+                subIm[sub.id] = imageUrl;
+                setSubmitedImages(subIm);
+              });
+              console.log(sub);
+            } else {
+              setSubmitedText(sub);
+            }
+          }
+        );
+      } catch (e) {
+        console.log(e);
+      }
+    }
+  }, [requestEventContent]);
+
+  useEffect(
+    () => console.log("SUBMITED IMAGES ", submitedImages),
+    [submitedImages]
+  );
+  useEffect(() => {
+    if (imageUri) {
+      Image.getSize(imageUri, (width, height) => {
+        setImageHeight(height);
+        setImageWidth(width);
+      });
+    }
+  }, [imageUri]);
+  const [timeRemaining, setTimeRemaining] = useState(
+    ((dataFuture - Date.now()) / 1000).toFixed(0)
+  );
+
+  function removeImage(image) {
+    let array = addedImages.filter((images) => image.id !== images.id);
     console.log(array);
     setaddedImages(array);
   }
-  function addImageUri(imageUri) {
+  function addImageUri(image) {
     let array = addedImages;
-    array.push({ id: array.length, uri: imageUri });
+    array.push({ id: array.length, uri: image?.uri, image: image });
     setaddedImages([...array]);
   }
   function addImage() {
-    let array = addedImages;
     launchImageLibrary({
       mediaType: "mixed",
       selectionLimit: 1,
       videoQuality: "low",
     }).then((result) => {
-      console.log(result);
       if (result?.assets?.length > 0) {
-        addImageUri(result.assets[0].uri);
+        addImageUri(result.assets[0]);
       }
     });
   }
+  function saveChallenge() {
+    setIsLoading(true);
+    //To save : addedImages
+    if (
+      (event.submissionType === "mixed" || event.submissionType === "image") &&
+      answer
+    ) {
+      //Save answer
+      if (submitedText) {
+        if (submitedText.content !== answer) {
+          //EDIT La submission
+        }
+        if (answer === "") {
+          newDeletionRequest(
+            "challenge/" + submitedText.id + "/submission",
+            "DELETE",
+            {},
+            apiToken
+          );
+        }
+      } else {
+        //New submission
+      }
+    }
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 1000);
+  }
+
+  useEffect(
+    () => submitedText && setAnswer(submitedText.content),
+    [submitedText]
+  );
   useEffect(() => {
     const interval = setInterval(() => {
-      console.log(timeRemaining);
       setTimeRemaining(((dataFuture - Date.now()) / 1000).toFixed(0));
     }, 1000);
     return () => {
@@ -91,36 +168,14 @@ function SpecialEventView(props) {
     >
       <HeaderComponenent
         navigation={props.navigation}
-        title={"Titre du défis"}
+        title={event?.translation[0]?.title}
       />
-      {/* <BackButtonComponent navigation={props.navigation} top={40} /> */}
+
       <ScrollView
         style={styles.scrollStyle}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.scrollStyleContent}
       >
-        {/* <ColoredViewComponent
-          coloredViewStyle={{ height: 40, minWidth: "60%" }}
-        >
-          <View
-            style={{
-              alignItems: "center",
-              justifyContent: "center",
-              flex: 1,
-            }}
-          >
-            <Text
-              style={{
-                color: "white",
-                fontFamily: "ChangaOne_400Regular",
-                fontSize: 20,
-                paddingHorizontal: 20,
-              }}
-            >
-              Titre du défis
-            </Text>
-          </View>
-        </ColoredViewComponent> */}
         <View
           style={{
             alignSelf: "center",
@@ -177,7 +232,7 @@ function SpecialEventView(props) {
                 color: themeStyle.text,
               }}
             >
-              Description du défis :
+              {langage.descriptionChallenge} :
             </Text>
             <Text
               style={{
@@ -187,11 +242,7 @@ function SpecialEventView(props) {
                 color: themeStyle.textless,
               }}
             >
-              Ceci est une superbe description de défis, ça peut être n'importe
-              quoi tant qu'on ne perd pas trop d'isépiens, exemple de défis à
-              éviter : Sauter d'un pont, frapper quelqu'un, tuer quelqu'un,
-              écouter un cours en entier, bref, tout ce qui peut être dangereux
-              pour la santée.
+              {event?.translation[0]?.description}
             </Text>
             <Text
               style={{
@@ -201,7 +252,7 @@ function SpecialEventView(props) {
                 marginTop: 20,
               }}
             >
-              Récompenses :
+              {langage.trophee} :
             </Text>
             <Text
               style={{
@@ -212,110 +263,141 @@ function SpecialEventView(props) {
                 color: themeStyle.textless,
               }}
             >
-              Ne pas mourir c'est bien, mais un tshirt gravity c'est encore
-              encore mieux
+              {event?.translation[0]?.rewards}
             </Text>
           </View>
-          <View
-            style={{
-              marginTop: 20,
-              height: 200,
-              width: width * 0.8,
-            }}
-          >
-            <Image
-              source={{ uri: addedImages[0].uri }}
-              style={{ height: 200, width: width * 0.8, resizeMode: "contain" }}
-            />
-          </View>
-          <Text
-            style={{
-              fontFamily: "ChangaOne_400Regular_Italic",
-              fontSize: 19,
-              marginBottom: 10,
-              marginTop: 20,
-              color: themeStyle.text,
-              alignSelf: "baseline",
-            }}
-          >
-            Ma réponse :
-          </Text>
-          <ColoredViewComponent containerStyle={styles.labelContainer} isBlue>
-            <TextInputComponent
-              // autoFocus
-              placeholder={"Réponse"}
-              value={answer}
-              onChange={setAnswer}
-            />
-          </ColoredViewComponent>
-          <Text
-            style={{
-              color: themeStyle.text,
-              fontFamily: "ChangaOne_400Regular_Italic",
-              fontSize: 19,
-              marginBottom: 10,
-              marginTop: 20,
 
-              alignSelf: "baseline",
-            }}
-          >
-            Mes photos et vidéos :
-          </Text>
-        </View>
-        <ScrollView
-          horizontal
-          style={{ width: width, paddingVertical: 10 }}
-          showsHorizontalScrollIndicator={false}
-        >
-          <View
+          <Image
+            source={{ uri: imageUri }}
             style={{
-              minWidth: "100%",
-              justifyContent: "center",
-              alignItems: "center",
-              flexDirection: "row",
+              width: width * 0.8,
+              maxHeight: width * 0.8,
+
+              resizeMode: "contain",
+              height: (width * 0.8 * imageHeight) / imageWidth,
+              // padding: 20,
             }}
+          />
+
+          {(event.submissionType === "mixed" ||
+            event.submissionType === "text") && (
+            <>
+              <Text
+                style={{
+                  fontFamily: "ChangaOne_400Regular_Italic",
+                  fontSize: 19,
+                  marginBottom: 10,
+                  marginTop: 20,
+                  color: themeStyle.text,
+                  alignSelf: "baseline",
+                }}
+              >
+                {langage.myanswer} :
+              </Text>
+              <ColoredViewComponent
+                containerStyle={styles.labelContainer}
+                isBlue
+              >
+                <TextInputComponent
+                  isAutoUp
+                  placeholder={langage.answer}
+                  value={answer}
+                  onChange={setAnswer}
+                />
+              </ColoredViewComponent>
+            </>
+          )}
+          {(event.submissionType === "mixed" ||
+            event.submissionType === "image") && (
+            <>
+              <Text
+                style={{
+                  color: themeStyle.text,
+                  fontFamily: "ChangaOne_400Regular_Italic",
+                  fontSize: 19,
+                  marginBottom: 10,
+                  marginTop: 20,
+
+                  alignSelf: "baseline",
+                }}
+              >
+                {langage.photosVideos} :
+              </Text>
+            </>
+          )}
+        </View>
+        {(event.submissionType === "mixed" ||
+          event.submissionType === "image") && (
+          <ScrollView
+            horizontal
+            style={{ width: width, paddingVertical: 10 }}
+            showsHorizontalScrollIndicator={false}
           >
-            <TouchableOpacity
+            <View
               style={{
-                borderColor: "gray",
-                borderWidth: 1,
-                width: 90,
-                height: 90,
-                borderRadius: 20,
-                marginHorizontal: 10,
+                minWidth: "100%",
                 justifyContent: "center",
                 alignItems: "center",
-                borderColor: themeStyle.text,
+                flexDirection: "row",
               }}
-              onPress={() => addImage()}
             >
-              <Image
-                source={cameraIcon}
-                style={{ width: 50, height: 50, tintColor: themeStyle.text }}
-              />
-            </TouchableOpacity>
-
-            <View style={{ flexDirection: "row-reverse" }}>
-              {addedImages.map((image, index) => (
-                <ImageTile
-                  key={index}
-                  image={image}
-                  removeImage={removeImage}
+              <TouchableOpacity
+                style={{
+                  borderColor: "gray",
+                  borderWidth: 1,
+                  width: 90,
+                  height: 90,
+                  borderRadius: 20,
+                  marginHorizontal: 10,
+                  justifyContent: "center",
+                  alignItems: "center",
+                  borderColor: themeStyle.text,
+                }}
+                onPress={() => addImage()}
+              >
+                <Image
+                  source={cameraIcon}
+                  style={{ width: 50, height: 50, tintColor: themeStyle.text }}
                 />
-              ))}
-              {/* <FlatList
-                data={addedImages}
-                horizontal
-                scrollEnabled={false}
-                renderItem={({ item }) => (
-                  <ImageTile image={item} removeImage={removeImage} />
-                )}
-                keyExtractor={(item) => item.id}
-              /> */}
+              </TouchableOpacity>
+
+              <View style={{ flexDirection: "row-reverse" }}>
+                {Object.keys(submitedImages).map((key) => {
+                  return (
+                    <ImageTile
+                      key={key}
+                      image={{ uri: submitedImages[key], subId: key }}
+                      removeImage={(image) => {
+                        newDeletionRequest(
+                          "challenge/" + image.subId + "/submission",
+                          "DELETE",
+                          {},
+                          apiToken
+                        );
+                      }}
+                    />
+                  );
+                })}
+                {addedImages.map((image, index) => (
+                  <ImageTile
+                    key={image + index}
+                    image={image}
+                    removeImage={removeImage}
+                  />
+                ))}
+                {/* {submitedImages.map((image, index) => (
+                 
+                ))} */}
+              </View>
             </View>
-          </View>
-        </ScrollView>
-        <TouchableOpacity style={{ marginTop: 20, marginBottom: 20 }}>
+          </ScrollView>
+        )}
+
+        <TouchableOpacity
+          style={{ marginTop: 20, marginBottom: 20 }}
+          onPress={() => saveChallenge()}
+          disabled={isLoading}
+        >
           <ColoredViewComponent
             coloredViewStyle={{
               height: 40,
@@ -338,10 +420,24 @@ function SpecialEventView(props) {
                   fontSize: 20,
                 }}
               >
-                Envoyer le défis
+                {langage.sendChallenge}
               </Text>
             </View>
           </ColoredViewComponent>
+          {isLoading ? (
+            <ActivityIndicator
+              color={"#2293D0"}
+              size="large"
+              style={{
+                zIndex: 2,
+                alignSelf: "center",
+                justifyContent: "center",
+                marginTop: 10,
+              }}
+            />
+          ) : (
+            <></>
+          )}
         </TouchableOpacity>
         <View style={{ width: "80%" }}>
           <CheckBoxComponent
@@ -354,7 +450,7 @@ function SpecialEventView(props) {
                 color: themeStyle.textless,
               }}
             >
-              Je veux bien que gravity partage ces fichiers avec les Isepiens
+              {langage.acceptSharing}
             </Text>
           </CheckBoxComponent>
         </View>
@@ -393,7 +489,7 @@ function ImageTile({ image, removeImage }) {
           padding: 6,
           borderRadius: 20,
         }}
-        onPress={() => removeImage(image.id)}
+        onPress={() => removeImage(image)}
       >
         <Image
           source={trashIcon}

@@ -10,33 +10,41 @@ import EventComponent from "../../components/EventComponent";
 function SentEventList(props) {
   const { langage } = useTranslation();
   const { themeStyle } = useTheme();
+  const [challengesAccepted, setChallengeAccepted] = useState([]);
+  const [challengesProcessing, setChallengesProcessing] = useState([]);
+  const [challengesRejected, setChallengeRejected] = useState([]);
 
-  const [challengesNormal, setChallangesNormal] = useState([]);
-  const [challengesSpecial, setChallangesSpecial] = useState([]);
-  const [isRefreshing, setRefreshing] = useState(false);
   const { apiToken } = useAuthentification();
 
-  const [normalRequest, newNormalRequest] = useFetch();
-  const [specialRequest, newSpecialRequest] = useFetch();
+  const [aceeptedRequest, newAcceptedRequest] = useFetch();
+  const [processingRequest, newProcessingRequest] = useFetch();
+  const [rejectedgRequest, newRejectedRequest] = useFetch();
 
   function updateData() {
-    newNormalRequest("challenge/new/normals", "GET", {}, apiToken);
-    newSpecialRequest("challenge/new/specials", "GET", {}, apiToken);
+    newRejectedRequest("challenge/refused", "GET", {}, apiToken);
+    newProcessingRequest("challenge/processing", "GET", {}, apiToken);
+    newAcceptedRequest("challenge/validated", "GET", {}, apiToken);
   }
   useEffect(() => {
     updateData();
   }, []);
 
   useEffect(() => {
-    if (normalRequest?.status === "Done") {
-      setChallangesNormal(normalRequest.content);
+    if (rejectedgRequest?.status === "Done") {
+      setChallengeRejected(rejectedgRequest.content);
     }
-  }, [normalRequest]);
+  }, [rejectedgRequest]);
   useEffect(() => {
-    if (specialRequest?.status === "Done") {
-      setChallangesSpecial(specialRequest.content);
+    if (processingRequest?.status === "Done") {
+      setChallengesProcessing(processingRequest.content);
+      console.log(processingRequest.content);
     }
-  }, [specialRequest]);
+  }, [processingRequest]);
+  useEffect(() => {
+    if (aceeptedRequest?.status === "Done") {
+      setChallengeAccepted(aceeptedRequest.content);
+    }
+  }, [aceeptedRequest]);
 
   return (
     <ScrollView>
@@ -54,12 +62,18 @@ function SentEventList(props) {
       </Text>
 
       <View style={{ opacity: 0.7 }}>
-        <EventComponent
-          navigation={props.navigation}
-          wrong={
-            "DEFIS REFUSÉ : La graviteam à jugé que le pont n'était pas assez haut pour valider le défis. Nous esperont tout de même que votre jambe vas mieux, n'hésitez pas à retenter le défis !"
+        {challengesRejected.map((challenge) => {
+          if (challenge?.type !== "special") {
+            return (
+              <EventComponent
+                key={challenge.id}
+                event={challenge}
+                navigation={props.navigation}
+                wrong={challenge.context}
+              />
+            );
           }
-        />
+        })}
       </View>
       <Text
         style={{
@@ -75,9 +89,25 @@ function SentEventList(props) {
       </Text>
 
       <View style={{ opacity: 0.7 }}>
-        <EventComponent navigation={props.navigation} validating />
-        <SpecialEventComponent navigation={props.navigation} validating />
-        <EventComponent navigation={props.navigation} validating />
+        {challengesProcessing.map((challenge) => {
+          if (challenge?.type === "special") {
+            return (
+              <SpecialEventComponent
+                key={challenge.id}
+                event={challenge}
+                navigation={props.navigation}
+                validating
+              />
+            );
+          }
+          return (
+            <EventComponent
+              event={challenge}
+              navigation={props.navigation}
+              validating
+            />
+          );
+        })}
       </View>
       <Text
         style={{
@@ -92,8 +122,18 @@ function SentEventList(props) {
         {langage.validate}
       </Text>
       <View style={{ opacity: 0.7 }}>
-        <EventComponent navigation={props.navigation} validate />
-        <EventComponent navigation={props.navigation} validate />
+        {challengesAccepted.map((challenge) => {
+          if (challenge?.type !== "special") {
+            return (
+              <EventComponent
+                key={challenge.id}
+                event={challenge}
+                navigation={props.navigation}
+                validate
+              />
+            );
+          }
+        })}
       </View>
     </ScrollView>
   );

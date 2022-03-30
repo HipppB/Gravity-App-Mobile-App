@@ -119,7 +119,7 @@ function DetailCalendarView(props) {
                 uri: image,
               }}
               style={styles.backgroundImage}
-              key={(Math.random() * 100).toFixed(0)}
+              // key={(Math.random() * 100).toFixed(0)}
             />
           </View>
           <View>

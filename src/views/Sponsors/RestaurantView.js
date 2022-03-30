@@ -89,9 +89,7 @@ function RestaurantView(props) {
                     latitude: marker.location.coordinates[1],
                   }}
                   title={marker.name}
-                  description={
-                    marker.translation[0].adress || "ICI ADRESSE DEV"
-                  }
+                  description={marker?.translation[0]?.subtitle}
                 />
               );
             })}

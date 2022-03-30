@@ -1,9 +1,8 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Platform } from "react-native";
 
-const useFetchPhoto = () => {
+function useFetchPhoto() {
   const [data, setData] = useState(null);
-
   async function newRequest(file, apiToken) {
     try {
       setData({ status: "Loading", content: null });
@@ -23,10 +22,13 @@ const useFetchPhoto = () => {
           uri: file.replace("file://", ""),
         });
       } else {
-        formdata.append("image", file);
+        formdata.append("image", {
+          type: "image/jpg",
+          name: "image.png",
+          uri: file,
+        });
       }
       options.body = formdata;
-      console.info(API, options);
       const response = await fetch(API, options);
 
       const json = await response.json();
@@ -42,6 +44,6 @@ const useFetchPhoto = () => {
   }
 
   return [data, newRequest];
-};
+}
 
 export default useFetchPhoto;

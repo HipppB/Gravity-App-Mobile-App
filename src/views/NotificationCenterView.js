@@ -45,6 +45,7 @@ function NotificationCenterView(props) {
   function openNotificationModal() {
     setModalOpen(true);
   }
+
   function handleNotification(notification) {
     notifee.displayNotification({
       title: notification.title,
@@ -138,6 +139,9 @@ function NotificationCenterView(props) {
 }
 
 function Notification({ notification, navigation, index, onPress }) {
+  const { apiToken } = useAuthentification();
+  const [request, newRequest] = useFetch();
+
   console.log(notification);
   const { themeStyle } = useTheme();
 
@@ -157,6 +161,11 @@ function Notification({ notification, navigation, index, onPress }) {
         break;
     }
   }
+
+  function isRead() {
+    newRequest("notification/" + notification.id, "POST", {}, apiToken);
+    setIsNewVisible(!isNewVisible);
+  }
   return (
     <View
       style={{
@@ -165,10 +174,7 @@ function Notification({ notification, navigation, index, onPress }) {
         paddingTop: index === 0 ? 20 : 0,
       }}
     >
-      <TouchableOpacity
-        style={{ zIndex: 2 }}
-        onPress={() => setIsNewVisible(!isNewVisible)}
-      >
+      <TouchableOpacity style={{ zIndex: 2 }} onPress={() => isRead()}>
         {notification?.isNew && isNewVisible ? (
           <Image
             source={require("../assets/images/new.png")}

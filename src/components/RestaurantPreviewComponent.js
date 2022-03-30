@@ -48,8 +48,8 @@ function RestaurantPreviewComponent({ restaurant, navigation, ...props }) {
               {"\n"}
             </Text>
             <Text style={styles.adress} selectable>
-              {restaurant.adress || "ICI ADRESSE A PAS OUBLIER DEV"}
-              {"\n"}
+              {restaurant.translation[0].subtitle}
+              {restaurant.translation[0].subtitle && "\n"}
             </Text>
             <Text style={styles.description}>
               {restaurant.translation[0].description}
