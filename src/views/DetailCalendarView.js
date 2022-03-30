@@ -347,20 +347,20 @@ function PersonsHeads({ listOfHeads, navigation, setVisible, participants }) {
 function PersonHead({ person, position, onPress }) {
   const { apiToken } = useAuthentification();
 
-  const [image, setImage] = useState();
-  console.log("PERSON", person);
-  useEffect(() => {
-    if (person?.profile_picture) {
-      getImage(person.profile_picture, apiToken, setImage);
-    } else if (person?.first_name || person?.last_name) {
-      setImage(
-        "https://ui-avatars.com/api/?name=" +
-          person?.first_name +
-          "+" +
-          person?.last_name
-      );
-    }
-  }, [person]);
+  // const [image, setImage] = useState();
+  // console.log("PERSON", person);
+  // useEffect(() => {
+  //   if (person?.profile_picture) {
+  //     getImage(person.profile_picture, apiToken, setImage);
+  //   } else if (person?.first_name || person?.last_name) {
+  //     setImage(
+  //       "https://ui-avatars.com/api/?name=" +
+  //         person?.first_name +
+  //         "+" +
+  //         person?.last_name
+  //     );
+  //   }
+  // }, [person]);
   return (
     <TouchableOpacity
       style={{
@@ -371,7 +371,12 @@ function PersonHead({ person, position, onPress }) {
       onPress={onPress}
     >
       <Image
-        source={{ uri: image }}
+        source={{
+          uri:
+            "https://api.liste-gravity.fr/static/image/" +
+            person?.profile_picture,
+          headers: { Authorization: "Bearer " + apiToken },
+        }}
         style={{
           width: 40,
           height: 40,

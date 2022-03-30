@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   StyleSheet,
   View,
@@ -8,49 +8,63 @@ import {
   TouchableOpacity,
 } from "react-native";
 import Carousel from "react-native-snap-carousel";
+import { useAuthentification } from "../../Context/AuthContext";
 import { useTheme } from "../../Context/theme/ThemeContext";
+import useFetch from "../../data/useFetch";
 const { width, height } = Dimensions.get("window");
 function PoleView(props) {
   const { themeStyle } = useTheme();
-
   return (
     <View>
-      <Pole name={"Bureau"} />
-      <Pole name={"Pôle Com"} />
-      <Pole name={"Pôle Créa"} />
-      <Pole name={"Pôle Sponsor"} />
-      <Pole name={"Pôle Tech"} />
-      <Pole name={"Pôle Event"} />
-      <Pole name={"Pôle Déco"} />
+      <Pole name={"Bureau"} type={"bureau"} />
+      <Pole name={"Pôle Com"} type={"com"} />
+      <Pole name={"Pôle Créa"} type={"crea"} />
+      <Pole name={"Pôle Tech"} type={"tech"} />
+      <Pole name={"Pôle Sponsor"} type={"sponsor"} />
+      <Pole name={"Pôle Food"} type={"food"} />
+      <Pole name={"Pôle Event"} type={"event"} />
+      <Pole name={"Pôle Déco"} type={"deco"} />
+      <Pole name={"Pôle Ecolo"} type={"ecolo"} />
+      <Pole name={"Pôle Mamie"} type={"mamie"} />
     </View>
   );
 }
 
 function Pole(props) {
   const { themeStyle } = useTheme();
-
-  const data = props?.members || [
-    {
-      name: "Nom",
-      poste: "Poste",
-      image: require("../../GravityHeadCrush/images/1.png"),
-    },
-    {
-      name: "Nom",
-      poste: "Poste",
-      image: require("../../GravityHeadCrush/images/2.png"),
-    },
-    {
-      name: "Nom",
-      poste: "Poste",
-      image: require("../../GravityHeadCrush/images/3.png"),
-    },
-    {
-      name: "Nom",
-      poste: "Poste",
-      image: require("../../GravityHeadCrush/images/4.png"),
-    },
-  ];
+  const { apiToken } = useAuthentification();
+  const [data, setData] = useState([]);
+  const [fetchedData, fetchData] = useFetch();
+  useEffect(() => {
+    fetchData("division/label", "POST", { label: props?.type }, apiToken);
+  }, [props.type]);
+  useEffect(() => {
+    if (fetchedData?.status === "Done" && fetchedData?.content?.members) {
+      setData(fetchedData.content.members);
+    }
+  }, [fetchedData]);
+  // const data = props?.members || [
+  //   {
+  //     name: "Nom",
+  //     poste: "Poste",
+  //     image: require("../../GravityHeadCrush/images/1.png"),
+  //   },
+  //   {
+  //     name: "Nom",
+  //     poste: "Poste",
+  //     image: require("../../GravityHeadCrush/images/2.png"),
+  //   },
+  //   {
+  //     name: "Nom",
+  //     poste: "Poste",
+  //     image: require("../../GravityHeadCrush/images/3.png"),
+  //   },
+  //   {
+  //     name: "Nom",
+  //     poste: "Poste",
+  //     image: require("../../GravityHeadCrush/images/4.png"),
+  //   },
+  // ];
   return (
     <View
       style={{
@@ -86,6 +100,7 @@ function Pole(props) {
 }
 
 function Profile({ member }) {
+  console.log(member);
   const { themeStyle } = useTheme();
   return (
     <TouchableOpacity
@@ -99,7 +114,7 @@ function Profile({ member }) {
           color: themeStyle.textless,
         }}
       >
-        {member?.name}
+        {member?.first_name}
       </Text>
       <Image
         source={member?.image}
@@ -119,7 +134,7 @@ function Profile({ member }) {
           color: themeStyle.textless,
         }}
       >
-        {member?.poste}
+        {member?.role}
       </Text>
     </TouchableOpacity>
   );

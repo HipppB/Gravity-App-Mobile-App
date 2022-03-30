@@ -6,6 +6,7 @@ import {
   ScrollView,
   TouchableOpacity,
   Image,
+  Pressable,
   Dimensions,
   Linking,
 } from "react-native";
@@ -25,16 +26,6 @@ import { useTheme } from "../Context/theme/ThemeContext";
 import { useAuthentification } from "../Context/AuthContext";
 import useFetch from "../data/useFetch";
 import getImage from "../components/data/getImage";
-const heads = [
-  require("../GravityHeadCrush/images/1.png"),
-  require("../GravityHeadCrush/images/2.png"),
-  require("../GravityHeadCrush/images/3.png"),
-  require("../GravityHeadCrush/images/4.png"),
-  require("../GravityHeadCrush/images/5.png"),
-  require("../GravityHeadCrush/images/6.png"),
-  require("../GravityHeadCrush/images/8.png"),
-  require("../GravityHeadCrush/images/9.png"),
-];
 
 const { width, height } = Dimensions.get("window");
 function PublicProfilView({ route, navigation }) {
@@ -45,6 +36,20 @@ function PublicProfilView({ route, navigation }) {
   const [request, newRequest] = useFetch();
   const [profile, setProfile] = useState();
   const [profilePicture, setProfilePicture] = useState();
+  const [pressed, setPressed] = useState(0);
+  async function press() {
+    if (profile?.url) {
+      setPressed(pressed + 1);
+      if (pressed >= 3) {
+        Linking.openURL(profile.url);
+      }
+      setTimeout(() => {
+        if (pressed > 0) {
+          setPressed(0);
+        }
+      }, 1500);
+    }
+  }
   useEffect(() => {
     if (id) {
       newRequest("user/profile/public/" + id, "GET", {}, apiToken);
@@ -84,22 +89,24 @@ function PublicProfilView({ route, navigation }) {
                   top={Platform.OS == "ios" ? 30 : 0}
                 />
               </View>
-              <Image
-                source={
-                  profilePicture
-                    ? {
-                        uri: profilePicture,
-                      }
-                    : require("../assets/images/logos/Couleur/LogoNoNomNoFond.png")
-                }
-                style={{
-                  width: 0.45 * width,
-                  height: 0.45 * width,
-                  borderRadius: profilePicture && width,
-                  resizeMode: profilePicture ? "cover" : "contain",
-                  alignSelf: "center",
-                }}
-              />
+              <Pressable onPress={() => press()}>
+                <Image
+                  source={
+                    profilePicture
+                      ? {
+                          uri: profilePicture,
+                        }
+                      : require("../assets/images/logos/Couleur/LogoNoNomNoFond.png")
+                  }
+                  style={{
+                    width: 0.45 * width,
+                    height: 0.45 * width,
+                    borderRadius: profilePicture && width,
+                    resizeMode: profilePicture ? "cover" : "contain",
+                    alignSelf: "center",
+                  }}
+                />
+              </Pressable>
               <Text
                 numberOfLines={1}
                 style={[styles.pageTitle, { color: themeStyle.text }]}
@@ -115,16 +122,27 @@ function PublicProfilView({ route, navigation }) {
                 contentContainerStyle={{ alignItems: "center" }}
                 showsVerticalScrollIndicator={false}
               >
-                <Text
-                  style={[styles.pageSubTitle, { color: themeStyle.textless }]}
-                >
-                  {langage.publicDesription}
-                </Text>
-                <Text
-                  style={[styles.description, { color: themeStyle.textless }]}
-                >
-                  {profile.description}
-                </Text>
+                {profile?.description != "" && (
+                  <Text>
+                    <Text
+                      style={[
+                        styles.pageSubTitle,
+                        { color: themeStyle.textless },
+                      ]}
+                    >
+                      {langage.publicDesription}
+                    </Text>
+
+                    <Text
+                      style={[
+                        styles.description,
+                        { color: themeStyle.textless },
+                      ]}
+                    >
+                      {profile.description}
+                    </Text>
+                  </Text>
+                )}
                 <Text
                   style={[styles.pageSubTitle, { color: themeStyle.textless }]}
                 >
