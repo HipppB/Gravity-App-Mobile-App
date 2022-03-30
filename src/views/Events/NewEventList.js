@@ -34,14 +34,18 @@ function NewEventList(props) {
 
   return (
     <ScrollView>
-      {challengesSpecial.map(() => (
-        <SpecialEventComponent navigation={props.navigation} />
+      {challengesSpecial.map((event) => (
+        <SpecialEventComponent
+          navigation={props.navigation}
+          event={event}
+          key={(Math.random() * 1000).toFixed()}
+        />
       ))}
       {challengesNormal.map((event) => (
         <EventComponent
           navigation={props.navigation}
           event={event}
-          key={(Math.random() * 1000).toFixed}
+          key={(Math.random() * 1000).toFixed()}
         />
       ))}
     </ScrollView>

@@ -9,16 +9,31 @@ import {
   Pressable,
 } from "react-native";
 import { useFocusEffect } from "@react-navigation/native";
-
+import { useAuthentification } from "../Context/AuthContext";
+import useFetch from "../data/useFetch";
+import getImage from "./data/getImage";
 import ColoredViewComponent from "./ColoredViewComponent";
 
-function SpecialEventComponent(props) {
-  const [dataFuture, setFutureDate] = useState(
-    (Date.now() + 10000000 * Math.random()).toFixed(0)
-  );
+function SpecialEventComponent({ event, navigation }) {
+  // console.log(event);
+  const [eventImage, setEventImage] = useState();
+  const [eventContent, setEventContent] = useState();
+  const [requestEventContent, newRequestEventContent] = useFetch();
 
+  useEffect(() => {
+    getImage(event.imageUri);
+    newRequestEventContent();
+  }, []);
+
+  useEffect(() => {
+    if (requestEventContent === "Done") {
+      setEventContent(requestEventContent?.content);
+    }
+  }, [requestEventContent]);
+
+  const [dataFuture, setFutureDate] = useState(new Date(event.expiredAt));
   const [timeRemaining, setTimeRemaining] = useState(
-    (dataFuture - Date.now()) / 1000
+    ((dataFuture - Date.now()) / 1000).toFixed(0)
   );
 
   useFocusEffect(
@@ -32,7 +47,7 @@ function SpecialEventComponent(props) {
     }, [timeRemaining])
   );
   function toggleOpen() {
-    props.navigation.navigate("SpecialEvent");
+    navigation.navigate("SpecialEvent");
   }
   return (
     <Pressable onPress={() => toggleOpen()}>

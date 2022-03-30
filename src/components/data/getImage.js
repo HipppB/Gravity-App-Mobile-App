@@ -1,3 +1,5 @@
+import React from "react";
+
 async function getImage(path, apiToken, callback) {
   console.info("IMAGE HAS BEEN CALLED", path);
   const API = "https://api.liste-gravity.fr/";

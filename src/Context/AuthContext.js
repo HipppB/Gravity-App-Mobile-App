@@ -16,8 +16,6 @@ const AuthContext = createContext({
   autoLogin: (callback) => {},
   userInfos: {},
   updateUserInfos: () => {},
-  userLocalPicture: {},
-  updateLocalPicture: () => {},
   setdeviceFcmToken: () => {},
 });
 
@@ -26,13 +24,11 @@ function AuthProvider({ children }) {
   const [isAuthentificated, setisAuthentificated] = useState(false);
   const [isFirstLogin, setIsFirstLogin] = useState(false);
   const [request, newRequest] = useFetch();
-
   const [apiToken, setApiToken] = useState(null);
-
   const [userInfos, setUserInfos] = useState({});
-  const [userLocalPicture, setUserLocalPicture] = useState();
   const [deviceFcmToken, setdeviceFcmToken] = useState();
   const [fcmRequest, newFcmRequest] = useFetch();
+
   async function updateUserInfos() {
     const result = await newRequest("user/profile", "GET", {}, apiToken);
     if (result?.status === "Unauthorized") {
@@ -40,13 +36,6 @@ function AuthProvider({ children }) {
     }
     if (result?.content?.email) {
       setUserInfos(result.content);
-      if (result?.content?.profile_picture) {
-        getImage(
-          result?.content?.profile_picture,
-          apiToken,
-          setUserLocalPicture
-        );
-      }
     } else {
       deleteTokenFromStorage();
       setApiToken(null);
@@ -58,9 +47,6 @@ function AuthProvider({ children }) {
       updateUserInfos();
     }
   }, [apiToken]);
-  function updateLocalPicture(uri) {
-    setUserLocalPicture(uri);
-  }
 
   async function login(email, password) {
     try {
@@ -111,6 +97,7 @@ function AuthProvider({ children }) {
           return "NETWORK";
       }
     } catch (e) {
+      console.warn(e);
       return "NETWORK";
     }
   }
@@ -146,6 +133,7 @@ function AuthProvider({ children }) {
           return "NETWORK";
       }
     } catch (e) {
+      console.warn(e);
       return "NETWORK";
     }
   }
@@ -179,9 +167,12 @@ function AuthProvider({ children }) {
           );
         setisAuthentificated(true);
       }
-      callback();
+      if (callback) {
+        callback();
+      }
       return token;
     } catch (e) {
+      console.warn(e);
       return null;
     }
   }
@@ -191,7 +182,7 @@ function AuthProvider({ children }) {
       await AsyncStorage.setItem("@apiToken", token);
       await AsyncStorage.setItem("@apiTokenDate", Date.now().toString());
     } catch (e) {
-      console.error("BIG ERROR", e);
+      console.warn(e);
     }
   };
   async function retrieveToken() {
@@ -210,7 +201,8 @@ function AuthProvider({ children }) {
         return false;
       }
     } catch (e) {
-      console.error(e);
+      console.warn(e);
+
       return false;
     }
   }
@@ -219,7 +211,7 @@ function AuthProvider({ children }) {
       const token = await AsyncStorage.removeItem("@apiToken");
       const tokenDate = await AsyncStorage.removeItem("@apiTokenDate");
     } catch (e) {
-      console.log(e);
+      console.warn(e);
     }
   }
   return (
@@ -235,8 +227,6 @@ function AuthProvider({ children }) {
         autoLogin,
         userInfos,
         updateUserInfos,
-        userLocalPicture,
-        updateLocalPicture,
         setdeviceFcmToken,
       }}
     >

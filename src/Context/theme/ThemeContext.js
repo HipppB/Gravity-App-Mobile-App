@@ -24,7 +24,7 @@ function ThemeProvider({ children }) {
     try {
       await AsyncStorage.setItem("@theme", theme);
     } catch (e) {
-      console.error("BIG ERROR", e);
+      console.warn(e);
     }
   };
   async function retrieveTheme() {
@@ -32,7 +32,7 @@ function ThemeProvider({ children }) {
       const theme = await AsyncStorage.getItem("@theme");
       return theme;
     } catch (e) {
-      console.error(e);
+      console.warn(e);
       return false;
     }
   }

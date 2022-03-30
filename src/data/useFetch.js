@@ -20,16 +20,24 @@ const useFetch = () => {
     }
 
     console.info(API + endPoint, options);
-    const response = await fetch(API + endPoint, options);
+    try {
+      const response = await fetch(API + endPoint, options);
 
-    const json = await response.json();
-    console.log("HEY NEW RESULT FETCH", data);
+      const json = await response.json();
+      console.log("HEY NEW RESULT FETCH", endPoint, "->", data);
 
-    if (json?.statusCode === 401) {
-      setData({ status: "Unauthorized", content: json });
+      if (json?.statusCode === 401) {
+        setData({ status: "Unauthorized", content: json });
+      }
+      setData({ status: "Done", content: json });
+
+      return { status: "Done", content: json };
+    } catch (e) {
+      console.warn(e);
+      setData({ status: "Error", content: e });
+
+      return { status: "Error", content: e };
     }
-    setData({ status: "Done", content: json });
-    return { status: "Done", content: json };
   }
 
   return [data, newRequest];

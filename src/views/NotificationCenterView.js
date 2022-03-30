@@ -47,8 +47,8 @@ function NotificationCenterView(props) {
   }
   function handleNotification(notification) {
     notifee.displayNotification({
-      title: "Ceci est une superbe notication GRAVITY",
-      body: `Bon, il faudra quand même que je mette quelque chose d'utilise ici....`,
+      title: notification.title,
+      body: notification.content,
       android: {
         channelId: "default",
       },
@@ -57,7 +57,7 @@ function NotificationCenterView(props) {
   function saveNotificationParameter(activity, food, sponsor, challenge) {
     setModalOpen(false);
     newPutRequest(
-      "user/profile",
+      "user",
       "PUT",
       {
         activityNotification: activity,
@@ -68,6 +68,7 @@ function NotificationCenterView(props) {
       apiToken
     );
   }
+
   return (
     <View
       style={{
@@ -150,6 +151,7 @@ function Notification({ notification, navigation, index, onPress }) {
         try {
           navigation.navigate(notification.action, notification.url);
         } catch (e) {
+          console.warn(e);
           console.log(e);
         }
         break;

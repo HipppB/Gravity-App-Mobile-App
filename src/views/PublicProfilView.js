@@ -197,13 +197,15 @@ function Item({ contact, network, ...props }) {
         break;
       case "email":
         setIcon(email);
+        break;
       case "Twitter":
         setIcon(twitter);
+        break;
       default:
         break;
     }
   }, []);
-  if (Math.random() > 1.5) return <View></View>;
+
   function openSocialLink() {
     switch (network) {
       case "Instagram":
@@ -257,7 +259,7 @@ function Item({ contact, network, ...props }) {
           }}
         >
           <Image
-            source={icon || "https://ui-avatars.com/api/?name=" + contact}
+            source={icon}
             style={{
               width: 25,
               height: 25,

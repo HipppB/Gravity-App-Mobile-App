@@ -117,7 +117,7 @@ function EventView(props) {
             <NewEventList navigation={props.navigation} />
           </View>
           <View style={[styles.bodyContainer]}>
-            <SentEventList navigation={props.navigation} />
+            {/* <SentEventList navigation={props.navigation} /> */}
           </View>
         </ScrollView>
       </View>

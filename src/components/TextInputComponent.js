@@ -18,7 +18,7 @@ function TextInputComponent(props) {
   const fontOpacity = useRef(new Animated.Value(0.8)).current;
   useEffect(() => {
     //In case a default value is given
-    if (props?.value) {
+    if (props?.value || props?.isAutoUp) {
       Animated.timing(topValue, {
         toValue: 0,
         duration: 200,
