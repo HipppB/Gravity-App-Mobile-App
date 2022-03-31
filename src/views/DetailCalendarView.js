@@ -24,7 +24,7 @@ import MapView, { Marker } from "react-native-maps";
 import { useTranslation } from "../Context/TranslationContext";
 import ModalPersonList from "../components/ModalPersonList";
 import { useTheme } from "../Context/theme/ThemeContext";
-import getImage from "../components/data/getImage";
+
 import { useAuthentification } from "../Context/AuthContext";
 import useFetch from "../data/useFetch";
 
@@ -44,7 +44,11 @@ function DetailCalendarView(props) {
     newRequest("event/" + event.id, "GET", {}, apiToken);
   }
   useEffect(() => {
-    getImage(event.image, apiToken, setImage);
+    setImage({
+      uri: "https://api.liste-gravity.fr/static/image/" + event?.image,
+      headers: { Authorization: "Bearer " + apiToken },
+    });
+
     if (event.open) {
       getHeads();
     }
@@ -115,9 +119,7 @@ function DetailCalendarView(props) {
           </View>
           <View>
             <Image
-              source={{
-                uri: image,
-              }}
+              source={image}
               style={styles.backgroundImage}
               // key={(Math.random() * 100).toFixed(0)}
             />
@@ -347,20 +349,6 @@ function PersonsHeads({ listOfHeads, navigation, setVisible, participants }) {
 function PersonHead({ person, position, onPress }) {
   const { apiToken } = useAuthentification();
 
-  // const [image, setImage] = useState();
-  // console.log("PERSON", person);
-  // useEffect(() => {
-  //   if (person?.profile_picture) {
-  //     getImage(person.profile_picture, apiToken, setImage);
-  //   } else if (person?.first_name || person?.last_name) {
-  //     setImage(
-  //       "https://ui-avatars.com/api/?name=" +
-  //         person?.first_name +
-  //         "+" +
-  //         person?.last_name
-  //     );
-  //   }
-  // }, [person]);
   return (
     <TouchableOpacity
       style={{

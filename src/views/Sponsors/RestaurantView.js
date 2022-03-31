@@ -40,7 +40,6 @@ function RestaurantView(props) {
     updateData();
   }, []);
   useEffect(() => {
-    console.log("RESULT", request);
     if (request?.status === "Done") {
       setMarkers(request.content);
       setRefreshing(false);

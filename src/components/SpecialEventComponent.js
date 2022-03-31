@@ -7,21 +7,16 @@ import {
   Animated,
   TouchableOpacity,
   Pressable,
+  Platform,
 } from "react-native";
 import { useFocusEffect } from "@react-navigation/native";
 import { useAuthentification } from "../Context/AuthContext";
 
-import getImage from "./data/getImage";
 import ColoredViewComponent from "./ColoredViewComponent";
 
 function SpecialEventComponent({ event, navigation }) {
   const [eventImage, setEventImage] = useState();
   const { apiToken } = useAuthentification();
-  useEffect(() => {
-    if (event.imageUri) {
-      getImage(event.imageUri, apiToken, setEventImage);
-    }
-  }, []);
 
   const [dataFuture, setFutureDate] = useState(new Date(event.expiredAt));
   const [timeRemaining, setTimeRemaining] = useState(
@@ -57,11 +52,16 @@ function SpecialEventComponent({ event, navigation }) {
         <View style={[styles.containerHeader]}>
           <Image
             source={
-              eventImage
-                ? { uri: eventImage }
+              event?.imageUri
+                ? {
+                    uri:
+                      "https://api.liste-gravity.fr/static/image/" +
+                      event?.imageUri,
+                    headers: { Authorization: "Bearer " + apiToken },
+                  }
                 : require("../assets/images/logos/Couleur/LogoNoNomNoFond.png")
             }
-            style={[styles.image, !eventImage && { resizeMode: "center" }]}
+            style={[styles.image, !event?.imageUri && { resizeMode: "center" }]}
           />
           <View style={styles.textContainer}>
             <Text
@@ -109,7 +109,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
 
-    elevation: 15,
+    elevation: Platform.OS === "ios" ? 15 : 0,
   },
   containerHeader: {
     flexDirection: "row",

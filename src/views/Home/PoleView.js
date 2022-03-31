@@ -6,26 +6,31 @@ import {
   Dimensions,
   Image,
   TouchableOpacity,
+  Platform,
 } from "react-native";
+import { ScrollView } from "react-native-gesture-handler";
 import Carousel from "react-native-snap-carousel";
 import { useAuthentification } from "../../Context/AuthContext";
 import { useTheme } from "../../Context/theme/ThemeContext";
 import useFetch from "../../data/useFetch";
 const { width, height } = Dimensions.get("window");
 function PoleView(props) {
-  const { themeStyle } = useTheme();
   return (
     <View>
-      <Pole name={"Bureau"} type={"bureau"} />
-      <Pole name={"Pôle Com"} type={"com"} />
-      <Pole name={"Pôle Créa"} type={"crea"} />
-      <Pole name={"Pôle Tech"} type={"tech"} />
-      <Pole name={"Pôle Sponsor"} type={"sponsor"} />
-      <Pole name={"Pôle Food"} type={"food"} />
-      <Pole name={"Pôle Event"} type={"event"} />
-      <Pole name={"Pôle Déco"} type={"deco"} />
-      <Pole name={"Pôle Ecolo"} type={"ecolo"} />
-      <Pole name={"Pôle Mamie"} type={"mamie"} />
+      <Pole name={"Bureau"} type={"bureau"} navigation={props.navigation} />
+      <Pole name={"Pôle Com"} type={"com"} navigation={props.navigation} />
+      <Pole name={"Pôle Créa"} type={"crea"} navigation={props.navigation} />
+      <Pole name={"Pôle Tech"} type={"tech"} navigation={props.navigation} />
+      <Pole
+        name={"Pôle Sponsor"}
+        type={"sponsor"}
+        navigation={props.navigation}
+      />
+      <Pole name={"Pôle Food"} type={"food"} navigation={props.navigation} />
+      <Pole name={"Pôle Event"} type={"event"} navigation={props.navigation} />
+      <Pole name={"Pôle Déco"} type={"deco"} navigation={props.navigation} />
+      <Pole name={"Pôle Ecolo"} type={"ecolo"} navigation={props.navigation} />
+      <Pole name={"Pôle Mamie"} type={"mamie"} navigation={props.navigation} />
     </View>
   );
 }
@@ -68,7 +73,7 @@ function Pole(props) {
   return (
     <View
       style={{
-        width: width,
+        width: width * 0.99,
         marginTop: 20,
         // backgroundColor: "blue",
       }}
@@ -85,26 +90,55 @@ function Pole(props) {
       >
         {props.name}
       </Text>
-
-      <Carousel
-        layout={"default"}
-        paddingBottom={10}
-        paddingTop={10}
-        sliderWidth={width}
-        itemWidth={width * 0.5}
-        data={data}
-        renderItem={(data) => <Profile member={data.item} />}
-      />
+      {Platform.OS === "ios" ? (
+        <Carousel
+          nestedScrollEnabled={true}
+          layout={"default"}
+          paddingBottom={10}
+          paddingTop={10}
+          sliderWidth={width * 0.99}
+          itemWidth={width * 0.5}
+          data={data}
+          renderItem={(data) => (
+            <Profile member={data.item} navigation={props.navigation} />
+          )}
+        />
+      ) : (
+        <ScrollView
+          horizontal={true}
+          // pagingEnabled
+          style={{ marginTop: 20 }}
+          // disableIntervalMomentum
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={{ justifyContent: "center" }}
+        >
+          {data.map((item, index) => (
+            <View
+              key={index}
+              style={{
+                width: width * 0.5,
+                marginLeft: width * 0.025,
+                marginRight: width * 0.025,
+              }}
+            >
+              <Profile member={item} navigation={props.navigation} />
+            </View>
+          ))}
+        </ScrollView>
+      )}
     </View>
   );
 }
 
-function Profile({ member }) {
-  console.log(member);
+function Profile({ member, navigation }) {
   const { themeStyle } = useTheme();
+  const { apiToken } = useAuthentification();
   return (
     <TouchableOpacity
       style={[styles.card, { backgroundColor: themeStyle.backless }]}
+      onPress={() => {
+        navigation.navigate("PublicProfil", { id: member.userId });
+      }}
     >
       <Text
         style={{
@@ -117,11 +151,14 @@ function Profile({ member }) {
         {member?.first_name}
       </Text>
       <Image
-        source={member?.image}
+        source={{
+          uri: "https://api.liste-gravity.fr/static/image/" + member?.image,
+          headers: { Authorization: "Bearer " + apiToken },
+        }}
         style={{
           width: (width * 0.5 - 50) * 0.8,
           height: (width * 0.5 - 50) * 0.8,
-          backgroundColor: "black",
+
           borderRadius: 10,
           resizeMode: "cover",
         }}

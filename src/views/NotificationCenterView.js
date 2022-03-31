@@ -142,7 +142,6 @@ function Notification({ notification, navigation, index, onPress }) {
   const { apiToken } = useAuthentification();
   const [request, newRequest] = useFetch();
 
-  console.log(notification);
   const { themeStyle } = useTheme();
 
   const [isNewVisible, setIsNewVisible] = useState(true);

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, View, Text } from "react-native";
+import { StyleSheet, View, Text, Image } from "react-native";
 import OutlinedText from "../../components/OutlinedText";
 import letterH from "../../assets/Letters/Italique/H.png";
 import letteri from "../../assets/Letters/Italique/i.png";
@@ -29,70 +29,91 @@ function GravityView(props) {
   }, [selectedLangage]);
   useEffect(() => {
     if (request?.status === "Done") {
-      setText(
-        request.content.content
-          .replaceAll("\\n", "\n")
-          .replaceAll("{name}", userInfos?.first_name || "")
-      );
+      const pieces = request.content.content.split("{name}");
+      const result = pieces.join(userInfos?.first_name);
+      const pieces2 = result.split("\\n");
+      const result2 = pieces2.join("\n");
+      setText(result2);
+      // setText(
+      //   request.content.content
+      //     .replace("\\n", "\n")
+      //     .replace("{name}", userInfos?.first_name || "")
+      // );
     }
   }, [request]);
 
   return (
     <View>
       <View style={styles.labelContainer}>
-        <View style={styles.labelTextletterContainer}>
-          <OutlinedText
-            letterImage={letterH}
-            fontHeight={22}
-            style={{ marginRight: 1 }}
-          />
-          <OutlinedText
-            letterImage={letteri}
-            fontHeight={20}
-            style={{ marginRight: 1 }}
-          />
-          <OutlinedText
-            letterImage={letters}
-            fontHeight={17}
-            style={{ marginRight: 1 }}
-          />
+        {selectedLangage === "fr" ? (
+          <View style={styles.labelTextletterContainer}>
+            <OutlinedText
+              letterImage={letterH}
+              fontHeight={22}
+              style={{ marginRight: 1 }}
+            />
+            <OutlinedText
+              letterImage={letteri}
+              fontHeight={20}
+              style={{ marginRight: 1 }}
+            />
+            <OutlinedText
+              letterImage={letters}
+              fontHeight={17}
+              style={{ marginRight: 1 }}
+            />
 
-          <OutlinedText
-            letterImage={lettert}
-            fontHeight={20}
-            style={{ marginRight: 0 }}
+            <OutlinedText
+              letterImage={lettert}
+              fontHeight={20}
+              style={{ marginRight: 0 }}
+            />
+            <OutlinedText
+              letterImage={lettero}
+              fontHeight={17}
+              style={{ marginRight: 0 }}
+            />
+            <OutlinedText
+              letterImage={letteri}
+              fontHeight={20}
+              style={{ marginRight: 0 }}
+            />
+            <OutlinedText
+              letterImage={letterr}
+              fontHeight={17}
+              style={{ marginRight: 0 }}
+            />
+            <OutlinedText
+              letterImage={lettere}
+              fontHeight={17}
+              style={{ marginRight: 7 }}
+            />
+            <OutlinedText
+              letterImage={letterd}
+              fontHeight={20}
+              style={{ marginRight: 0 }}
+            />
+            <OutlinedText
+              letterImage={lettere}
+              fontHeight={17}
+              style={{ marginRight: 7 }}
+            />
+          </View>
+        ) : (
+          <Image
+            source={require("../../assets/Letters/history.png")}
+            style={{
+              height: 30,
+              resizeMode: "contain",
+              maxWidth: 150,
+              flexShrink: 1,
+              alignSelf: "flex-end",
+              // backgroundColor: "red",
+              top: 1,
+              tintColor: themeStyle.text,
+            }}
           />
-          <OutlinedText
-            letterImage={lettero}
-            fontHeight={17}
-            style={{ marginRight: 0 }}
-          />
-          <OutlinedText
-            letterImage={letteri}
-            fontHeight={20}
-            style={{ marginRight: 0 }}
-          />
-          <OutlinedText
-            letterImage={letterr}
-            fontHeight={17}
-            style={{ marginRight: 0 }}
-          />
-          <OutlinedText
-            letterImage={lettere}
-            fontHeight={17}
-            style={{ marginRight: 7 }}
-          />
-          <OutlinedText
-            letterImage={letterd}
-            fontHeight={20}
-            style={{ marginRight: 0 }}
-          />
-          <OutlinedText
-            letterImage={lettere}
-            fontHeight={17}
-            style={{ marginRight: 7 }}
-          />
-        </View>
+        )}
         <Text style={[styles.labelText, { color: themeStyle.text }]}>
           GRAVITY
         </Text>

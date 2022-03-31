@@ -14,6 +14,28 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { Chat, MessageType, defaultTheme } from "@flyerhq/react-native-chat-ui";
 import logoBlanc from "../assets/images/logos/Couleur/LogoNoNom.png";
 import BackButtonComponent from "../components/BackButtonComponent";
+import io from "socket.io-client";
+
+const API = "https://api.liste-gravity.fr";
+let socket;
+
+const initiateSocket = (token) => {
+  socket = io(API);
+  console.log("Connecting");
+  if (socket && token) socket.emit("join", token);
+};
+const disconnectSocket = () => {
+  console.log("Disconnecting socket...");
+  if (socket) socket.disconnect();
+};
+const subscribeToChat = (cb) => {
+  if (!socket) return true;
+  socket.on("chat", (msg) => {
+    console.log("Websocket event received!");
+    return cb(null, msg);
+  });
+};
+
 const { width, height } = Dimensions.get("screen");
 const uuidv4 = () => {
   return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, (c) => {
@@ -28,9 +50,6 @@ function ChatView(props) {
   const size = useRef(new Animated.Value(width * 0.3)).current;
   const left = useRef(new Animated.Value(1)).current;
   const opacity = useRef(new Animated.Value(1)).current;
-
-  function onKeyBoardOpen() {}
-  function onKeyBoardClose() {}
 
   useEffect(() => {
     const showSubscription = Keyboard.addListener(
@@ -88,36 +107,29 @@ function ChatView(props) {
     firstName: "Graviteam",
     imageUrl: Image.resolveAssetSource(logoBlanc).uri,
   };
-  const [messages, setMessages] = useState([
-    {
-      author: user2,
-      createdAt: new Date(1647226800000),
-      id: uuidv4(),
-      text: "Tkt, n'hésites pas à continuer cette fausse conversation pour tester l'application !",
-      type: "text",
-    },
-    {
-      author: user,
-      createdAt: new Date(1647226800000),
-      id: uuidv4(),
-      text: "Wow ça marche ! Génial merci !",
-      type: "text",
-    },
-    {
-      author: user2,
-      createdAt: new Date(1647226800000),
-      id: uuidv4(),
-      text: "Tu tape ton texte puis tu clique sur l'icone !",
-      type: "text",
-    },
-    {
-      author: user,
-      createdAt: new Date(1647226800000),
-      id: uuidv4(),
-      text: "Hey comment j'envois un message ?",
-      type: "text",
-    },
-  ]);
+  const [messages, setMessages] = useState([]);
+
+  // {
+  //   author: user,
+  //   createdAt: new Date(1647226800000),
+  //   id: uuidv4(),
+  //   text: "Wow ça marche ! Génial merci !",
+  //   type: "text",
+  // },
+  // {
+  //   author: user2,
+  //   createdAt: new Date(1647226800000),
+  //   id: uuidv4(),
+  //   text: "Tu tape ton texte puis tu clique sur l'icone !",
+  //   type: "text",
+  // },
+  // {
+  //   author: user,
+  //   createdAt: new Date(1647226800000),
+  //   id: uuidv4(),
+  //   text: "Hey comment j'envois un message ?",
+  //   type: "text",
+  // },
 
   const addMessage = (message) => {
     setMessages([message, ...messages]);

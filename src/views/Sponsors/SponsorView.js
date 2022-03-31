@@ -48,7 +48,6 @@ function SponsorView(props) {
     updateData();
   }, []);
   useEffect(() => {
-    console.log("RESULT", request);
     if (request?.status === "Done") {
       setSponsorList(request.content);
       setRefreshing(false);

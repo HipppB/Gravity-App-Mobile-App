@@ -1,5 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, View, ScrollView, Text } from "react-native";
+import {
+  StyleSheet,
+  View,
+  ScrollView,
+  Text,
+  RefreshControl,
+} from "react-native";
 import { useAuthentification } from "../../Context/AuthContext";
 import { useTranslation } from "../../Context/TranslationContext";
 import { useTheme } from "../../Context/theme/ThemeContext";
@@ -13,7 +19,7 @@ function SentEventList(props) {
   const [challengesAccepted, setChallengeAccepted] = useState([]);
   const [challengesProcessing, setChallengesProcessing] = useState([]);
   const [challengesRejected, setChallengeRejected] = useState([]);
-
+  const [isRefreshing, setRefreshing] = useState(false);
   const { apiToken } = useAuthentification();
 
   const [aceeptedRequest, newAcceptedRequest] = useFetch();
@@ -37,7 +43,7 @@ function SentEventList(props) {
   useEffect(() => {
     if (processingRequest?.status === "Done") {
       setChallengesProcessing(processingRequest.content);
-      console.log(processingRequest.content);
+      setRefreshing(false);
     }
   }, [processingRequest]);
   useEffect(() => {
@@ -47,7 +53,11 @@ function SentEventList(props) {
   }, [aceeptedRequest]);
 
   return (
-    <ScrollView>
+    <ScrollView
+      refreshControl={
+        <RefreshControl refreshing={isRefreshing} onRefresh={updateData} />
+      }
+    >
       <Text
         style={{
           fontFamily: "ChangaOne_400Regular_Italic",
@@ -62,11 +72,11 @@ function SentEventList(props) {
       </Text>
 
       <View style={{ opacity: 0.7 }}>
-        {challengesRejected.map((challenge) => {
+        {challengesRejected.map((challenge, index) => {
           if (challenge?.type !== "special") {
             return (
               <EventComponent
-                key={challenge.id}
+                key={challenge.id + index}
                 event={challenge}
                 navigation={props.navigation}
                 wrong={challenge.context}
@@ -74,7 +84,21 @@ function SentEventList(props) {
             );
           }
         })}
+        {challengesRejected?.length === 0 && (
+          <Text
+            style={{
+              alignSelf: "center",
+              color: themeStyle.textless,
+              marginTop: 20,
+              fontFamily: "Neon",
+              fontSize: 20,
+            }}
+          >
+            {langage.noChallenge}
+          </Text>
+        )}
       </View>
+
       <Text
         style={{
           fontFamily: "ChangaOne_400Regular_Italic",
@@ -89,11 +113,11 @@ function SentEventList(props) {
       </Text>
 
       <View style={{ opacity: 0.7 }}>
-        {challengesProcessing.map((challenge) => {
+        {challengesProcessing.map((challenge, index) => {
           if (challenge?.type === "special") {
             return (
               <SpecialEventComponent
-                key={challenge.id}
+                key={challenge.id + index}
                 event={challenge}
                 navigation={props.navigation}
                 validating
@@ -102,12 +126,26 @@ function SentEventList(props) {
           }
           return (
             <EventComponent
+              key={challenge.id + index}
               event={challenge}
               navigation={props.navigation}
               validating
             />
           );
         })}
+        {challengesProcessing?.length === 0 && (
+          <Text
+            style={{
+              alignSelf: "center",
+              color: themeStyle.textless,
+              marginTop: 20,
+              fontFamily: "Neon",
+              fontSize: 20,
+            }}
+          >
+            {langage.noChallenge}
+          </Text>
+        )}
       </View>
       <Text
         style={{
@@ -122,11 +160,11 @@ function SentEventList(props) {
         {langage.validate}
       </Text>
       <View style={{ opacity: 0.7 }}>
-        {challengesAccepted.map((challenge) => {
+        {challengesAccepted.map((challenge, index) => {
           if (challenge?.type !== "special") {
             return (
               <EventComponent
-                key={challenge.id}
+                key={challenge.id + index}
                 event={challenge}
                 navigation={props.navigation}
                 validate
@@ -134,6 +172,19 @@ function SentEventList(props) {
             );
           }
         })}
+        {challengesAccepted?.length === 0 && (
+          <Text
+            style={{
+              alignSelf: "center",
+              color: themeStyle.textless,
+              marginTop: 20,
+              fontFamily: "Neon",
+              fontSize: 20,
+            }}
+          >
+            {langage.noChallenge}
+          </Text>
+        )}
       </View>
     </ScrollView>
   );

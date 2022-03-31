@@ -9,20 +9,23 @@ import {
 } from "react-native";
 
 import { useAuthentification } from "../Context/AuthContext";
-import getImage from "./data/getImage";
+
 const { width, height } = Dimensions.get("screen");
 
 function CalendarComponent({ event, navigation, ...props }) {
   const { apiToken } = useAuthentification();
-  const [image, setImage] = useState();
-
-  useEffect(() => getImage(event.image, apiToken, setImage), []);
   return (
     <TouchableOpacity
       style={styles.container}
       onPress={() => navigation.navigate("calendarDetails", { event })}
     >
-      <Image source={{ uri: image }} style={styles.backgroundImage} />
+      <Image
+        source={{
+          uri: "https://api.liste-gravity.fr/static/image/" + event?.image,
+          headers: { Authorization: "Bearer " + apiToken },
+        }}
+        style={styles.backgroundImage}
+      />
 
       <Text style={styles.textInfos}>{event.translation[0].short_desc}</Text>
       <Text style={styles.textName}>{event.translation[0].title}</Text>

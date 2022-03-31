@@ -18,7 +18,6 @@ import { ScrollView } from "react-native-gesture-handler";
 import ColoredViewComponent from "./ColoredViewComponent";
 import { useTranslation } from "../Context/TranslationContext";
 import { useTheme } from "../Context/theme/ThemeContext";
-import getImage from "./data/getImage";
 import { useAuthentification } from "../Context/AuthContext";
 function SponsorComponent({ sponsor }) {
   const [isOpen, setisOpen] = useState(false);
@@ -34,7 +33,10 @@ function SponsorComponent({ sponsor }) {
   }
   const [contentHeight, setContentHeight] = useState(0);
   useEffect(() => {
-    getImage(sponsor.picture, apiToken, setImage);
+    setImage({
+      uri: "https://api.liste-gravity.fr/static/image/" + sponsor.picture,
+      headers: { Authorization: "Bearer " + apiToken },
+    });
   }, [sponsor]);
   function open() {
     Animated.parallel([
@@ -97,7 +99,7 @@ function SponsorComponent({ sponsor }) {
         ]}
       >
         <View style={[styles.containerHeader]}>
-          <Image source={{ uri: image }} style={styles.image} />
+          <Image source={image} style={styles.image} />
           <View style={styles.textContainer}>
             <Text
               style={{

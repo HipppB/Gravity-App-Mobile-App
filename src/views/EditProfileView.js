@@ -19,7 +19,7 @@ import TextInputComponent from "../components/TextInputComponent.js";
 import { ScrollView } from "react-native-gesture-handler";
 import { launchImageLibrary } from "react-native-image-picker";
 import BackButtonComponent from "../components/BackButtonComponent.js";
-import getImage from "../components/data/getImage";
+
 import useFetch from "../data/useFetch";
 const { width, height } = Dimensions.get("screen");
 function EditProfileView(props) {
@@ -43,13 +43,16 @@ function EditProfileView(props) {
   const [profileUrl, setProfileUrl] = useState();
 
   const loadingopacity = useRef(new Animated.Value(0)).current;
-
   async function changePhoto() {
     try {
       const result = await launchImageLibrary({ mediaType: "photo" });
       if (result?.assets?.length > 0) {
+        console.info(result);
         setNewFileType(result?.assets[0]?.type);
-        setProfileUrl(result?.assets[0]?.uri);
+        setProfileUrl({
+          uri: result?.assets[0]?.uri,
+          filename: result?.assets[0]?.fileName,
+        });
       }
     } catch (e) {
       console.warn(e);
@@ -119,7 +122,8 @@ function EditProfileView(props) {
     ];
 
     if (newFileType) {
-      newPhotoRequest(profileUrl, apiToken);
+      console.warn(profileUrl.uri);
+      newPhotoRequest(profileUrl.uri, apiToken, newFileType);
     }
 
     console.log(Object.keys(changedInfos));
@@ -141,7 +145,12 @@ function EditProfileView(props) {
 
   useEffect(() => {
     if (!profileUrl && userInfos?.profile_picture) {
-      getImage(userInfos?.profile_picture, apiToken, setProfileUrl);
+      setProfileUrl({
+        uri:
+          "https://api.liste-gravity.fr/static/image/" +
+          userInfos?.profile_picture,
+        headers: { Authorization: "Bearer " + apiToken },
+      });
     }
     if (userInfos?.socials) {
     }
@@ -187,6 +196,7 @@ function EditProfileView(props) {
     }
   }, [updateRequest]);
   useEffect(() => {
+    console.info("HEY HERE YOU", photoRequest);
     if (photoRequest?.status === "Done") {
       updateUserInfos();
       if (photoRequest?.content?.filename) {
@@ -242,7 +252,7 @@ function EditProfileView(props) {
             }}
           >
             <Image
-              source={{ uri: profileUrl }}
+              source={profileUrl}
               style={{
                 width: 0.4 * width,
                 height: 0.4 * width,

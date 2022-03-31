@@ -25,7 +25,6 @@ import { useTranslation } from "../Context/TranslationContext";
 import { useTheme } from "../Context/theme/ThemeContext";
 import { useAuthentification } from "../Context/AuthContext";
 import useFetch from "../data/useFetch";
-import getImage from "../components/data/getImage";
 
 const { width, height } = Dimensions.get("window");
 function PublicProfilView({ route, navigation }) {
@@ -59,11 +58,12 @@ function PublicProfilView({ route, navigation }) {
     if (request?.status === "Done") {
       setProfile(request.content);
       if (request?.content?.profile_picture) {
-        getImage(
-          request?.content?.profile_picture,
-          apiToken,
-          setProfilePicture
-        );
+        setProfilePicture({
+          uri:
+            "https://api.liste-gravity.fr/static/image/" +
+            request?.content?.profile_picture,
+          headers: { Authorization: "Bearer " + apiToken },
+        });
       }
     }
   }, [request]);
@@ -79,23 +79,20 @@ function PublicProfilView({ route, navigation }) {
         backgroundColor: themeStyle.background,
       }}
     >
+      <BackButtonComponent
+        navigation={navigation}
+        top={Platform.OS == "ios" ? 30 : 0}
+      />
       {id ? (
         <>
           {profile ? (
             <>
-              <View style={{ position: "absolute", top: 0 }}>
-                <BackButtonComponent
-                  navigation={navigation}
-                  top={Platform.OS == "ios" ? 30 : 0}
-                />
-              </View>
+              <View style={{ position: "absolute", top: 0 }}></View>
               <Pressable onPress={() => press()}>
                 <Image
                   source={
                     profilePicture
-                      ? {
-                          uri: profilePicture,
-                        }
+                      ? profilePicture
                       : require("../assets/images/logos/Couleur/LogoNoNomNoFond.png")
                   }
                   style={{
@@ -123,7 +120,7 @@ function PublicProfilView({ route, navigation }) {
                 showsVerticalScrollIndicator={false}
               >
                 {profile?.description != "" && (
-                  <Text>
+                  <>
                     <Text
                       style={[
                         styles.pageSubTitle,
@@ -141,7 +138,7 @@ function PublicProfilView({ route, navigation }) {
                     >
                       {profile.description}
                     </Text>
-                  </Text>
+                  </>
                 )}
                 <Text
                   style={[styles.pageSubTitle, { color: themeStyle.textless }]}
@@ -238,8 +235,8 @@ function Item({ contact, network, ...props }) {
       case "Snapchat":
         Linking.openURL("https://www.snapchat.com/add/" + contact);
         break;
-      case "Facebook":
-        Linking.openURL("https://www.instagram.com/" + contact);
+        // case "Facebook":
+        //   Linking.openURL("https://www.fa.com/" + contact);
         break;
       default:
         Clipboard.setString(contact);

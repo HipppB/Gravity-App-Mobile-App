@@ -2,7 +2,7 @@ import React, { createContext, useContext, useState, useEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import useFetch from "../data/useFetch";
-import getImage from "../components/data/getImage";
+
 import messaging from "@react-native-firebase/messaging";
 
 const AuthContext = createContext({

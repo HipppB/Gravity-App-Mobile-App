@@ -17,7 +17,7 @@ import { ScrollView } from "react-native-gesture-handler";
 import ColoredViewComponent from "../../components/ColoredViewComponent";
 import { useTheme } from "../../Context/theme/ThemeContext";
 import { useTranslation } from "../../Context/TranslationContext";
-import getImage from "../../components/data/getImage";
+
 import { useAuthentification } from "../../Context/AuthContext";
 
 function RestaurantDetailView({ route, navigation }) {
@@ -32,8 +32,7 @@ function RestaurantDetailView({ route, navigation }) {
     let lon = 2.32779;
     Linking.openURL(restaurant.link);
   }
-  const [image, setImage] = useState();
-  useEffect(() => getImage(restaurant.picture, apiToken, setImage), []);
+
   return (
     <View
       style={{
@@ -46,7 +45,10 @@ function RestaurantDetailView({ route, navigation }) {
         <View style={{ alignItems: "center" }}>
           <Image
             source={{
-              uri: image,
+              uri:
+                "https://api.liste-gravity.fr/static/image/" +
+                restaurant.picture,
+              headers: { Authorization: "Bearer " + apiToken },
             }}
             style={styles.backgroundImage}
           />

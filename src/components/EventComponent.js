@@ -13,20 +13,14 @@ import {
 
 import ColoredViewComponent from "../components/ColoredViewComponent";
 import { LinearGradient } from "expo-linear-gradient";
-import getImage from "./data/getImage";
+
 import { useAuthentification } from "../Context/AuthContext";
 
 function EventComponent({ event, ...props }) {
   const [isOpen, setisOpen] = useState(false);
   const containerHeight = useRef(new Animated.Value(0)).current;
 
-  const [eventImage, setEventImage] = useState();
   const { apiToken } = useAuthentification();
-  useEffect(() => {
-    if (event.imageUri) {
-      getImage(event.imageUri, apiToken, setEventImage);
-    }
-  }, []);
 
   const [contentHeight, setContentHeight] = useState(0);
 
@@ -96,11 +90,19 @@ function EventComponent({ event, ...props }) {
             <View style={[styles.containerHeader]}>
               <Animated.Image
                 source={
-                  eventImage
-                    ? { uri: eventImage }
+                  event?.imageUri
+                    ? {
+                        uri:
+                          "https://api.liste-gravity.fr/static/image/" +
+                          event?.imageUri,
+                        headers: { Authorization: "Bearer " + apiToken },
+                      }
                     : require("../assets/images/logos/Couleur/LogoNoNomNoFond.png")
                 }
-                style={[styles.image, !eventImage && { resizeMode: "center" }]}
+                style={[
+                  styles.image,
+                  !event?.imageUri && { resizeMode: "center" },
+                ]}
               />
               <View style={styles.textContainer}>
                 <Text
@@ -173,11 +175,19 @@ function EventComponent({ event, ...props }) {
           <View style={[styles.containerHeader]}>
             <Image
               source={
-                eventImage
-                  ? { uri: eventImage }
+                event?.imageUri
+                  ? {
+                      uri:
+                        "https://api.liste-gravity.fr/static/image/" +
+                        event?.imageUri,
+                      headers: { Authorization: "Bearer " + apiToken },
+                    }
                   : require("../assets/images/logos/Couleur/LogoNoNomNoFond.png")
               }
-              style={[styles.image, !eventImage && { resizeMode: "center" }]}
+              style={[
+                styles.image,
+                !event?.imageUri && { resizeMode: "center" },
+              ]}
             />
             <View style={styles.textContainer}>
               <Text

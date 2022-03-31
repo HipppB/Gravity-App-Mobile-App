@@ -18,8 +18,6 @@ function LoginViewOld(props) {
   console.log("Status", StatusBar.currentHeight);
   return (
     <SafeAreaView style={styles.container}>
-      <StatusBar backgroundColor="white" hideTransitionAnimation="false" />
-
       <View style={styles.logoContainer}>
         <Image
           source={require("../assets/images/logos/Couleur/Logo.png")}

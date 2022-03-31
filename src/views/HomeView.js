@@ -295,7 +295,7 @@ function HomeView(props) {
           <ScrollView
             style={[styles.pageInPageContainer, { paddingHorizontal: 0 }]}
           >
-            <PoleView />
+            <PoleView navigation={props.navigation} />
           </ScrollView>
           {project && (
             <View

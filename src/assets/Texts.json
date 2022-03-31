@@ -88,7 +88,8 @@
     "photosVideos": "Mes photos",
     "sendChallenge": "Envoyer le défis",
     "openInNav": "Ouvrir dans le navigateur",
-    "acceptSharing": "Je veux bien que gravity partage ces fichiers avec les Isepiens"
+    "acceptSharing": "Je veux bien que gravity partage ces fichiers avec les Isepiens",
+    "noChallenge": "Aucun défis"
   },
   "en": {
     "connexionButton": "Login",
@@ -179,6 +180,7 @@
     "photosVideos": "My photos",
     "sendChallenge": "Send the challenge",
     "openInNav": "Open in browser",
-    "acceptSharing": "I accept that gravity share these files with other Isep members"
+    "acceptSharing": "I accept that gravity share these files with other Isep members",
+    "noChallenge": "No challenge"
   }
 }

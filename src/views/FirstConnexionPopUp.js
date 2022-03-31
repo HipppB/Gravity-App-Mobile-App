@@ -44,20 +44,20 @@ function FirstConnexionPopUp({ isModalVisible, setModalVisible, navigation }) {
 
   useEffect(() => {
     if (requestText?.status === "Done") {
-      setText(
-        requestText.content.content
-          .replaceAll("\\n", "\n")
-          .replaceAll("{name}", userInfos?.first_name || "")
-      );
+      const pieces = requestText.content.content.split("{name}");
+      const result = pieces.join(userInfos?.first_name);
+      const pieces2 = result.split("\\n");
+      const result2 = pieces2.join("\n");
+      setText(result2);
     }
   }, [requestText]);
   useEffect(() => {
     if (requestText?.status === "Done") {
-      setText(
-        requestText.content.content
-          .replaceAll("\\n", "\n")
-          .replaceAll("{name}", userInfos?.first_name || "")
-      );
+      const pieces = requestText.content.content.split("{name}");
+      const result = pieces.join(userInfos?.first_name);
+      const pieces2 = result.split("\\n");
+      const result2 = pieces2.join("\n");
+      setText(result2);
     }
   }, [userInfos]);
   const num = ((Math.random() * 60) % 6).toFixed(0);

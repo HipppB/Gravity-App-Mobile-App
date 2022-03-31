@@ -138,7 +138,6 @@ function BottomBarComponent({ navigation, ...props }) {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "white",
     height: 100,
     width: "100%",
     flexDirection: "row",
@@ -177,7 +176,7 @@ const styles = StyleSheet.create({
 
   activeButtonGradient: {
     padding: 5,
-    backgroundColor: "#E8E8E8",
+    // backgroundColor: "#E8E8E8",
     justifyContent: "center",
     alignItems: "center",
 

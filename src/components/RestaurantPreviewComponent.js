@@ -2,13 +2,12 @@ import React, { useState, useEffect } from "react";
 import { StyleSheet, View, Text, Image } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import ColoredViewComponent from "./ColoredViewComponent";
-import getImage from "./data/getImage";
+
 import { useAuthentification } from "../Context/AuthContext";
 function RestaurantPreviewComponent({ restaurant, navigation, ...props }) {
   console.log(restaurant);
   const { apiToken } = useAuthentification();
-  const [image, setImage] = useState();
-  useEffect(() => getImage(restaurant.picture, apiToken, setImage), []);
+
   return (
     // <View style={styles.container}>
     <TouchableOpacity
@@ -23,7 +22,9 @@ function RestaurantPreviewComponent({ restaurant, navigation, ...props }) {
       >
         <Image
           source={{
-            uri: image,
+            uri:
+              "https://api.liste-gravity.fr/static/image/" + restaurant.picture,
+            headers: { Authorization: "Bearer " + apiToken },
           }}
           style={{
             width: 50,

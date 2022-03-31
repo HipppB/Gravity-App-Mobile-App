@@ -1,15 +1,5 @@
 import React, { useEffect, useState } from "react";
 
-import LoginView from "./src/views/LoginView";
-import {
-  StyleSheet,
-  View,
-  Text,
-  Image,
-  TouchableOpacity,
-  StatusBar,
-} from "react-native";
-
 import MainNavigator from "./src/routes/MainNavigator";
 import { AuthProvider } from "./src/Context/AuthContext";
 import { TranslationProvider } from "./src/Context/TranslationContext";

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { StatusBar } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 
@@ -22,7 +23,7 @@ import {
 import LoginViewOld from "../views/LoginViewOld";
 import { useAuthentification } from "../Context/AuthContext";
 import PushNotification from "react-native-push-notification";
-
+import { useTheme } from "../Context/theme/ThemeContext";
 const Stack = createStackNavigator();
 
 function MainNavigator(props) {
@@ -51,46 +52,54 @@ function MainNavigator(props) {
     return <LoginViewOld />;
   }
 
+  const { themeStyle } = useTheme();
   return (
-    <NavigationContainer>
-      {!isAuthentificated ? (
-        <Stack.Navigator screenOptions={{ headerShown: false }}>
-          <Stack.Screen name="Login" component={LoginView} />
-          <Stack.Screen name="Connexion" component={ConnexionView} />
-        </Stack.Navigator>
-      ) : (
-        <Stack.Navigator
-          screenOptions={{
-            headerShown: false,
-          }}
-        >
-          <Stack.Screen name="TabNavigator" component={TabNavigator} />
-          <Stack.Screen
-            name="Notifications"
-            options={{ presentation: "modal" }}
-            component={NotificationCenterView}
-          />
-          <Stack.Screen
-            name="Welcome"
-            options={{ presentation: "modal" }}
-            component={FirstConnexionPopUp}
-          />
-          <Stack.Screen
-            name="ParticipantList"
-            options={{ presentation: "modal" }}
-            component={ListOfParticipantView}
-          />
-          <Stack.Screen
-            name="PublicProfil"
-            options={{ presentation: "modal" }}
-            component={PublicProfilView}
-          />
+    <>
+      <StatusBar
+        backgroundColor={themeStyle.background}
+        hideTransitionAnimation="true"
+        animated={false}
+      />
+      <NavigationContainer>
+        {!isAuthentificated ? (
+          <Stack.Navigator screenOptions={{ headerShown: false }}>
+            <Stack.Screen name="Login" component={LoginView} />
+            <Stack.Screen name="Connexion" component={ConnexionView} />
+          </Stack.Navigator>
+        ) : (
+          <Stack.Navigator
+            screenOptions={{
+              headerShown: false,
+            }}
+          >
+            <Stack.Screen name="TabNavigator" component={TabNavigator} />
+            <Stack.Screen
+              name="Notifications"
+              options={{ presentation: "modal" }}
+              component={NotificationCenterView}
+            />
+            <Stack.Screen
+              name="Welcome"
+              options={{ presentation: "modal" }}
+              component={FirstConnexionPopUp}
+            />
+            <Stack.Screen
+              name="ParticipantList"
+              options={{ presentation: "modal" }}
+              component={ListOfParticipantView}
+            />
+            <Stack.Screen
+              name="PublicProfil"
+              options={{ presentation: "modal" }}
+              component={PublicProfilView}
+            />
 
-          <Stack.Screen name="Chat" component={ChatView} />
-          <Stack.Screen name="DrawWithHeads" component={DrawWithHeads} />
-        </Stack.Navigator>
-      )}
-    </NavigationContainer>
+            <Stack.Screen name="Chat" component={ChatView} />
+            <Stack.Screen name="DrawWithHeads" component={DrawWithHeads} />
+          </Stack.Navigator>
+        )}
+      </NavigationContainer>
+    </>
   );
 }
 export default MainNavigator;

@@ -20,13 +20,13 @@ import clockIcon from "../../assets/icons/clock.png";
 import cameraIcon from "../../assets/images/camera.png";
 import trashIcon from "../../assets/icons/trash.png";
 import { launchCamera, launchImageLibrary } from "react-native-image-picker";
-import BackButtonComponent from "../../components/BackButtonComponent";
+
 import TextInputComponent from "../../components/TextInputComponent";
 import { useTheme } from "../../Context/theme/ThemeContext";
 import { useTranslation } from "../../Context/TranslationContext";
 import CheckBoxComponent from "../../components/CheckBoxComponent";
 import { useAuthentification } from "../../Context/AuthContext";
-import getImage from "../../components/data/getImage";
+
 import useFetch from "../../data/useFetch";
 const { width, height } = Dimensions.get("screen");
 
@@ -49,15 +49,26 @@ function SpecialEventView(props) {
   const [acceptsToShare, setacceptsToShare] = useState(true);
   const [addedImages, setaddedImages] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [submissionRequest, newSubmitionRequest] = useFetch();
+
   useEffect(() => {
-    getImage(event.imageUri, apiToken, setImageUri);
+    if (event?.imageUri) {
+      setImageUri({
+        uri: "https://api.liste-gravity.fr/static/image/" + event?.imageUri,
+        headers: { Authorization: "Bearer " + apiToken },
+      });
+    }
+
     newRequestEventContent("challenge/" + event.id, "GET", {}, apiToken);
   }, []);
+
   useEffect(() => {
     if (requestEventContent?.status === "Done") {
-      console.log(event.id);
       try {
-        console.log(requestEventContent?.content[0]?.challenge_submission);
+        console.log(
+          "EVENT CONTENT ",
+          requestEventContent?.content[0]?.challenge_submission
+        );
 
         setEventContent(
           requestEventContent?.content[0] &&
@@ -66,11 +77,12 @@ function SpecialEventView(props) {
         requestEventContent?.content[0]?.challenge_submission?.forEach(
           (sub) => {
             if (sub.isFile) {
-              getImage(sub.content, apiToken, (imageUrl) => {
-                let subIm = submitedImages;
-                subIm[sub.id] = imageUrl;
-                setSubmitedImages(subIm);
-              });
+              let subIm = submitedImages;
+              subIm[sub.id] = {
+                uri:
+                  "https://api.liste-gravity.fr/static/image/" + sub?.content,
+                headers: { Authorization: "Bearer " + apiToken },
+              };
               console.log(sub);
             } else {
               setSubmitedText(sub);
@@ -78,35 +90,23 @@ function SpecialEventView(props) {
           }
         );
       } catch (e) {
-        console.log(e);
+        console.log(JSON.stringify(e));
       }
     }
   }, [requestEventContent]);
 
-  useEffect(
-    () => console.log("SUBMITED IMAGES ", submitedImages),
-    [submitedImages]
-  );
-  useEffect(() => {
-    if (imageUri) {
-      Image.getSize(imageUri, (width, height) => {
-        setImageHeight(height);
-        setImageWidth(width);
-      });
-    }
-  }, [imageUri]);
   const [timeRemaining, setTimeRemaining] = useState(
     ((dataFuture - Date.now()) / 1000).toFixed(0)
   );
 
   function removeImage(image) {
     let array = addedImages.filter((images) => image.id !== images.id);
-    console.log(array);
+
     setaddedImages(array);
   }
   function addImageUri(image) {
     let array = addedImages;
-    array.push({ id: array.length, uri: image?.uri, image: image });
+    array.push({ id: array.length, object: { uri: image?.uri }, image: image });
     setaddedImages([...array]);
   }
   function addImage() {
@@ -120,30 +120,83 @@ function SpecialEventView(props) {
       }
     });
   }
+  const [isLoadingImages, setIsLoadingImages] = useState(false);
+  const [hasbeenLoading, sethasBeenLoading] = useState(false);
   function saveChallenge() {
     setIsLoading(true);
+    setIsLoadingImages(true);
+    sethasBeenLoading(true);
     //To save : addedImages
+
     if (
       (event.submissionType === "mixed" || event.submissionType === "image") &&
-      answer
+      addedImages.length > 0
     ) {
-      //Save answer
-      if (submitedText) {
-        if (submitedText.content !== answer) {
-          //EDIT La submission
+      addedImages.forEach((addedImage) => {
+        //Upload Image
+        let options = {
+          method: "POST",
+          headers: {
+            "Content-Type": "multipart/form-data; ",
+            Authorization: "Bearer " + apiToken,
+          },
+        };
+        let formdata = new FormData();
+        if (Platform.OS === "ios") {
+          formdata.append("image", {
+            type: addedImage?.image?.type,
+            name: "image.png",
+            uri: addedImage?.image?.uri.replace("file://", ""),
+          });
+        } else {
+          formdata.append("image", {
+            type: addedImage?.image?.type,
+            name: "image.png",
+            uri: addedImage?.image?.uri,
+          });
         }
-        if (answer === "") {
+        options.body = formdata;
+        fetch(
+          "https://api.liste-gravity.fr/challenge/" + event.id + "/image",
+          options
+        ).then(() => {
+          if (addedImages.indexOf(addedImage) === addedImages.length - 1) {
+            setIsLoadingImages(false);
+          }
+        });
+      });
+    } else {
+      setIsLoadingImages(false);
+    }
+
+    // Save answer
+    if (event.submissionType === "mixed" || event.submissionType === "text") {
+      if (submitedText || answer) {
+        if (submitedText?.content && submitedText?.content !== answer) {
           newDeletionRequest(
             "challenge/" + submitedText.id + "/submission",
             "DELETE",
             {},
             apiToken
           );
+
+          if (answer) {
+            newSubmitionRequest(
+              "challenge/submission",
+              "POST",
+              {
+                challengeId: event.id.toString(),
+                content: answer,
+                acceptToShareImage: acceptsToShare,
+                isFile: false,
+              },
+              apiToken
+            );
+          }
         }
-      } else {
-        //New submission
       }
     }
+
     setTimeout(() => {
       setIsLoading(false);
     }, 1000);
@@ -162,6 +215,11 @@ function SpecialEventView(props) {
     };
   });
 
+  useEffect(() => {
+    if (!isLoadingImages && !isLoading && hasbeenLoading) {
+      props.navigation.goBack();
+    }
+  }, [isLoadingImages, isLoading]);
   return (
     <View
       style={[styles.pageContainer, { backgroundColor: themeStyle.background }]}
@@ -187,6 +245,7 @@ function SpecialEventView(props) {
             style={{
               marginTop: 20,
               flexDirection: "row",
+
               alignItems: "center",
               width: "100%",
               alignSelf: "center",
@@ -249,7 +308,7 @@ function SpecialEventView(props) {
                 fontFamily: "ChangaOne_400Regular_Italic",
                 fontSize: 19,
                 color: themeStyle.text,
-                marginTop: 20,
+                marginTop: 10,
               }}
             >
               {langage.trophee} :
@@ -266,18 +325,27 @@ function SpecialEventView(props) {
               {event?.translation[0]?.rewards}
             </Text>
           </View>
-
-          <Image
-            source={{ uri: imageUri }}
-            style={{
-              width: width * 0.8,
-              maxHeight: width * 0.8,
-
-              resizeMode: "contain",
-              height: (width * 0.8 * imageHeight) / imageWidth,
-              // padding: 20,
-            }}
-          />
+          {event?.imageUri && (
+            <Image
+              source={imageUri}
+              onLoad={({
+                nativeEvent: {
+                  source: { width, height },
+                },
+              }) => {
+                setImageHeight(height);
+                setImageWidth(width);
+              }}
+              style={{
+                backgroundColor: "yellow",
+                width: width * 0.8,
+                maxHeight: width * 0.8,
+                marginTop: 20,
+                resizeMode: "contain",
+                height: (width * 0.8 * imageHeight) / imageWidth,
+              }}
+            />
+          )}
 
           {(event.submissionType === "mixed" ||
             event.submissionType === "text") && (
@@ -317,7 +385,7 @@ function SpecialEventView(props) {
                   fontSize: 19,
                   marginBottom: 10,
                   marginTop: 20,
-
+                  // backgroundColor: "blue",
                   alignSelf: "baseline",
                 }}
               >
@@ -328,75 +396,85 @@ function SpecialEventView(props) {
         </View>
         {(event.submissionType === "mixed" ||
           event.submissionType === "image") && (
-          <ScrollView
-            horizontal
-            style={{ width: width, paddingVertical: 10 }}
-            showsHorizontalScrollIndicator={false}
-          >
-            <View
-              style={{
-                minWidth: "100%",
+          <View style={{ width: width, paddingVertical: 10 }}>
+            <ScrollView
+              horizontal={true}
+              showsHorizontalScrollIndicator={false}
+              contentContainerStyle={{
                 justifyContent: "center",
-                alignItems: "center",
-                flexDirection: "row",
+                paddingHorizontal: 20,
               }}
             >
-              <TouchableOpacity
+              <View
                 style={{
-                  borderColor: "gray",
-                  borderWidth: 1,
-                  width: 90,
-                  height: 90,
-                  borderRadius: 20,
-                  marginHorizontal: 10,
                   justifyContent: "center",
                   alignItems: "center",
-                  borderColor: themeStyle.text,
+                  flexDirection: "row",
                 }}
-                onPress={() => addImage()}
               >
-                <Image
-                  source={cameraIcon}
-                  style={{ width: 50, height: 50, tintColor: themeStyle.text }}
-                />
-              </TouchableOpacity>
-
-              <View style={{ flexDirection: "row-reverse" }}>
-                {Object.keys(submitedImages).map((key) => {
-                  return (
-                    <ImageTile
-                      key={key}
-                      image={{ uri: submitedImages[key], subId: key }}
-                      removeImage={(image) => {
-                        newDeletionRequest(
-                          "challenge/" + image.subId + "/submission",
-                          "DELETE",
-                          {},
-                          apiToken
-                        );
-                      }}
-                    />
-                  );
-                })}
-                {addedImages.map((image, index) => (
-                  <ImageTile
-                    key={image + index}
-                    image={image}
-                    removeImage={removeImage}
+                <TouchableOpacity
+                  style={{
+                    borderColor: "gray",
+                    borderWidth: 1,
+                    width: 90,
+                    height: 90,
+                    borderRadius: 20,
+                    marginHorizontal: 10,
+                    justifyContent: "center",
+                    alignItems: "center",
+                    borderColor: themeStyle.text,
+                  }}
+                  onPress={() => addImage()}
+                >
+                  <Image
+                    source={cameraIcon}
+                    style={{
+                      width: 50,
+                      height: 50,
+                      tintColor: themeStyle.text,
+                    }}
                   />
-                ))}
-                {/* {submitedImages.map((image, index) => (
-                 
-                ))} */}
+                </TouchableOpacity>
+
+                <View style={{ flexDirection: "row-reverse" }}>
+                  {Object.keys(submitedImages).map((key) => {
+                    // DEV CODE DE MERDE
+                    return (
+                      <ImageTile
+                        key={key}
+                        image={{ object: submitedImages[key], subId: key }}
+                        removeImage={(image) => {
+                          newDeletionRequest(
+                            "challenge/" + image.subId + "/submission",
+                            "DELETE",
+                            {},
+                            apiToken
+                          );
+                          let newSubIm = submitedImages;
+                          delete newSubIm[key];
+
+                          setSubmitedImages(newSubIm);
+                        }}
+                      />
+                    );
+                  })}
+                  {addedImages.map((image, index) => (
+                    <ImageTile
+                      key={image + index}
+                      image={image}
+                      removeImage={removeImage}
+                    />
+                  ))}
+                </View>
               </View>
-            </View>
-          </ScrollView>
+            </ScrollView>
+          </View>
         )}
 
         <TouchableOpacity
           style={{ marginTop: 20, marginBottom: 20 }}
           onPress={() => saveChallenge()}
-          disabled={isLoading}
+          disabled={isLoading || isLoadingImages}
         >
           <ColoredViewComponent
             coloredViewStyle={{
@@ -424,7 +502,7 @@ function SpecialEventView(props) {
               </Text>
             </View>
           </ColoredViewComponent>
-          {isLoading ? (
+          {isLoading || isLoadingImages ? (
             <ActivityIndicator
               color={"#2293D0"}
               size="large"
@@ -468,9 +546,7 @@ function ImageTile({ image, removeImage }) {
       }}
     >
       <Image
-        source={{
-          uri: image.uri,
-        }}
+        source={image?.uri ? { uri: image.uri } : image.object}
         style={{
           backgroundColor: "gray",
           width: 90,

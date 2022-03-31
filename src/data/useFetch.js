@@ -5,7 +5,7 @@ const useFetch = () => {
 
   async function newRequest(endPoint, method, content, apiToken) {
     setData({ status: "Loading", content: null });
-    console.log("HEY NEW REQUEST ", content + " -> " + JSON.stringify(content));
+    // console.log("HEY NEW REQUEST ", content + " -> " + JSON.stringify(content));
     const API = "https://api.liste-gravity.fr/";
     let options = {
       method: method,
@@ -19,12 +19,12 @@ const useFetch = () => {
       options.body = JSON.stringify(content);
     }
 
-    console.info(API + endPoint, options);
+    // console.info(API + endPoint, options);
     try {
       const response = await fetch(API + endPoint, options);
 
       const json = await response.json();
-      console.log("HEY NEW RESULT FETCH", endPoint, "->", data);
+      // console.log("NEW FETCH", method, endPoint, "->", json);
 
       if (json?.statusCode === 401) {
         setData({ status: "Unauthorized", content: json });

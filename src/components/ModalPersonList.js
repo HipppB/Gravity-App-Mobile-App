@@ -10,7 +10,7 @@ import {
 } from "react-native";
 import Modal from "react-native-modal";
 import ColoredViewComponent from "./ColoredViewComponent";
-import getImage from "../components/data/getImage";
+
 import { useAuthentification } from "../Context/AuthContext";
 import { useTranslation } from "../Context/TranslationContext";
 
@@ -21,14 +21,20 @@ const Item = ({ participant, title, navigation, setVisible }) => {
 
   useEffect(() => {
     if (participant?.profile_picture) {
-      getImage(participant.profile_picture, apiToken, setImage);
+      setImage({
+        uri:
+          "https://api.liste-gravity.fr/static/image/" +
+          participant?.profile_picture,
+        headers: { Authorization: "Bearer " + apiToken },
+      });
     } else if (participant?.first_name || participant?.last_name) {
-      setImage(
-        "https://ui-avatars.com/api/?name=" +
+      setImage({
+        uri:
+          "https://ui-avatars.com/api/?name=" +
           participant?.first_name +
           "+" +
-          participant?.last_name
-      );
+          participant?.last_name,
+      });
     }
   }, [participant]);
   return (
@@ -39,7 +45,7 @@ const Item = ({ participant, title, navigation, setVisible }) => {
         navigation.navigate("PublicProfil", { id: participant.id });
       }}
     >
-      <Image source={{ uri: image }} style={styles.itemImage} />
+      <Image source={image} style={styles.itemImage} />
 
       <Text numberOfLines={1} style={styles.itemTitle}>
         {participant.first_name}
