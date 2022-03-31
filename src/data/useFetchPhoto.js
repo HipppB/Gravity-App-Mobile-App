@@ -10,7 +10,9 @@ function useFetchPhoto() {
       let options = {
         method: "POST",
         headers: {
-          "Content-Type": "multipart/form-data; ",
+          Accept: "multipart/form-data",
+
+          "Content-Type": "multipart/form-data",
           Authorization: "Bearer " + apiToken,
         },
       };
@@ -28,6 +30,7 @@ function useFetchPhoto() {
           uri: file,
         });
       }
+      console.info(formdata);
       options.body = formdata;
       const response = await fetch(API, options);
 

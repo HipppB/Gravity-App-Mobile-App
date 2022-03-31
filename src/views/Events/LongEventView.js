@@ -128,7 +128,8 @@ function LongEventView(props) {
         let options = {
           method: "POST",
           headers: {
-            "Content-Type": "multipart/form-data; ",
+            Accept: "multipart/form-data",
+            "Content-Type": "multipart/form-data",
             Authorization: "Bearer " + apiToken,
           },
         };
@@ -143,7 +144,7 @@ function LongEventView(props) {
           formdata.append("image", {
             type: addedImage?.image?.type,
             name: "image.png",
-            uri: addedImage?.image?.uri.replace("file://", ""),
+            uri: addedImage?.image?.uri,
           });
         }
         options.body = formdata;

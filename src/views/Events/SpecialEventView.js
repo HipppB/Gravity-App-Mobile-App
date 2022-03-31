@@ -137,7 +137,8 @@ function SpecialEventView(props) {
         let options = {
           method: "POST",
           headers: {
-            "Content-Type": "multipart/form-data; ",
+            Accept: "multipart/form-data",
+            "Content-Type": "multipart/form-data",
             Authorization: "Bearer " + apiToken,
           },
         };
