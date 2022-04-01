@@ -241,7 +241,7 @@ function EventComponent({ event, ...props }) {
           >
             <Text
               style={{
-                paddingHorizontal: 10,
+                paddingHorizontal: 20,
 
                 fontFamily: "ChangaOne_400Regular_Italic",
                 fontSize: 15,
@@ -282,6 +282,7 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     width: "80%",
     alignSelf: "center",
+
     marginTop: 20,
 
     borderRadius: 10,
@@ -303,6 +304,7 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   image: {
+    marginLeft: 5,
     width: 50,
     height: 50,
     marginRight: 8,
@@ -311,7 +313,7 @@ const styles = StyleSheet.create({
   textContainer: {},
   buttonTouchableContainer: {
     width: "70%",
-    // alignSelf: "center",
+    alignSelf: "center",
     marginTop: 15,
   },
   buttonContainerContainer: {},

@@ -127,62 +127,67 @@ function DetailCalendarView(props) {
               // key={(Math.random() * 100).toFixed(0)}
             />
           </View>
-          <View>
-            <View style={styles.labelContainer}>
-              <View style={styles.labelTextletterContainer}>
-                <OutlinedText
-                  letterImage={letterAA}
-                  fontHeight={15}
-                  style={{ marginRight: 7 }}
-                />
-                <OutlinedText
-                  letterImage={letterp}
-                  top={3}
-                  fontHeight={12}
-                  style={{ marginRight: 1 }}
-                />
-                <OutlinedText
-                  letterImage={letterr}
-                  fontHeight={9}
-                  style={{ marginRight: 1 }}
-                />
-                <OutlinedText
-                  letterImage={lettero}
-                  fontHeight={9}
-                  style={{ marginRight: 0 }}
-                />
-                <OutlinedText
-                  letterImage={letterp}
-                  top={3}
-                  fontHeight={12}
-                  style={{ marginRight: 1 }}
-                />
-                <OutlinedText
-                  letterImage={lettero}
-                  fontHeight={9}
-                  style={{ marginRight: 0 }}
-                />
-                <OutlinedText
-                  letterImage={letters}
-                  fontHeight={9}
-                  style={{ marginRight: 7 }}
-                />
-                <OutlinedText
-                  letterImage={letterd}
-                  fontHeight={13}
-                  style={{ marginRight: 1 }}
-                />
-                <OutlinedText
-                  letterImage={lettere}
-                  fontHeight={9}
-                  style={{ marginRight: 7 }}
-                />
+          {event?.translation[0]?.title &&
+          event?.translation[0]?.title != " " ? (
+            <View>
+              <View style={styles.labelContainer}>
+                <View style={styles.labelTextletterContainer}>
+                  <OutlinedText
+                    letterImage={letterAA}
+                    fontHeight={15}
+                    style={{ marginRight: 7 }}
+                  />
+                  <OutlinedText
+                    letterImage={letterp}
+                    top={3}
+                    fontHeight={12}
+                    style={{ marginRight: 1 }}
+                  />
+                  <OutlinedText
+                    letterImage={letterr}
+                    fontHeight={9}
+                    style={{ marginRight: 1 }}
+                  />
+                  <OutlinedText
+                    letterImage={lettero}
+                    fontHeight={9}
+                    style={{ marginRight: 0 }}
+                  />
+                  <OutlinedText
+                    letterImage={letterp}
+                    top={3}
+                    fontHeight={12}
+                    style={{ marginRight: 1 }}
+                  />
+                  <OutlinedText
+                    letterImage={lettero}
+                    fontHeight={9}
+                    style={{ marginRight: 0 }}
+                  />
+                  <OutlinedText
+                    letterImage={letters}
+                    fontHeight={9}
+                    style={{ marginRight: 7 }}
+                  />
+                  <OutlinedText
+                    letterImage={letterd}
+                    fontHeight={13}
+                    style={{ marginRight: 1 }}
+                  />
+                  <OutlinedText
+                    letterImage={lettere}
+                    fontHeight={9}
+                    style={{ marginRight: 7 }}
+                  />
+                </View>
+                <Text style={[styles.labelText, { color: themeStyle.text }]}>
+                  {event.translation[0].title}
+                </Text>
               </View>
-              <Text style={[styles.labelText, { color: themeStyle.text }]}>
-                {event.translation[0].title}
-              </Text>
             </View>
-          </View>
+          ) : (
+            <View style={styles.labelContainer}></View>
+          )}
 
           <View style={{ width: "80%", marginTop: 10 }}>
             <Text
