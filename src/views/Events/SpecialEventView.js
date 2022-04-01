@@ -18,6 +18,8 @@ import ColoredViewComponent from "../../components/ColoredViewComponent";
 import HeaderComponenent from "../../components/HeaderComponenent";
 import clockIcon from "../../assets/icons/clock.png";
 import cameraIcon from "../../assets/images/camera.png";
+import VideoIcon from "../../assets/icons/video.png";
+
 import trashIcon from "../../assets/icons/trash.png";
 import { launchCamera, launchImageLibrary } from "react-native-image-picker";
 
@@ -113,6 +115,7 @@ function SpecialEventView(props) {
     launchImageLibrary({
       mediaType: "mixed",
       selectionLimit: 1,
+      durationLimit: 30,
       videoQuality: "low",
     }).then((result) => {
       if (result?.assets?.length > 0) {
@@ -146,13 +149,13 @@ function SpecialEventView(props) {
         if (Platform.OS === "ios") {
           formdata.append("image", {
             type: addedImage?.image?.type,
-            name: "image.png",
+            name: addedImage?.image?.fileName,
             uri: addedImage?.image?.uri.replace("file://", ""),
           });
         } else {
           formdata.append("image", {
             type: addedImage?.image?.type,
-            name: "image.png",
+            name: addedImage?.image?.fileName,
             uri: addedImage?.image?.uri,
           });
         }
@@ -338,7 +341,6 @@ function SpecialEventView(props) {
                 setImageWidth(width);
               }}
               style={{
-                backgroundColor: "yellow",
                 width: width * 0.8,
                 maxHeight: width * 0.8,
                 marginTop: 20,
@@ -440,8 +442,17 @@ function SpecialEventView(props) {
                 <View style={{ flexDirection: "row-reverse" }}>
                   {Object.keys(submitedImages).map((key) => {
                     // DEV CODE DE MERDE
+                    let regex1 = /([a-zA-Z]+(\d[a-zA-Z]+)+)\.avi/i;
+                    let regex2 = /([a-zA-Z]+(\d[a-zA-Z]+)+)\.mp4/i;
+                    let regex3 = /([a-zA-Z]+(\d[a-zA-Z]+)+)\.mov/i;
+
                     return (
                       <ImageTile
+                        isVideo={
+                          regex1.test(submitedImages[key].uri.toLowerCase()) ||
+                          regex2.test(submitedImages[key].uri.toLowerCase()) ||
+                          regex3.test(submitedImages[key].uri.toLowerCase())
+                        }
                         key={key}
                         image={{ object: submitedImages[key], subId: key }}
                         removeImage={(image) => {
@@ -459,13 +470,16 @@ function SpecialEventView(props) {
                       />
                     );
                   })}
-                  {addedImages.map((image, index) => (
-                    <ImageTile
-                      key={image + index}
-                      image={image}
-                      removeImage={removeImage}
-                    />
-                  ))}
+                  {addedImages.map((image, index) => {
+                    return (
+                      <ImageTile
+                        isVideo={image.image.type.search("video") > -1}
+                        key={image + index}
+                        image={image}
+                        removeImage={removeImage}
+                      />
+                    );
+                  })}
                 </View>
               </View>
             </ScrollView>
@@ -537,7 +551,7 @@ function SpecialEventView(props) {
     </View>
   );
 }
-function ImageTile({ image, removeImage }) {
+function ImageTile({ image, removeImage, isVideo }) {
   return (
     <View
       style={{
@@ -546,16 +560,40 @@ function ImageTile({ image, removeImage }) {
         justifyContent: "center",
       }}
     >
-      <Image
-        source={image?.uri ? { uri: image.uri } : image.object}
-        style={{
-          backgroundColor: "gray",
-          width: 90,
-          height: 90,
-          borderRadius: 20,
-          marginHorizontal: 10,
-        }}
-      />
+      {!isVideo ? (
+        <Image
+          source={image?.uri ? { uri: image.uri } : image.object}
+          style={{
+            width: 90,
+            height: 90,
+            borderRadius: 20,
+            marginHorizontal: 10,
+          }}
+        />
+      ) : (
+        <ColoredViewComponent
+          coloredViewStyle={{
+            // backgroundColor: "#2293D0",
+            width: 90,
+            height: 90,
+            alignItems: "center",
+            justifyContent: "center",
+            borderRadius: 20,
+            marginHorizontal: 10,
+          }}
+        >
+          <Image
+            source={VideoIcon}
+            style={{
+              width: 60,
+              height: 60,
+              tintColor: "white",
+
+              borderRadius: 20,
+            }}
+          />
+        </ColoredViewComponent>
+      )}
       <TouchableOpacity
         style={{
           zIndex: 2,

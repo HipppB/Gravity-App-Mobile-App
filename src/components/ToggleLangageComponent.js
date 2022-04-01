@@ -5,7 +5,7 @@ import english from "../assets/images/united-kingdom.png";
 import { useTranslation } from "../Context/TranslationContext";
 import { useAuthentification } from "../Context/AuthContext";
 
-function ToggleLangageComponent(props) {
+function ToggleThemeComponent(props) {
   const { apiToken } = useAuthentification();
 
   const { toggleLangage, langage, selectedLangage } = useTranslation();
@@ -31,4 +31,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ToggleLangageComponent;
+export default ToggleThemeComponent;

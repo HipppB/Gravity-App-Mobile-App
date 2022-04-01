@@ -8,6 +8,7 @@ import {
   Image,
   Dimensions,
   Animated,
+  Switch,
 } from "react-native";
 
 import ColoredViewComponent from "../components/ColoredViewComponent";
@@ -26,6 +27,7 @@ LogBox.ignoreLogs([
   "[react-native-gesture-handler] Seems like you're using an old API with gesture components, check out new Gestures system!",
 ]);
 import ToggleLangageComponent from "../components/ToggleLangageComponent";
+import ToggleThemeComponent from "../components/ToggleThemeComponent";
 
 import { StatusBar } from "expo-status-bar";
 
@@ -139,8 +141,18 @@ function LoginView(props) {
           <Text style={styles.buttonText}>{langage?.connexionButton}</Text>
         </ColoredViewComponent>
       </TouchableOpacity>
+      <View
+        style={{
+          flexDirection: "row",
+          alignItems: "center",
+          width: 100,
+          justifyContent: "space-between",
+        }}
+      >
+        <ToggleThemeComponent />
 
-      <ToggleLangageComponent />
+        <ToggleLangageComponent />
+      </View>
     </SafeAreaView>
   );
 }

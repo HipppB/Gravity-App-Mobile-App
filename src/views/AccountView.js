@@ -15,7 +15,7 @@ import { useTranslation } from "../Context/TranslationContext";
 import ToggleLangageComponent from "../components/ToggleLangageComponent.js";
 import { useAuthentification } from "../Context/AuthContext";
 import { useTheme } from "../Context/theme/ThemeContext";
-
+import ToggleThemeComponent from "../components/ToggleThemeComponent.js";
 const { width, height } = Dimensions.get("screen");
 function AccountView(props) {
   const { toggleLangage, langage } = useTranslation();
@@ -82,8 +82,19 @@ function AccountView(props) {
             <Text style={styles.titleText}>{langage.disconnect}</Text>
           </ColorViewComponent>
         </TouchableOpacity>
+        <View
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+            width: 100,
+            justifyContent: "space-between",
+            marginTop: 20,
+          }}
+        >
+          <ToggleThemeComponent />
 
-        <ToggleLangageComponent containerStyle={{ marginTop: 10 }} />
+          <ToggleLangageComponent />
+        </View>
       </View>
     </SafeAreaView>
   );
@@ -122,7 +133,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "space-evenly",
     alignItems: "center",
-    backgroundColor: "yellow",
+
     flexShrink: 1,
   },
   text: {

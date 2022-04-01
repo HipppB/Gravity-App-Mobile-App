@@ -96,26 +96,29 @@ function DetailCalendarView(props) {
       <ScrollView style={styles.bodyScrollContainer}>
         <View style={styles.bodyContainer}>
           <View style={{ minWidth: "60%", marginBottom: 30 }}>
-            <ColoredViewComponent coloredViewStyle={{ height: 40 }}>
-              <View
-                style={{
-                  alignItems: "center",
-                  justifyContent: "center",
-                  flex: 1,
-                  paddingHorizontal: 10,
-                }}
-              >
-                <Text
-                  style={{
-                    color: "white",
-                    fontFamily: "ChangaOne_400Regular_Italic",
-                    fontSize: 18,
-                  }}
-                >
-                  {event.translation[0].title}
-                </Text>
-              </View>
-            </ColoredViewComponent>
+            {event?.translation[0]?.title &&
+              event?.translation[0]?.title != " " && (
+                <ColoredViewComponent coloredViewStyle={{ height: 40 }}>
+                  <View
+                    style={{
+                      alignItems: "center",
+                      justifyContent: "center",
+                      flex: 1,
+                      paddingHorizontal: 10,
+                    }}
+                  >
+                    <Text
+                      style={{
+                        color: "white",
+                        fontFamily: "ChangaOne_400Regular_Italic",
+                        fontSize: 18,
+                      }}
+                    >
+                      {event.translation[0].title}
+                    </Text>
+                  </View>
+                </ColoredViewComponent>
+              )}
           </View>
           <View>
             <Image
@@ -359,12 +362,20 @@ function PersonHead({ person, position, onPress }) {
       onPress={onPress}
     >
       <Image
-        source={{
-          uri:
-            "https://api.liste-gravity.fr/static/image/" +
-            person?.profile_picture,
-          headers: { Authorization: "Bearer " + apiToken },
-        }}
+        source={
+          person?.profile_picture
+            ? {
+                uri:
+                  "https://api.liste-gravity.fr/static/image/" +
+                  person?.profile_picture,
+                headers: { Authorization: "Bearer " + apiToken },
+              }
+            : {
+                uri:
+                  "https://ui-avatars.com/api/?name=" + person?.first_name ||
+                  "I" + "+" + person?.last_name,
+              }
+        }
         style={{
           width: 40,
           height: 40,

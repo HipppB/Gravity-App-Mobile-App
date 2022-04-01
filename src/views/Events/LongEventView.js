@@ -13,6 +13,7 @@ import {
 import ColoredViewComponent from "../../components/ColoredViewComponent";
 import HeaderComponenent from "../../components/HeaderComponenent";
 import { useTheme } from "../../Context/theme/ThemeContext";
+import VideoIcon from "../../assets/icons/video.png";
 
 import cameraIcon from "../../assets/images/camera.png";
 import trashIcon from "../../assets/icons/trash.png";
@@ -104,6 +105,8 @@ function LongEventView(props) {
     launchImageLibrary({
       mediaType: "mixed",
       selectionLimit: 1,
+      durationLimit: 30,
+
       videoQuality: "low",
     }).then((result) => {
       if (result?.assets?.length > 0) {
@@ -137,13 +140,13 @@ function LongEventView(props) {
         if (Platform.OS === "ios") {
           formdata.append("image", {
             type: addedImage?.image?.type,
-            name: "image.png",
+            name: addedImage?.image?.fileName,
             uri: addedImage?.image?.uri.replace("file://", ""),
           });
         } else {
           formdata.append("image", {
             type: addedImage?.image?.type,
-            name: "image.png",
+            name: addedImage?.image?.fileName,
             uri: addedImage?.image?.uri,
           });
         }
@@ -319,90 +322,98 @@ function LongEventView(props) {
             </>
           )}
         </View>
-        <View style={{}}>
-          {(event.submissionType === "mixed" ||
-            event.submissionType === "image") && (
-            <View
-              style={{
-                marginTop: 0,
-                width: width,
-                paddingVertical: 10,
+
+        {(event.submissionType === "mixed" ||
+          event.submissionType === "image") && (
+          <View
+            style={{
+              width: width,
+              paddingVertical: 10,
+            }}
+          >
+            <ScrollView
+              horizontal={true}
+              showsHorizontalScrollIndicator={false}
+              contentContainerStyle={{
+                justifyContent: "center",
+                paddingHorizontal: 20,
               }}
             >
-              <ScrollView
-                horizontal={true}
-                showsHorizontalScrollIndicator={false}
-                contentContainerStyle={{
+              <View
+                style={{
                   justifyContent: "center",
-                  paddingHorizontal: 20,
+                  alignItems: "center",
+                  flexDirection: "row",
                 }}
               >
-                <View
+                <TouchableOpacity
                   style={{
+                    borderColor: "gray",
+                    borderWidth: 1,
+                    width: 90,
+                    height: 90,
+                    borderRadius: 20,
+                    marginHorizontal: 10,
                     justifyContent: "center",
                     alignItems: "center",
-                    flexDirection: "row",
+                    borderColor: themeStyle.text,
                   }}
+                  onPress={() => addImage()}
                 >
-                  <TouchableOpacity
+                  <Image
+                    source={cameraIcon}
                     style={{
-                      borderColor: "gray",
-                      borderWidth: 1,
-                      width: 90,
-                      height: 90,
-                      borderRadius: 20,
-                      marginHorizontal: 10,
-                      justifyContent: "center",
-                      alignItems: "center",
-                      borderColor: themeStyle.text,
+                      width: 50,
+                      height: 50,
+                      tintColor: themeStyle.text,
                     }}
-                    onPress={() => addImage()}
-                  >
-                    <Image
-                      source={cameraIcon}
-                      style={{
-                        width: 50,
-                        height: 50,
-                        tintColor: themeStyle.text,
-                      }}
-                    />
-                  </TouchableOpacity>
+                  />
+                </TouchableOpacity>
 
-                  <View style={{ flexDirection: "row-reverse" }}>
-                    {Object.keys(submitedImages).map((key) => {
-                      // DEV CODE DE MERDE
-                      return (
-                        <ImageTile
-                          key={key}
-                          image={{ object: submitedImages[key], subId: key }}
-                          removeImage={(image) => {
-                            newDeletionRequest(
-                              "challenge/" + image.subId + "/submission",
-                              "DELETE",
-                              {},
-                              apiToken
-                            );
-                            let newSubIm = submitedImages;
-                            delete newSubIm[key];
+                <View style={{ flexDirection: "row-reverse" }}>
+                  {Object.keys(submitedImages).map((key) => {
+                    // DEV CODE DE MERDE
+                    let regex1 = /([a-zA-Z]+(\d[a-zA-Z]+)+)\.avi/i;
+                    let regex2 = /([a-zA-Z]+(\d[a-zA-Z]+)+)\.mp4/i;
+                    let regex3 = /([a-zA-Z]+(\d[a-zA-Z]+)+)\.mov/i;
 
-                            setSubmitedImages(newSubIm);
-                          }}
-                        />
-                      );
-                    })}
-                    {addedImages.map((image, index) => (
+                    return (
                       <ImageTile
-                        key={image + index}
-                        image={image}
-                        removeImage={removeImage}
+                        isVideo={
+                          regex1.test(submitedImages[key].uri.toLowerCase()) ||
+                          regex2.test(submitedImages[key].uri.toLowerCase()) ||
+                          regex3.test(submitedImages[key].uri.toLowerCase())
+                        }
+                        key={key}
+                        image={{ object: submitedImages[key], subId: key }}
+                        removeImage={(image) => {
+                          newDeletionRequest(
+                            "challenge/" + image.subId + "/submission",
+                            "DELETE",
+                            {},
+                            apiToken
+                          );
+                          let newSubIm = submitedImages;
+                          delete newSubIm[key];
+
+                          setSubmitedImages(newSubIm);
+                        }}
                       />
-                    ))}
-                  </View>
+                    );
+                  })}
+                  {addedImages.map((image, index) => (
+                    <ImageTile
+                      isVideo={image.image.type.search("video") > -1}
+                      key={image + index}
+                      image={image}
+                      removeImage={removeImage}
+                    />
+                  ))}
                 </View>
-              </ScrollView>
-            </View>
-          )}
-        </View>
+              </View>
+            </ScrollView>
+          </View>
+        )}
 
         <TouchableOpacity
           style={{ marginTop: 20, marginBottom: 20 }}
@@ -469,7 +480,8 @@ function LongEventView(props) {
     </View>
   );
 }
-function ImageTile({ image, removeImage }) {
+function ImageTile({ image, removeImage, isVideo }) {
+  console.log(image);
   return (
     <View
       style={{
@@ -477,16 +489,40 @@ function ImageTile({ image, removeImage }) {
         justifyContent: "center",
       }}
     >
-      <Image
-        source={image?.uri ? { uri: image.uri } : image.object}
-        style={{
-          backgroundColor: "gray",
-          width: 90,
-          height: 90,
-          borderRadius: 20,
-          marginHorizontal: 10,
-        }}
-      />
+      {!isVideo ? (
+        <Image
+          source={image?.uri ? { uri: image.uri } : image.object}
+          style={{
+            width: 90,
+            height: 90,
+            borderRadius: 20,
+            marginHorizontal: 10,
+          }}
+        />
+      ) : (
+        <ColoredViewComponent
+          coloredViewStyle={{
+            // backgroundColor: "#2293D0",
+            width: 90,
+            height: 90,
+            alignItems: "center",
+            justifyContent: "center",
+            borderRadius: 20,
+            marginHorizontal: 10,
+          }}
+        >
+          <Image
+            source={VideoIcon}
+            style={{
+              width: 60,
+              height: 60,
+              tintColor: "white",
+
+              borderRadius: 20,
+            }}
+          />
+        </ColoredViewComponent>
+      )}
       <TouchableOpacity
         style={{
           zIndex: 2,

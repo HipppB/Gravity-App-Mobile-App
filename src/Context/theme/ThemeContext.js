@@ -6,6 +6,7 @@ import colorsLight from "./styleLight";
 const ThemeContext = createContext({
   toggleTheme: () => {},
   themeStyle: {},
+  activeTheme: "",
 });
 
 // create context
@@ -37,9 +38,12 @@ function ThemeProvider({ children }) {
     }
   }
   function toggleTheme() {
-    if (theme === "light") {
+    console.log(activeTheme);
+    if (activeTheme === "light") {
+      setThemeStyle(colorsDark);
       setTheme("dark");
     } else {
+      setThemeStyle(colorsLight);
       setTheme("light");
     }
   }
@@ -49,6 +53,7 @@ function ThemeProvider({ children }) {
       value={{
         toggleTheme,
         themeStyle,
+        activeTheme,
       }}
     >
       {children}
