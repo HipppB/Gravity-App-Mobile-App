@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   StyleSheet,
   View,
@@ -15,7 +15,8 @@ import { useTheme } from "../Context/theme/ThemeContext";
 
 function HeaderComponenent(props) {
   const { langage } = useTranslation();
-  const { userInfos } = useAuthentification();
+  const { userInfos, apiToken } = useAuthentification();
+  useEffect(() => console.info(userInfos.profile_picture), [userInfos]);
 
   const { themeStyle } = useTheme();
 
@@ -34,14 +35,29 @@ function HeaderComponenent(props) {
             props.navigation.navigate("Home", { screen: "HomeAccount" })
           }
         >
-          <LinearGradient
-            colors={["#0C1316", "#2293D0"]}
-            end={{ x: 1, y: 0 }}
-            start={{ x: -0.1, y: 0 }}
-            style={[styles.profileContainer]}
-          >
-            <View style={styles.profileSubContainer}></View>
-          </LinearGradient>
+          {userInfos?.profile_picture ? (
+            <Image
+              source={{
+                uri:
+                  "https://api.liste-gravity.fr/static/image/" +
+                  userInfos?.profile_picture,
+                headers: { Authorization: "Bearer " + apiToken },
+              }}
+              style={[
+                styles.profileContainer,
+                // { borderWidth: 0, width: 40, height: 40 },
+              ]}
+            />
+          ) : (
+            <LinearGradient
+              colors={["#0C1316", "#2293D0"]}
+              end={{ x: 1, y: 0 }}
+              start={{ x: -0.1, y: 0 }}
+              style={[styles.profileContainer]}
+            >
+              <View style={styles.profileSubContainer}></View>
+            </LinearGradient>
+          )}
 
           <View style={styles.textContainer}>
             <Text style={[styles.welcomeText, { color: themeStyle.textless }]}>

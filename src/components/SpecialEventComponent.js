@@ -17,7 +17,6 @@ import ColoredViewComponent from "./ColoredViewComponent";
 function SpecialEventComponent({ event, navigation }) {
   const [eventImage, setEventImage] = useState();
   const { apiToken } = useAuthentification();
-
   const [dataFuture, setFutureDate] = useState(new Date(event.expiredAt));
   const [timeRemaining, setTimeRemaining] = useState(
     ((dataFuture - Date.now()) / 1000).toFixed(0)
@@ -52,7 +51,7 @@ function SpecialEventComponent({ event, navigation }) {
         <View style={[styles.containerHeader]}>
           <Image
             source={
-              event?.imageUri
+              event?.imageUri !== null
                 ? {
                     uri:
                       "https://api.liste-gravity.fr/static/image/" +
@@ -61,7 +60,10 @@ function SpecialEventComponent({ event, navigation }) {
                   }
                 : require("../assets/images/logos/Couleur/LogoNoNomNoFond.png")
             }
-            style={[styles.image, !event?.imageUri && { resizeMode: "center" }]}
+            style={[
+              styles.image,
+              event?.imageUri === null && { resizeMode: "center" },
+            ]}
           />
           <View style={styles.textContainer}>
             <Text

@@ -13,10 +13,13 @@ import {
 
 import ColoredViewComponent from "../components/ColoredViewComponent";
 import { LinearGradient } from "expo-linear-gradient";
+import { useTranslation } from "../Context/TranslationContext";
 
 import { useAuthentification } from "../Context/AuthContext";
 
 function EventComponent({ event, ...props }) {
+  console.log(event);
+  const { langage } = useTranslation();
   const [isOpen, setisOpen] = useState(false);
   const containerHeight = useRef(new Animated.Value(0)).current;
 
@@ -90,7 +93,7 @@ function EventComponent({ event, ...props }) {
             <View style={[styles.containerHeader]}>
               <Animated.Image
                 source={
-                  event?.imageUri
+                  event?.imageUri !== null
                     ? {
                         uri:
                           "https://api.liste-gravity.fr/static/image/" +
@@ -101,7 +104,7 @@ function EventComponent({ event, ...props }) {
                 }
                 style={[
                   styles.image,
-                  !event?.imageUri && { resizeMode: "center" },
+                  event?.imageUri === null && { resizeMode: "center" },
                 ]}
               />
               <View style={styles.textContainer}>
@@ -125,7 +128,7 @@ function EventComponent({ event, ...props }) {
                     lineHeight: 20,
                   }}
                 >
-                  Défis validé !
+                  {langage.validateChallenge}
                 </Text>
               </View>
             </View>
@@ -175,7 +178,7 @@ function EventComponent({ event, ...props }) {
           <View style={[styles.containerHeader]}>
             <Image
               source={
-                event?.imageUri
+                event?.imageUri !== null
                   ? {
                       uri:
                         "https://api.liste-gravity.fr/static/image/" +
@@ -186,7 +189,7 @@ function EventComponent({ event, ...props }) {
               }
               style={[
                 styles.image,
-                !event?.imageUri && { resizeMode: "center" },
+                event?.imageUri === null && { resizeMode: "center" },
               ]}
             />
             <View style={styles.textContainer}>
@@ -195,7 +198,9 @@ function EventComponent({ event, ...props }) {
                   fontFamily: "ChangaOne_400Regular",
                   fontSize: 19,
                   color: "white",
+                  paddingBottom: 0,
                   lineHeight: 20,
+                  textAlignVertical: "center",
                 }}
               >
                 {event?.translation[0]?.title}
@@ -211,7 +216,7 @@ function EventComponent({ event, ...props }) {
                 }}
               >
                 {props?.wrong
-                  ? "Défis refusé"
+                  ? langage.rejectedChallenge
                   : event?.translation[0]?.subtitle}
               </Text>
             </View>
@@ -258,10 +263,10 @@ function EventComponent({ event, ...props }) {
               >
                 <Text style={styles.buttonText}>
                   {props?.wrong
-                    ? "Retenter le défis"
+                    ? langage.retryChallenge
                     : props?.validating
-                    ? "Rajouter des éléments"
-                    : "Participer au Défis"}
+                    ? langage.addElements
+                    : langage.participateChallenge}
                 </Text>
               </ColoredViewComponent>
             </TouchableOpacity>
@@ -306,7 +311,7 @@ const styles = StyleSheet.create({
   textContainer: {},
   buttonTouchableContainer: {
     width: "70%",
-    alignSelf: "center",
+    // alignSelf: "center",
     marginTop: 15,
   },
   buttonContainerContainer: {},

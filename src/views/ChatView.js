@@ -9,34 +9,17 @@ import {
   Keyboard,
   StatusBar,
   Platform,
+  Button,
+  Pressable,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Chat, MessageType, defaultTheme } from "@flyerhq/react-native-chat-ui";
 import logoBlanc from "../assets/images/logos/Couleur/LogoNoNom.png";
 import BackButtonComponent from "../components/BackButtonComponent";
 import io from "socket.io-client";
+import { useAuthentification } from "../Context/AuthContext";
 
-const API = "https://api.liste-gravity.fr";
 let socket;
-
-const initiateSocket = (token) => {
-  socket = io(API);
-  console.log("Connecting");
-  if (socket && token) socket.emit("join", token);
-};
-const disconnectSocket = () => {
-  console.log("Disconnecting socket...");
-  if (socket) socket.disconnect();
-};
-const subscribeToChat = (cb) => {
-  if (!socket) return true;
-  socket.on("chat", (msg) => {
-    console.log("Websocket event received!");
-    return cb(null, msg);
-  });
-};
-
-const { width, height } = Dimensions.get("screen");
 const uuidv4 = () => {
   return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, (c) => {
     const r = Math.floor(Math.random() * 16);
@@ -46,6 +29,11 @@ const uuidv4 = () => {
 };
 
 function ChatView(props) {
+  const { apiToken } = useAuthentification();
+  const { width, height } = Dimensions.get("screen");
+
+  const API = "https://api.liste-gravity.fr";
+
   // Logo Animation Handler
   const size = useRef(new Animated.Value(width * 0.3)).current;
   const left = useRef(new Animated.Value(1)).current;
@@ -98,42 +86,73 @@ function ChatView(props) {
       hideSubscription.remove();
     };
   }, []);
-
   const user = {
-    id: "06c33e8b-e835-4736-80f4-63f44b66666c",
+    id: "06c33e8b-e835-4736-80f4-63f44d77766c",
   };
   const user2 = {
     id: "06c33e8b-e835-4736-80f4-63f44b66766c",
     firstName: "Graviteam",
     imageUrl: Image.resolveAssetSource(logoBlanc).uri,
   };
-  const [messages, setMessages] = useState([]);
 
-  // {
-  //   author: user,
-  //   createdAt: new Date(1647226800000),
-  //   id: uuidv4(),
-  //   text: "Wow ça marche ! Génial merci !",
-  //   type: "text",
-  // },
-  // {
-  //   author: user2,
-  //   createdAt: new Date(1647226800000),
-  //   id: uuidv4(),
-  //   text: "Tu tape ton texte puis tu clique sur l'icone !",
-  //   type: "text",
-  // },
-  // {
-  //   author: user,
-  //   createdAt: new Date(1647226800000),
-  //   id: uuidv4(),
-  //   text: "Hey comment j'envois un message ?",
-  //   type: "text",
-  // },
+  //GESTION SOCKET
+  useEffect(() => {
+    initiateSocket();
+    return () => disconnectSocket();
+  }, []);
 
-  const addMessage = (message) => {
-    setMessages([message, ...messages]);
+  const initiateSocket = () => {
+    socket = io(API, {
+      extraHeaders: {
+        Authorization: apiToken,
+      },
+    });
+
+    if (socket) {
+      subscribeToChat(callbackReceiveing);
+    }
   };
+  const subscribeToChat = (cb) => {
+    if (!socket) return true;
+    console.log("SUBSCRIBING");
+    socket.on("chat", (msg) => {
+      console.log(messages);
+      return cb(msg);
+    });
+  };
+
+  const disconnectSocket = () => {
+    console.log("Disconnecting socket...");
+    if (socket) socket.disconnect();
+  };
+
+  //GESTIONS MESSAGES
+  const [messages, setMessages] = useState([]);
+  const [lastMesssage, setLastMessage] = useState();
+  function addMessage(message) {
+    setMessages([message, ...messages]);
+  }
+
+  function callbackReceiveing(message) {
+    const textMessage = {
+      author: user2,
+      createdAt: Date.now(),
+      id: (Math.random() * 10000).toFixed(0),
+      text: message + " " + (Math.random() * 1000).toFixed(0),
+      type: "text",
+    };
+
+    setLastMessage(textMessage);
+    // let newMessages = messages;
+    // newMessages = [textMessage, ...newMessages];
+    // setMessages(newMessages);
+  }
+  useEffect(() => {
+    if (lastMesssage) {
+      setMessages([lastMesssage, ...messages]);
+      setLastMessage();
+    }
+  }, [lastMesssage]);
 
   const handleSendPress = (message) => {
     const textMessage = {
@@ -143,8 +162,11 @@ function ChatView(props) {
       text: message.text,
       type: "text",
     };
+    console.log("sending", message);
+    socket.emit("chat", message);
     addMessage(textMessage);
   };
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <StatusBar
@@ -167,6 +189,7 @@ function ChatView(props) {
           opacity: opacity,
         }}
       />
+
       <BackButtonComponent
         navigation={props.navigation}
         top={Platform.OS == "ios" ? 60 : 0}

@@ -81,15 +81,19 @@
     "waitingVal": "En attente de validation",
     "validate": "Défis validés",
     "addElements": "Rajouter des éléments",
-    "descriptionChallenge": "Description du défis",
+    "descriptionChallenge": "Description du défi",
     "trophee": "Récompenses",
     "myanswer": "Ma réponse",
     "answer": "Réponse",
     "photosVideos": "Mes photos",
-    "sendChallenge": "Envoyer le défis",
+    "sendChallenge": "Envoyer le défi",
     "openInNav": "Ouvrir dans le navigateur",
     "acceptSharing": "Je veux bien que gravity partage ces fichiers avec les Isepiens",
-    "noChallenge": "Aucun défis"
+    "noChallenge": "Aucun défi",
+    "retryChallenge": "Retenter le défi",
+    "participateChallenge": "Participer au défi",
+    "rejectedChallenge": "Défi refusé",
+    "validateChallenge": "Défi validé !"
   },
   "en": {
     "connexionButton": "Login",
@@ -181,6 +185,10 @@
     "sendChallenge": "Send the challenge",
     "openInNav": "Open in browser",
     "acceptSharing": "I accept that gravity share these files with other Isep members",
-    "noChallenge": "No challenge"
+    "noChallenge": "No challenge",
+    "retryChallenge": "Retry the challenge",
+    "participateChallenge": "Participate",
+    "rejectedChallenge": "Challenge rejected",
+    "validateChallenge": "Challenge validate !"
   }
 }
