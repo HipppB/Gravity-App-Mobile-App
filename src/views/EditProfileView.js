@@ -235,7 +235,7 @@ function EditProfileView(props) {
           style={{
             width: "100%",
             height: "auto",
-            paddingBottom: 0,
+            paddingBottom: 100,
           }}
           contentContainerStyle={{ alignItems: "center" }}
           showsVerticalScrollIndicator={false}
@@ -340,7 +340,10 @@ function EditProfileView(props) {
               onChange={setSnap}
             />
           </ColoredViewComponent>
-          <ColoredViewComponent containerStyle={styles.labelContainer} isBlue>
+          <ColoredViewComponent
+            containerStyle={{ ...styles.labelContainer, marginBottom: 100 }}
+            isBlue
+          >
             <TextInputComponent
               isAutoUp
               placeholder={langage.tiktokPlaceHolder}
@@ -348,27 +351,27 @@ function EditProfileView(props) {
               onChange={setTikTok}
             />
           </ColoredViewComponent>
-          <View style={styles.buttonTouchableContainer}>
-            <Animated.Text
-              style={{
-                alignSelf: "center",
-                opacity: loadingopacity,
-                fontFamily: "ChangaOne_400Regular_Italic",
-                color: themeStyle.textless,
-              }}
-            >
-              {langage.isSaving}
-            </Animated.Text>
-            <TouchableOpacity onPress={() => saveInfos()}>
-              <ColoredViewComponent
-                coloredViewStyle={styles.buttonContainer}
-                containerStyle={styles.buttonContainerContainer}
-              >
-                <Text style={styles.buttonText}>{langage?.saveLabel}</Text>
-              </ColoredViewComponent>
-            </TouchableOpacity>
-          </View>
         </ScrollView>
+        <View style={styles.buttonTouchableContainer}>
+          <TouchableOpacity onPress={() => saveInfos()}>
+            <ColoredViewComponent
+              coloredViewStyle={styles.buttonContainer}
+              containerStyle={styles.buttonContainerContainer}
+            >
+              <Text style={styles.buttonText}>{langage?.saveLabel}</Text>
+            </ColoredViewComponent>
+          </TouchableOpacity>
+          <Animated.Text
+            style={{
+              alignSelf: "center",
+              opacity: loadingopacity,
+              fontFamily: "ChangaOne_400Regular_Italic",
+              color: themeStyle.textless,
+            }}
+          >
+            {langage.isSaving}
+          </Animated.Text>
+        </View>
       </KeyboardAvoidingView>
     </SafeAreaView>
   );
@@ -413,10 +416,13 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   buttonTouchableContainer: {
-    marginTop: 40,
+    position: "absolute",
+    bottom: 0,
+    // marginTop: 10,
     width: "70%",
     justifyContent: "center",
-    marginBottom: 20,
+    // marginBottom: -10,
+    // zIndex: 2,
   },
   buttonContainerContainer: {},
   buttonContainer: {

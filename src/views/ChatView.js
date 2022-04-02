@@ -18,6 +18,7 @@ import logoBlanc from "../assets/images/logos/Couleur/LogoNoNom.png";
 import BackButtonComponent from "../components/BackButtonComponent";
 import io from "socket.io-client";
 import { useAuthentification } from "../Context/AuthContext";
+import useFetch from "../data/useFetch";
 
 let socket;
 const uuidv4 = () => {
@@ -29,7 +30,9 @@ const uuidv4 = () => {
 };
 
 function ChatView(props) {
+  const [oldMessages, getOldMessages] = useFetch();
   const { apiToken } = useAuthentification();
+
   const { width, height } = Dimensions.get("screen");
 
   const API = "https://api.liste-gravity.fr";
@@ -129,6 +132,31 @@ function ChatView(props) {
   //GESTIONS MESSAGES
   const [messages, setMessages] = useState([]);
   const [lastMesssage, setLastMessage] = useState();
+
+  useEffect(() => {
+    getOldMessages("user/chats", "GET", {}, apiToken);
+  }, []);
+  useEffect(() => {
+    if (oldMessages?.status === "Done") {
+      let newOld = [];
+      oldMessages?.content?.forEach((message) => {
+        console.log(message);
+        const textMessage = {
+          author: message.isAdmin ? user2 : user,
+          // author: user,
+          createdAt: Date.now(),
+          id: message.id,
+          text: message.content,
+          type: "text",
+        };
+        newOld.push(textMessage);
+      });
+      newOld.reverse();
+      console.log(newOld);
+      setMessages([...messages, ...newOld]);
+    }
+  }, [oldMessages]);
+
   function addMessage(message) {
     setMessages([message, ...messages]);
   }
@@ -163,7 +191,7 @@ function ChatView(props) {
       type: "text",
     };
     console.log("sending", message);
-    socket.emit("chat", message);
+    socket.emit("chat", message.text);
     addMessage(textMessage);
   };
 
