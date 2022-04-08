@@ -159,6 +159,8 @@ function SpecialEventView(props) {
             uri: addedImage?.image?.uri,
           });
         }
+        formdata.append("status", acceptsToShare);
+
         options.body = formdata;
         fetch(
           "https://api.liste-gravity.fr/challenge/" + event.id + "/image",
@@ -183,20 +185,19 @@ function SpecialEventView(props) {
             {},
             apiToken
           );
-
-          if (answer) {
-            newSubmitionRequest(
-              "challenge/submission",
-              "POST",
-              {
-                challengeId: event.id.toString(),
-                content: answer,
-                acceptToShareImage: acceptsToShare,
-                isFile: false,
-              },
-              apiToken
-            );
-          }
+        }
+        if (!submitedText?.content || submitedText?.content !== answer) {
+          newSubmitionRequest(
+            "challenge/submission",
+            "POST",
+            {
+              challengeId: event.id.toString(),
+              content: answer,
+              acceptToShareImage: acceptsToShare,
+              isFile: false,
+            },
+            apiToken
+          );
         }
       }
     }

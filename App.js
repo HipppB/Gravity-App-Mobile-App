@@ -23,7 +23,7 @@ async function onAppBootstrap(callback) {
 
   // Get the token
   const token = await messaging().getToken();
-
+  console.info("TOKEN", token);
   // Save the token
   callback(token);
 }

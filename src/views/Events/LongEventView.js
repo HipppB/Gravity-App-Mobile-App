@@ -150,6 +150,8 @@ function LongEventView(props) {
             uri: addedImage?.image?.uri,
           });
         }
+        console.log(acceptsToShare, "authorisation");
+        formdata.append("status", acceptsToShare);
         options.body = formdata;
         // console.info(
         //   "https://api.liste-gravity.fr/challenge/" + event.id + "/image",
@@ -170,6 +172,7 @@ function LongEventView(props) {
     }
 
     // Save answer
+    console.info("ANSWER", submitedText, answer);
     if (event.submissionType === "mixed" || event.submissionType === "text") {
       console.info("ANSWER", submitedText, answer);
 
@@ -181,19 +184,20 @@ function LongEventView(props) {
             {},
             apiToken
           );
-          if (answer) {
-            newSubmitionRequest(
-              "challenge/submission",
-              "POST",
-              {
-                challengeId: event.id.toString(),
-                content: answer,
-                acceptToShareImage: acceptsToShare,
-                isFile: false,
-              },
-              apiToken
-            );
-          }
+        }
+
+        if (!submitedText?.content || submitedText?.content !== answer) {
+          newSubmitionRequest(
+            "challenge/submission",
+            "POST",
+            {
+              challengeId: event.id.toString(),
+              content: answer,
+              acceptToShareImage: acceptsToShare,
+              isFile: false,
+            },
+            apiToken
+          );
         }
       }
     }

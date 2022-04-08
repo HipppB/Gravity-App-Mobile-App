@@ -13,6 +13,7 @@ import CalendarComponent from "../components/CalendarComponent";
 import getCalendar from "../data/getCalendar";
 import { useTheme } from "../Context/theme/ThemeContext";
 import { useAuthentification } from "../Context/AuthContext";
+import { useTranslation } from "../Context/TranslationContext";
 import useFetch from "../data/useFetch";
 const { width, height } = Dimensions.get("screen");
 
@@ -21,6 +22,7 @@ function CalendarView(props) {
   const [eventList, setEventList] = useState([]);
   const [request, newRequest] = useFetch();
   const [isRefreshing, setRefreshing] = useState(false);
+  const { langage } = useTranslation();
   function updateData() {
     setRefreshing(true);
     newRequest("event/all", "GET", {}, apiToken);
@@ -29,7 +31,7 @@ function CalendarView(props) {
 
   useEffect(() => {
     updateData();
-  }, []);
+  }, [langage]);
   useEffect(() => {
     if (request?.status === "Unauthorized") {
       logout();

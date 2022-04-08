@@ -23,8 +23,12 @@ import useFetch from "../data/useFetch";
 import PoleView from "./Home/PoleView";
 import FilmView from "./Home/FilmView";
 import FoodView from "./Home/FoodView";
+import notifee from "@notifee/react-native";
 const { width, height } = Dimensions.get("screen");
 function HomeView(props) {
+  useEffect(() => {
+    notifee.setBadgeCount(0);
+  }, []);
   const { themeStyle } = useTheme();
 
   const [statusProject, requestProject] = useFetch();

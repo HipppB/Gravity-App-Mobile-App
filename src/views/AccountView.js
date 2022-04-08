@@ -16,6 +16,8 @@ import ToggleLangageComponent from "../components/ToggleLangageComponent.js";
 import { useAuthentification } from "../Context/AuthContext";
 import { useTheme } from "../Context/theme/ThemeContext";
 import ToggleThemeComponent from "../components/ToggleThemeComponent.js";
+import BackButtonComponent from "../components/BackButtonComponent";
+
 const { width, height } = Dimensions.get("screen");
 function AccountView(props) {
   const { toggleLangage, langage } = useTranslation();
@@ -30,6 +32,11 @@ function AccountView(props) {
         backgroundColor={themeStyle.background}
         hideTransitionAnimation="true"
         animated={false}
+      />
+      <BackButtonComponent
+        navigation={props.navigation}
+        top={Platform.OS == "ios" ? 60 : 0}
+        color={"white"}
       />
       <View
         style={{

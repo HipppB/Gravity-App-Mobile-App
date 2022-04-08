@@ -144,7 +144,7 @@ function ChatView(props) {
         const textMessage = {
           author: message.isAdmin ? user2 : user,
           // author: user,
-          createdAt: Date.now(),
+          createdAt: message?.date,
           id: message.id,
           text: message.content,
           type: "text",
@@ -166,7 +166,7 @@ function ChatView(props) {
       author: user2,
       createdAt: Date.now(),
       id: (Math.random() * 10000).toFixed(0),
-      text: message + " " + (Math.random() * 1000).toFixed(0),
+      text: message,
       type: "text",
     };
 

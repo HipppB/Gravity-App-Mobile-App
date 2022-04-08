@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   StyleSheet,
   View,
@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   Image,
   Linking,
+  Animated,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import HeaderComponenent from "../components/HeaderComponenent";
@@ -38,8 +39,11 @@ function DetailCalendarView(props) {
   const [requestInscription, newRequestInscription] = useFetch();
   const [statusInscription, setStatusInscription] = useState();
   const [participants, setParticipants] = useState([]);
+  const [contentHeight, setContentHeight] = useState(20);
+  const containerHeight = useRef(new Animated.Value(0)).current;
 
   const [image, setImage] = useState();
+  // Animated.Value();
   function getHeads() {
     newRequest("event/" + event.id, "GET", {}, apiToken);
   }
@@ -75,7 +79,7 @@ function DetailCalendarView(props) {
         event.location.coordinates[0]
     );
   }
-  const { toggleLangage, langage } = useTranslation();
+  const { toggleLangage, langage, selectedLangage } = useTranslation();
   const [isModalParticipantVisible, setModalParticipantVisible] =
     useState(false);
   function openModal() {
@@ -131,56 +135,94 @@ function DetailCalendarView(props) {
           event?.translation[0]?.title != " " ? (
             <View>
               <View style={styles.labelContainer}>
-                <View style={styles.labelTextletterContainer}>
-                  <OutlinedText
-                    letterImage={letterAA}
-                    fontHeight={15}
-                    style={{ marginRight: 7 }}
+                {selectedLangage === "fr" ? (
+                  <View
+                    style={styles.labelTextletterContainer}
+                    onLayout={(event) => {
+                      var { x, y, width, height } = event.nativeEvent.layout;
+                      console.log(height);
+                      setContentHeight(height);
+                    }}
+                  >
+                    <OutlinedText
+                      letterImage={letterAA}
+                      fontHeight={15}
+                      style={{ marginRight: 7 }}
+                    />
+                    <OutlinedText
+                      letterImage={letterp}
+                      top={3}
+                      fontHeight={12}
+                      style={{ marginRight: 1 }}
+                    />
+                    <OutlinedText
+                      letterImage={letterr}
+                      fontHeight={9}
+                      style={{ marginRight: 1 }}
+                    />
+                    <OutlinedText
+                      letterImage={lettero}
+                      fontHeight={9}
+                      style={{ marginRight: 0 }}
+                    />
+                    <OutlinedText
+                      letterImage={letterp}
+                      top={3}
+                      fontHeight={12}
+                      style={{ marginRight: 1 }}
+                    />
+                    <OutlinedText
+                      letterImage={lettero}
+                      fontHeight={9}
+                      style={{ marginRight: 0 }}
+                    />
+                    <OutlinedText
+                      letterImage={letters}
+                      fontHeight={9}
+                      style={{ marginRight: 7 }}
+                    />
+                    <OutlinedText
+                      letterImage={letterd}
+                      fontHeight={13}
+                      style={{ marginRight: 1 }}
+                    />
+                    <OutlinedText
+                      letterImage={lettere}
+                      fontHeight={9}
+                      style={{ marginRight: 7 }}
+                    />
+                  </View>
+                ) : (
+                  <Animated.Image
+                    source={require("../assets/Letters/about.png")}
+                    style={{
+                      height: 20,
+                      resizeMode: "contain",
+
+                      maxWidth: 100,
+                      width: 60,
+                      flexShrink: 1,
+                      marginRight: 7,
+
+                      // flexShrink: 1,
+
+                      // backgroundColor: "red",
+                      top: 0,
+                      tintColor: themeStyle.text,
+                    }}
                   />
-                  <OutlinedText
-                    letterImage={letterp}
-                    top={3}
-                    fontHeight={12}
-                    style={{ marginRight: 1 }}
-                  />
-                  <OutlinedText
-                    letterImage={letterr}
-                    fontHeight={9}
-                    style={{ marginRight: 1 }}
-                  />
-                  <OutlinedText
-                    letterImage={lettero}
-                    fontHeight={9}
-                    style={{ marginRight: 0 }}
-                  />
-                  <OutlinedText
-                    letterImage={letterp}
-                    top={3}
-                    fontHeight={12}
-                    style={{ marginRight: 1 }}
-                  />
-                  <OutlinedText
-                    letterImage={lettero}
-                    fontHeight={9}
-                    style={{ marginRight: 0 }}
-                  />
-                  <OutlinedText
-                    letterImage={letters}
-                    fontHeight={9}
-                    style={{ marginRight: 7 }}
-                  />
-                  <OutlinedText
-                    letterImage={letterd}
-                    fontHeight={13}
-                    style={{ marginRight: 1 }}
-                  />
-                  <OutlinedText
-                    letterImage={lettere}
-                    fontHeight={9}
-                    style={{ marginRight: 7 }}
-                  />
-                </View>
-                <Text style={[styles.labelText, { color: themeStyle.text }]}>
+                )}
+                <Text
+                  style={[
+                    styles.labelText,
+                    {
+                      color: themeStyle.text,
+                      // backgroundColor: "yellow",
+                      height: 20,
+                      flexGrow: 1,
+                    },
+                  ]}
+                >
                   {event.translation[0].title}
                 </Text>
               </View>
@@ -415,20 +457,31 @@ const styles = StyleSheet.create({
   labelContainer: {
     width: 0.8 * width,
     marginTop: 20,
+    // backgroundColor: "green",
+    alignItems: "flex-start",
+    display: "flex",
+
     justifyContent: "flex-start",
     flexDirection: "row",
-    alignItems: "center",
+    // alignItems: "center",
     // backgroundColor: "red",
   },
   labelTextletterContainer: {
     flexDirection: "row",
     alignItems: "baseline",
+    height: 29,
+    width: 100,
+    marginRight: 6,
+    top: 1,
+
     // backgroundColor: "green",
   },
   labelText: {
     // backgroundColor: "blue",
+    // height: 20,
     color: "black",
     fontSize: 18,
+    textAlignVertical: "top",
     fontFamily: "ChangaOne_400Regular_Italic",
   },
 

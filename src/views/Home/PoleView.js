@@ -29,8 +29,11 @@ function PoleView(props) {
       <Pole name={"Pôle Food"} type={"food"} navigation={props.navigation} />
       <Pole name={"Pôle Event"} type={"event"} navigation={props.navigation} />
       <Pole name={"Pôle Déco"} type={"deco"} navigation={props.navigation} />
-      <Pole name={"Pôle Ecolo"} type={"ecolo"} navigation={props.navigation} />
-      <Pole name={"Pôle Mamie"} type={"mamie"} navigation={props.navigation} />
+      <Pole
+        name={"Pôle Écologie"}
+        type={"ecolo"}
+        navigation={props.navigation}
+      />
     </View>
   );
 }
@@ -48,28 +51,7 @@ function Pole(props) {
       setData(fetchedData.content.members);
     }
   }, [fetchedData]);
-  // const data = props?.members || [
-  //   {
-  //     name: "Nom",
-  //     poste: "Poste",
-  //     image: require("../../GravityHeadCrush/images/1.png"),
-  //   },
-  //   {
-  //     name: "Nom",
-  //     poste: "Poste",
-  //     image: require("../../GravityHeadCrush/images/2.png"),
-  //   },
-  //   {
-  //     name: "Nom",
-  //     poste: "Poste",
-  //     image: require("../../GravityHeadCrush/images/3.png"),
-  //   },
-  //   {
-  //     name: "Nom",
-  //     poste: "Poste",
-  //     image: require("../../GravityHeadCrush/images/4.png"),
-  //   },
-  // ];
+
   return (
     <View
       style={{

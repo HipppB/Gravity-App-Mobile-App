@@ -121,7 +121,7 @@ function SponsorComponent({ sponsor }) {
               }}
               numberOfLines={1}
             >
-              {sponsor.translation[0].context_text}dqdz
+              {sponsor.translation[0].context_text}
             </Text>
           </View>
         </View>
