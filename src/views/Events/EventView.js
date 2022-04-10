@@ -9,6 +9,7 @@ import {
   RefreshControl,
 } from "react-native";
 import HeaderComponenent from "../../components/HeaderComponenent";
+import Ranking from "./Ranking";
 import { useTranslation } from "../../Context/TranslationContext";
 import DrawingBoard from "../../components/DrawingBoard";
 const { width, height } = Dimensions.get("screen");
@@ -18,13 +19,27 @@ import { LinearGradient } from "expo-linear-gradient";
 import { useTheme } from "../../Context/theme/ThemeContext";
 import NewEventList from "./NewEventList";
 import SentEventList from "./SentEventList";
+import useFetch from "../../data/useFetch";
+import { useAuthentification } from "../../Context/AuthContext";
 function EventView(props) {
   const { themeStyle } = useTheme();
   const { langage } = useTranslation();
+  const { apiToken } = useAuthentification();
   let scrollViewSelector = useRef();
   let scrollViewPages = useRef();
   const [activePage, setActivePage] = useState(0);
+  const [rankAvailable, setRankAvailable] = useState(false);
 
+  const [rankingAvailibility, requestRankingAvailibility] = useFetch();
+  useEffect(async () => {
+    requestRankingAvailibility("presentation/status/12", "GET", {}, apiToken);
+  }, []);
+  useEffect(() => {
+    console.log(rankingAvailibility);
+    if (rankingAvailibility?.status === "Done") {
+      setRankAvailable(rankingAvailibility.content);
+    }
+  }, [rankingAvailibility]);
   function changeActivePage(pageNumber) {
     setActivePage(pageNumber);
 
@@ -90,6 +105,30 @@ function EventView(props) {
               </Text>
             </LinearGradient>
           </TouchableOpacity>
+          {rankAvailable && (
+            <TouchableOpacity onPress={() => changeActivePage(2)}>
+              <LinearGradient
+                colors={
+                  activePage == 2
+                    ? ["#0C1316", "#203C42", "#2293D0"]
+                    : ["#E8E8E8", "#E8E8E8", "#E8E8E8"]
+                }
+                end={{ x: 1, y: 0 }}
+                locations={[0.0, 0.25, 0.75]}
+                start={{ x: -0.3, y: 0 }}
+                style={styles.buttonSelectorView}
+              >
+                <Text
+                  style={[
+                    styles.buttonSelectorViewText,
+                    activePage == 2 ? styles.buttonSelectorViewTextActive : {},
+                  ]}
+                >
+                  {langage.ranking}
+                </Text>
+              </LinearGradient>
+            </TouchableOpacity>
+          )}
         </ScrollView>
       </View>
       <View style={styles.bodyContainer}>
@@ -119,6 +158,14 @@ function EventView(props) {
           <View style={[styles.bodyContainer]}>
             <SentEventList navigation={props.navigation} />
           </View>
+          {rankAvailable && (
+            <View style={[styles.bodyContainer]}>
+              <Ranking
+                navigation={props.navigation}
+                isFocused={activePage === 2}
+              />
+            </View>
+          )}
         </ScrollView>
       </View>
     </View>

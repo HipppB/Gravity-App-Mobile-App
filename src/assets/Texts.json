@@ -93,7 +93,14 @@
     "retryChallenge": "Retenter le défi",
     "participateChallenge": "Participer au défi",
     "rejectedChallenge": "Défi refusé",
-    "validateChallenge": "Défi validé !"
+    "validateChallenge": "Défi validé !",
+    "ranking": "CLASSEMENT",
+    "first": "1er",
+    "second": "2e",
+    "third": "3e",
+    "loading": "Chargement...",
+    "needAtLeast": "Il faut au moins",
+    "toGopodium": "points pour monter sur le podium !"
   },
   "en": {
     "connexionButton": "Login",
@@ -189,6 +196,13 @@
     "retryChallenge": "Retry the challenge",
     "participateChallenge": "Participate",
     "rejectedChallenge": "Challenge rejected",
-    "validateChallenge": "Challenge validate !"
+    "validateChallenge": "Challenge validate !",
+    "ranking": "RANKING",
+    "first": "1st",
+    "second": "2nd",
+    "third": "3rd",
+    "loading": "Loading...",
+    "needAtLeast": "You need at least",
+    "toGopodium": "points to go on the podium !"
   }
 }
