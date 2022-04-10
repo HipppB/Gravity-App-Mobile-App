@@ -19,6 +19,7 @@ import ColoredViewComponent from "./ColoredViewComponent";
 import { useTranslation } from "../Context/TranslationContext";
 import { useTheme } from "../Context/theme/ThemeContext";
 import { useAuthentification } from "../Context/AuthContext";
+const { width, height } = Dimensions.get("screen");
 function SponsorComponent({ sponsor }) {
   const [isOpen, setisOpen] = useState(false);
   const [image, setImage] = useState();
@@ -106,7 +107,7 @@ function SponsorComponent({ sponsor }) {
                 fontFamily: "ChangaOne_400Regular",
                 fontSize: 19,
                 color: themeStyle.text,
-                lineHeight: 20,
+                // lineHeight: 20,
               }}
             >
               {sponsor.name}
@@ -115,11 +116,12 @@ function SponsorComponent({ sponsor }) {
               style={{
                 fontFamily: "ChangaOne_400Regular_Italic",
                 fontSize: 17,
-                maxWidth: "90%",
+                maxWidth: width * 0.8 - 70,
                 color: themeStyle.textless,
-                lineHeight: 20,
+
+                // lineHeight:,
               }}
-              numberOfLines={1}
+              numberOfLines={layoutOpen ? 0 : 1}
             >
               {sponsor.translation[0].context_text}
             </Text>
@@ -195,6 +197,7 @@ const styles = StyleSheet.create({
   containerHeader: {
     flexDirection: "row",
     alignItems: "center",
+
     width: "100%",
     alignSelf: "center",
     padding: 10,
@@ -204,9 +207,10 @@ const styles = StyleSheet.create({
     height: 50,
     marginRight: 8,
     borderRadius: 10,
-    backgroundColor: "black",
   },
-  textContainer: {},
+  textContainer: {
+    justifyContent: "center",
+  },
   buttonTouchableContainer: {
     width: "70%",
     alignSelf: "center",

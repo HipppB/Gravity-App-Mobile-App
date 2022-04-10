@@ -146,18 +146,23 @@ function Notification({ notification, navigation, index, onPress }) {
 
   const [isNewVisible, setIsNewVisible] = useState(true);
   function callBack() {
-    switch (notification.action) {
-      case "URL":
-        Linking.openURL(notification.url);
-        break;
-      default:
-        try {
-          navigation.navigate(notification.action, notification.url);
-        } catch (e) {
-          console.warn(e);
-          console.log(e);
-        }
-        break;
+    if (notification?.isNew) {
+      isRead();
+    }
+    if (notification?.action) {
+      switch (notification.action) {
+        case "URL":
+          Linking.openURL(notification.url);
+          break;
+        default:
+          try {
+            navigation.navigate(notification?.action, notification?.url);
+          } catch (e) {
+            console.warn(e);
+            console.log(e);
+          }
+          break;
+      }
     }
   }
 

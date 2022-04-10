@@ -14,6 +14,7 @@ import {
 import ColoredViewComponent from "../components/ColoredViewComponent";
 import { LinearGradient } from "expo-linear-gradient";
 import { useTranslation } from "../Context/TranslationContext";
+const { width, height } = Dimensions.get("screen");
 
 import { useAuthentification } from "../Context/AuthContext";
 
@@ -114,6 +115,8 @@ function EventComponent({ event, ...props }) {
                     fontSize: 19,
                     color: "white",
                     lineHeight: 20,
+                    textAlignVertical: "center",
+                    maxWidth: width * 0.8 - 70,
                   }}
                 >
                   {event?.translation[0]?.title}
@@ -121,10 +124,8 @@ function EventComponent({ event, ...props }) {
                 <Text
                   style={{
                     color: "white",
-
                     fontFamily: "ChangaOne_400Regular_Italic",
                     fontSize: 17,
-
                     lineHeight: 20,
                   }}
                 >
@@ -192,6 +193,7 @@ function EventComponent({ event, ...props }) {
                 event?.imageUri === null && { resizeMode: "center" },
               ]}
             />
+
             <View style={styles.textContainer}>
               <Text
                 style={{
@@ -201,24 +203,25 @@ function EventComponent({ event, ...props }) {
                   paddingBottom: 0,
                   lineHeight: 20,
                   textAlignVertical: "center",
+                  maxWidth: width * 0.8 - 70,
                 }}
               >
                 {event?.translation[0]?.title}
               </Text>
-              <Text
-                style={{
-                  color: "white",
-
-                  fontFamily: "ChangaOne_400Regular_Italic",
-                  fontSize: 17,
-
-                  lineHeight: 20,
-                }}
-              >
-                {props?.wrong
-                  ? langage.rejectedChallenge
-                  : event?.translation[0]?.subtitle}
-              </Text>
+              {(event?.translation[0]?.subtitle || langage?.wrong) && (
+                <Text
+                  style={{
+                    color: "white",
+                    fontFamily: "ChangaOne_400Regular_Italic",
+                    fontSize: 17,
+                    lineHeight: 20,
+                  }}
+                >
+                  {props?.wrong
+                    ? langage.rejectedChallenge
+                    : event?.translation[0]?.subtitle}
+                </Text>
+              )}
             </View>
           </View>
           <View

@@ -72,6 +72,7 @@ function SpecialEventComponent({ event, navigation }) {
                 fontSize: 19,
                 color: "white",
                 lineHeight: 20,
+                maxWidth: width * 0.8 - 70,
               }}
             >
               {event?.translation[0]?.title}
@@ -82,6 +83,7 @@ function SpecialEventComponent({ event, navigation }) {
                 fontSize: 17,
                 color: "white",
                 lineHeight: 20,
+                maxWidth: width * 0.8 - 70,
               }}
             >
               {Math.floor(timeRemaining / 3600)}h{" "}

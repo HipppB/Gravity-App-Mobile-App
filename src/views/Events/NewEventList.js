@@ -1,16 +1,26 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, View, ScrollView, RefreshControl } from "react-native";
+import {
+  StyleSheet,
+  View,
+  ScrollView,
+  RefreshControl,
+  Text,
+} from "react-native";
 import { useAuthentification } from "../../Context/AuthContext";
 import useFetch from "../../data/useFetch";
 import SpecialEventComponent from "../../components/SpecialEventComponent";
 import EventComponent from "../../components/EventComponent";
+import { useTranslation } from "../../Context/TranslationContext";
+import { useTheme } from "../../Context/theme/ThemeContext";
+
 function NewEventList(props) {
   const [challengesNormal, setChallangesNormal] = useState([]);
   const [challengesSpecial, setChallangesSpecial] = useState([]);
   const [isRefreshing, setRefreshing] = useState(false);
 
   const { apiToken } = useAuthentification();
-
+  const { langage } = useTranslation();
+  const { themeStyle } = useTheme();
   const [normalRequest, newNormalRequest] = useFetch();
   const [specialRequest, newSpecialRequest] = useFetch();
 
@@ -56,6 +66,20 @@ function NewEventList(props) {
             key={(Math.random() * 1000).toFixed()}
           />
         ))}
+
+      {challengesNormal?.length === 0 && challengesSpecial?.length === 0 ? (
+        <Text
+          style={{
+            alignSelf: "center",
+            color: themeStyle.textless,
+            marginTop: 20,
+            fontFamily: "Neon",
+            fontSize: 20,
+          }}
+        >
+          {langage.noChallenge}
+        </Text>
+      ) : null}
     </ScrollView>
   );
 }
