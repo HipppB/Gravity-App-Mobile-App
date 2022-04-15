@@ -54,7 +54,7 @@ function Ranking({ navigation, isFocused }) {
         renderItem={({ item }) => (
           <NotPodium user={item} navigation={navigation} />
         )}
-        keyExtractor={() => (Math.random() * 100).toFixed(0)}
+        keyExtractor={(item) => item.user_id}
         getItemCount={() => userRank.length - 3}
         getItem={(data, index) => data[index + 3]}
       />

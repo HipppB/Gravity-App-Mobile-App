@@ -8,9 +8,11 @@ import {
   TouchableOpacity,
   Pressable,
   Platform,
+  Dimensions,
 } from "react-native";
 import { useFocusEffect } from "@react-navigation/native";
 import { useAuthentification } from "../Context/AuthContext";
+const { width, height } = Dimensions.get("screen");
 
 import ColoredViewComponent from "./ColoredViewComponent";
 

@@ -100,7 +100,8 @@
     "third": "3e",
     "loading": "Chargement...",
     "needAtLeast": "Il faut au moins",
-    "toGopodium": "points pour monter sur le podium !"
+    "toGopodium": "points pour monter sur le podium !",
+    "projectInFewPoints": "Les points majeurs de notre projet"
   },
   "en": {
     "connexionButton": "Login",
@@ -203,6 +204,7 @@
     "third": "3rd",
     "loading": "Loading...",
     "needAtLeast": "You need at least",
-    "toGopodium": "points to go on the podium !"
+    "toGopodium": "points to go on the podium !",
+    "projectInFewPoints": "Main points of our project"
   }
 }

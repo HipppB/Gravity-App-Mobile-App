@@ -213,8 +213,9 @@ function EventComponent({ event, ...props }) {
                   style={{
                     color: "white",
                     fontFamily: "ChangaOne_400Regular_Italic",
-                    fontSize: 17,
+                    fontSize: 16,
                     lineHeight: 20,
+                    maxWidth: width * 0.8 - 70,
                   }}
                 >
                   {props?.wrong

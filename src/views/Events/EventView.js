@@ -28,7 +28,7 @@ function EventView(props) {
   let scrollViewSelector = useRef();
   let scrollViewPages = useRef();
   const [activePage, setActivePage] = useState(0);
-  const [rankAvailable, setRankAvailable] = useState(false);
+  const [rankAvailable, setRankAvailable] = useState(true);
 
   const [rankingAvailibility, requestRankingAvailibility] = useFetch();
   useEffect(async () => {
@@ -37,7 +37,7 @@ function EventView(props) {
   useEffect(() => {
     console.log(rankingAvailibility);
     if (rankingAvailibility?.status === "Done") {
-      setRankAvailable(rankingAvailibility.content);
+      //setRankAvailable(rankingAvailibility.content);
     }
   }, [rankingAvailibility]);
   function changeActivePage(pageNumber) {
