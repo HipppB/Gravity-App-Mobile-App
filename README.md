@@ -1,3 +1,7 @@
+<p align="center">
+<img src="https://github.com/HipppB/Gravity-App-Mobile-App/blob/master/src/assets/images/logos/Couleur/Logo.png" style="width: 300px; heigth: 300px"/>
+</p>
+
 # Gravity mobile App
 
 <p>
@@ -10,7 +14,6 @@
 
 ## 🪐 The project
 
-<img src="https://github.com/HipppB/Gravity-App-Mobile-App/blob/master/src/assets/images/logos/Couleur/Logo.png" style="width: 100px; heigth: 100px"/>
 This app was developed to connect with students during the week of election of the BDE of ISEP school 2022.
 The features needed were : 
 - Global Stuff
