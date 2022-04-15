@@ -28,12 +28,17 @@ The features needed were :
  - Status management
  - Rank system
 
+## GitHub repositories
+- Server : https://github.com/Artcann/Gravity-Back (Nest JS)
+- Back office : https://github.com/HipppB/Gravity-App-Admin-Panel (React JS)
+- Mobile app : https://github.com/HipppB/Gravity-App-Mobile-App (React Native)
 
 ## 🚀 How to use
 
 - Install packages with `npm install`.
   - If you have native iOS code run `npx pod-install`
 - Run `npx react-native run-ios|android` to run on ios or android.
+
 
 ## 📝 Notes
 
